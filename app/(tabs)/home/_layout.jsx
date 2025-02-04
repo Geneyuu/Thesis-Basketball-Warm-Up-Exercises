@@ -20,6 +20,10 @@ const Layout = () => {
 					name="whole-body"
 					options={{ headerShown: false, headerTitle: "Whole Body" }}
 				/>
+				<Stack.Screen
+					name="stretching"
+					options={{ headerShown: false, headerTitle: "Stretching" }}
+				/>
 			</Stack>
 		</SafeAreaView>
 	);

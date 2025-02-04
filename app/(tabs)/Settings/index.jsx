@@ -8,19 +8,16 @@ import {
 	Alert,
 	ScrollView,
 	SafeAreaView,
+	useWindowDimensions,
 } from "react-native";
 import { Data } from "./../../_layout"; // Import your context
 import { Link, useRouter } from "expo-router"; // For navigation
 
 const Settings = () => {
-	const {
-		exerciseTimer,
-		setExerciseTimer,
-		restTimer,
-		setRestTimer,
-		setTimer,
-		setIsTimerRunning,
-	} = useContext(Data); // Access context
+	const { width, height } = useWindowDimensions();
+
+	const { exerciseTimer, setExerciseTimer, restTimer, setRestTimer } =
+		useContext(Data); // Access context
 
 	const [newExerciseTimer, setNewExerciseTimer] = useState(exerciseTimer); // Editable state for exercise timer
 	const [newRestTimer, setNewRestTimer] = useState(restTimer); // Editable state for rest timer
@@ -41,7 +38,6 @@ const Settings = () => {
 		// Update the timers in context
 		setExerciseTimer(newExerciseTimer);
 		setRestTimer(newRestTimer);
-		setIsTimerRunning(false);
 
 		// Navigate back to the home screen
 		router.replace("/(tabs)/");
@@ -111,8 +107,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 16,
 		justifyContent: "center",
-		marginBottom: 100,
-		marginTop: 30,
+		marginBottom: 35,
+		marginTop: 10,
 	},
 	title: {
 		fontSize: 30,
@@ -157,7 +153,7 @@ const styles = StyleSheet.create({
 		marginTop: 40,
 		borderTopWidth: 1,
 		borderTopColor: "#ccc",
-		paddingTop: 20,
+		paddingTop: 50,
 		justifyContent: "center",
 		alignItems: "center",
 	},

@@ -8,92 +8,27 @@ import {
 	ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { Data } from "../../_layout"; // Import context
+import { Data } from "../../_layout";
 
-// Main Home Component
 const Home = () => {
-	const styles = StyleSheet.create({
-		container: {
-			flex: 1,
-			backgroundColor: "#fff",
-		},
-	});
-
 	return (
 		<View style={styles.container}>
-			{/* Header */}
 			<Header />
-
-			{/* Featured Exercises */}
 			<FeaturedExercises />
-
-			{/* Categories */}
 			<Categories />
 		</View>
 	);
 };
 
-// LogoSection Component
-const LogoSection = () => {
-	const styles = StyleSheet.create({
-		logoContainer: {
-			flexDirection: "row",
-			alignItems: "center",
-		},
-		headerText: {
-			fontSize: 40,
-			fontFamily: "Oswald-Bold",
-			color: "#161616",
-		},
-	});
+const LogoSection = () => (
+	<View style={styles.logoContainer}>
+		<Text style={styles.headerText}>WarmUps</Text>
+	</View>
+);
 
-	return (
-		<View style={styles.logoContainer}>
-			<Text style={styles.headerText}>WarmUps</Text>
-		</View>
-	);
-};
-
-// ProfileSection Component
 const ProfileSection = () => {
-	const { name } = useContext(Data); // Access name from context
+	const { name } = useContext(Data);
 	const router = useRouter();
-	const styles = StyleSheet.create({
-		profileSection: {
-			flexDirection: "row",
-			alignItems: "center",
-		},
-		greetingText: {
-			fontSize: 14,
-			color: "#000",
-			fontFamily: "Karla-Regular",
-		},
-		greetingName: {
-			color: "#161616",
-			fontFamily: "Oswald-Bold",
-			fontSize: 16,
-			textTransform: "uppercase",
-		},
-		subGreetingText: {
-			fontSize: 12,
-			fontFamily: "Karla-ExtraLight",
-			color: "#161616",
-			marginTop: 2,
-			textAlign: "right",
-		},
-		profileContainer: {
-			marginLeft: 10,
-			width: 60,
-			height: 60,
-			borderRadius: 10,
-			overflow: "hidden",
-		},
-		profileImage: {
-			width: "100%",
-			height: "100%",
-			resizeMode: "contain",
-		},
-	});
 
 	return (
 		<View style={styles.profileSection}>
@@ -116,117 +51,36 @@ const ProfileSection = () => {
 	);
 };
 
-// SubHeader Component
-const SubHeader = () => {
-	const styles = StyleSheet.create({
-		subHeaderText: {
-			marginTop: 0,
-			fontSize: 10,
-			color: "#000",
-			fontFamily: "Karla-ExtraLight",
-			width: "50%",
-		},
-	});
+const SubHeader = () => (
+	<Text style={styles.subHeaderText}>
+		Basketball Warm-Up Exercises, exclusive for Cavite State University.
+	</Text>
+);
 
-	return (
-		<Text style={styles.subHeaderText}>
-			Basketball Warm-Up Exercises, exclusive for Lorem ipsum dolor sit
-			amet.
-		</Text>
-	);
-};
-
-// Header Component
-const Header = () => {
-	const styles = StyleSheet.create({
-		header: {
-			paddingBlock: 15,
-			paddingInline: 20,
-			backgroundColor: "#fff",
-			borderEndWidth: 0,
-			borderStartWidth: 0,
-			borderBottomWidth: 3,
-		},
-		headerRow: {
-			flexDirection: "row",
-			alignItems: "center",
-			justifyContent: "space-between",
-		},
-	});
-
-	return (
-		<View style={styles.header}>
-			<View style={styles.headerRow}>
-				<LogoSection />
-				<ProfileSection />
-			</View>
-			<SubHeader />
+const Header = () => (
+	<View style={styles.header}>
+		<View style={styles.headerRow}>
+			<LogoSection />
+			<ProfileSection />
 		</View>
-	);
-};
+		<SubHeader />
+	</View>
+);
 
-// FeaturedExercises Component
-const FeaturedExercises = () => {
-	const styles = StyleSheet.create({
-		featuredContainer: {
-			marginBottom: 0,
-			padding: 20,
-			marginTop: 15,
-		},
-		sectionTitle: {
-			fontSize: 20,
-			marginBottom: 5,
-			fontFamily: "Karla-Bold",
-			color: "#000",
-		},
-		featuredBox: {
-			marginTop: 5,
-			height: 175,
-			borderRadius: 10,
-			overflow: "hidden", // Ensure the image stays within the rounded corners
-			marginBottom: -18,
-		},
-		featuredImage: {
-			width: "100%",
-			height: "100%",
-			resizeMode: "cover", // This will ensure the image covers the area
-		},
-	});
-
-	return (
-		<View style={styles.featuredContainer}>
-			<Text style={styles.sectionTitle}>Featured Exercises</Text>
-			<View style={styles.featuredBox}>
-				<Image
-					source={require("../../../assets/images/withballpreview.png")}
-					style={styles.featuredImage}
-				/>
-			</View>
+const FeaturedExercises = () => (
+	<View style={styles.featuredContainer}>
+		<Text style={styles.sectionTitle}>Featured Exercises</Text>
+		<View style={styles.featuredBox}>
+			<Image
+				source={require("../../../assets/images/withballpreview.png")}
+				style={styles.featuredImage}
+			/>
 		</View>
-	);
-};
+	</View>
+);
 
-// CategoryCard Component
 const CategoryCard = ({ title, imageUri, navigationPath }) => {
 	const router = useRouter();
-	const styles = StyleSheet.create({
-		categoryCard: {
-			width: "47%",
-			marginBottom: 10,
-		},
-		cardImage: {
-			width: "100%",
-			height: 120,
-			borderRadius: 10,
-		},
-		cardText: {
-			textAlign: "center",
-			paddingTop: 15,
-			fontFamily: "Karla-Regular",
-			color: "#000",
-			fontSize: 16,
-		},
-	});
 
 	return (
 		<TouchableOpacity
@@ -239,57 +93,112 @@ const CategoryCard = ({ title, imageUri, navigationPath }) => {
 	);
 };
 
-// Categories Component
-const Categories = () => {
-	const styles = StyleSheet.create({
-		categoriesContainer: {
-			flex: 1,
-			padding: 20,
-		},
-		categoriesGrid: {
-			flexDirection: "row",
-			flexWrap: "wrap",
-			justifyContent: "space-between",
-		},
-		sectionTitle: {
-			fontSize: 20,
-			fontFamily: "Karla-Bold",
-			color: "#000",
-			paddingBottom: 10,
-		},
-	});
+const Categories = () => (
+	<View style={styles.categoriesContainer}>
+		<Text style={styles.sectionTitle}>Categories</Text>
+		<ScrollView
+			contentContainerStyle={styles.categoriesGrid}
+			showsVerticalScrollIndicator={false}
+		>
+			<CategoryCard
+				title="Whole Body (Dynamic)"
+				imageUri={require("../../../assets/images/wholebodypreview.png")}
+				navigationPath="home/whole-body/details"
+			/>
+			<CategoryCard
+				title="In Place"
+				imageUri={require("../../../assets/images/inplacepreview.png")}
+				navigationPath="home/in-place/inplace"
+			/>
+			<CategoryCard
+				title="With Ball"
+				imageUri={require("../../../assets/images/withballpreview.png")}
+				navigationPath="home/with-ball/withball"
+			/>
+			<CategoryCard
+				title="Stretching"
+				imageUri={require("../../../assets/images/stretchingpreview.png")}
+				navigationPath="home/stretching/stretching"
+			/>
+		</ScrollView>
+	</View>
+);
 
-	return (
-		<View style={styles.categoriesContainer}>
-			<Text style={styles.sectionTitle}>Categories</Text>
-			<ScrollView
-				contentContainerStyle={styles.categoriesGrid}
-				showsVerticalScrollIndicator={false}
-				overScrollMode="always"
-			>
-				<CategoryCard
-					title="Whole Body (Dynamic)"
-					imageUri={require("../../../assets/images/wholebodypreview.png")}
-					navigationPath="home/whole-body/details"
-				/>
-				<CategoryCard
-					title="In Place"
-					imageUri={require("../../../assets/images/inplacepreview.png")}
-					navigationPath="home/in-place/inplace"
-				/>
-				<CategoryCard
-					title="With Ball"
-					imageUri={require("../../../assets/images/withballpreview.png")}
-					navigationPath="home/with-ball/withball"
-				/>
-				<CategoryCard
-					title="Stretching"
-					imageUri={require("../../../assets/images/stretchingpreview.png")}
-					navigationPath="home/stretching/stretching"
-				/>
-			</ScrollView>
-		</View>
-	);
-};
+const styles = StyleSheet.create({
+	container: { flex: 1, backgroundColor: "#fff" },
+	logoContainer: { flexDirection: "row", alignItems: "center" },
+	headerText: { fontSize: 40, fontFamily: "Oswald-Bold", color: "#161616" },
+	profileSection: { flexDirection: "row", alignItems: "center" },
+	greetingText: { fontSize: 14, color: "#000", fontFamily: "Karla-Regular" },
+	greetingName: {
+		color: "#161616",
+		fontFamily: "Oswald-Bold",
+		fontSize: 16,
+		textTransform: "uppercase",
+	},
+	subGreetingText: {
+		fontSize: 12,
+		fontFamily: "Karla-ExtraLight",
+		color: "#161616",
+		marginTop: 2,
+		textAlign: "right",
+	},
+	profileContainer: {
+		marginLeft: 10,
+		width: 60,
+		height: 60,
+		borderRadius: 10,
+		overflow: "hidden",
+	},
+	profileImage: { width: "100%", height: "100%", resizeMode: "contain" },
+	subHeaderText: {
+		marginTop: 0,
+		fontSize: 10,
+		color: "#000",
+		fontFamily: "Karla-ExtraLight",
+		width: "50%",
+	},
+	header: {
+		paddingVertical: 15,
+		paddingHorizontal: 20,
+		backgroundColor: "#fff",
+		borderBottomWidth: 3,
+	},
+	headerRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	featuredContainer: { marginBottom: 0, padding: 20, marginTop: 15 },
+	sectionTitle: {
+		fontSize: 20,
+		marginBottom: 5,
+		fontFamily: "Karla-Bold",
+		color: "#000",
+	},
+	featuredBox: {
+		marginTop: 5,
+		height: 175,
+		borderRadius: 10,
+		overflow: "hidden",
+		marginBottom: -18,
+	},
+	featuredImage: { width: "100%", height: "100%", resizeMode: "cover" },
+	categoryCard: { width: "47%", marginBottom: 10 },
+	cardImage: { width: "100%", height: 120, borderRadius: 10 },
+	cardText: {
+		textAlign: "center",
+		paddingTop: 15,
+		fontFamily: "Karla-Regular",
+		color: "#000",
+		fontSize: 16,
+	},
+	categoriesContainer: { flex: 1, padding: 20 },
+	categoriesGrid: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
+	},
+});
 
 export default Home;

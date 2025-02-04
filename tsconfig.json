@@ -15,6 +15,7 @@
 		"app/(tabs)/_layout.jsx",
 		"app/_layout.jsx",
 		"app/(tabs)/Profile.jsx",
-		"app/(tabs)/Settings/index.jsx"
+		"app/(tabs)/Settings/index.jsx",
+		"app/index.jsx"
 	]
 }

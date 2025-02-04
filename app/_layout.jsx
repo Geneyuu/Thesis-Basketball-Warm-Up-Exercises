@@ -43,24 +43,8 @@ export default function RootLayout() {
 			}}
 		>
 			<Stack>
-				{" "}
-				// pag wala neto hindi magwowork yung navigation at di mo rin
-				makikita sa screens
-				{/* Ito yung pinaka-navigation stack mo. 
-      			Lahat ng screens na ilalagay mo dito ay magiging part ng stack navigation. */}
 				<Stack.Screen name="index" options={{ headerShown: false }} />
-				{/* 
-				- Ito yung unang screen na ipapakita (default screen). 
-				- Dahil ito ang "index", automatic siyang una sa listahan. 
-				- `headerShown: false` → Hindi ipapakita yung header.
-  				*/}
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-				{/* 
-				- Ito yung "tabs" navigation folder mo. 
-				- Ibig sabihin, pag pumasok ka sa isang tab (e.g., Home, Profile, Settings), 
-				yung mga laman nun ay nasa ilalim ng `(tabs)`. 
-				- Kahit wala siya sa stack na ‘to, gagana pa rin kasi nasa `_layout.jsx` siya.  at file base routing ang expo kaya automatic kahit wala to 
-			*/}
 			</Stack>
 		</Data.Provider>
 	);

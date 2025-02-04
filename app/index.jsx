@@ -39,7 +39,7 @@ export default function Index() {
 				// Set a longer delay to show splash screen for 10 seconds
 				setTimeout(() => {
 					setIsLoading(false);
-				}, 6000); // 20 seconds delay before hiding the splash screen
+				}, 6000);
 			} catch (error) {
 				console.error("Error loading fonts:", error);
 				setIsLoading(false);
@@ -47,7 +47,7 @@ export default function Index() {
 		};
 
 		loadAssets();
-	}, [router]);
+	}, []);
 
 	// Start the animation when the component mounts
 	useEffect(() => {
@@ -73,7 +73,7 @@ export default function Index() {
 		if (!isLoading) {
 			router.replace("/(tabs)/home"); // Redirect after the delay
 		}
-	}, [isLoading, router]);
+	}, [isLoading]);
 
 	if (isLoading) {
 		return (

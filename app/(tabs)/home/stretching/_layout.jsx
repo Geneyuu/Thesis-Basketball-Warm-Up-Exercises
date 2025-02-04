@@ -15,7 +15,7 @@ const CustomHeader = () => {
 			>
 				<Ionicons name="arrow-back" size={24} color="#161616" />
 			</TouchableOpacity>
-			<Text style={styles.headerTitle}>With Ball</Text>
+			<Text style={styles.headerTitle}>Stretching</Text>
 		</View>
 	);
 };
@@ -24,7 +24,7 @@ const Layout = () => {
 	return (
 		<Stack>
 			<Stack.Screen
-				name="withball"
+				name="stretching"
 				options={{
 					headerShown: true,
 					header: () => <CustomHeader />,
@@ -36,7 +36,6 @@ const Layout = () => {
 					headerBackTitleVisible: false, // Hide back button title
 				}}
 			/>
-			{/* <Stack.Screen name="StartWarmUps" options={{ headerShown: true }} /> */}
 		</Stack>
 	);
 };

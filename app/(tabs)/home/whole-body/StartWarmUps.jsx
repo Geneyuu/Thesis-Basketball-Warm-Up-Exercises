@@ -159,38 +159,35 @@ const StartWarmups = () => {
 	useEffect(() => {
 		let interval;
 
-		// Countdown logic for exercise
-		if (isTimerRunning && timer > 0 && !isResting) {
+		// Countdown logic for both exercise and rest
+		if (isTimerRunning && timer > 0) {
 			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
 		}
-		// Countdown logic for rest
-		else if (isTimerRunning && timer > 0 && isResting) {
-			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-		}
-		// Handle exercise transition when the timer hits 0
-		else if (timer === 0 && !isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
-				setIsResting(true);
-				setTimer(restTimer); // Set the rest period
+
+		// Handle transitions when the timer hits 0
+		if (timer === 0) {
+			if (!isResting) {
+				if (currentExerciseIndex < exercises.length - 1) {
+					setIsResting(true);
+					setTimer(restTimer); // Set rest period
+				} else {
+					setIsTimerRunning(false);
+					setCurrentExerciseIndex(0);
+					setTimer(exerciseTimer); // Reset to exercise timer
+					setIsResting(false);
+					router.replace("/(tabs)/");
+					setTimeout(() => {
+						alert(
+							"With Ball Exercises Completed! You can now play Basketball!"
+						);
+					}, 1000);
+				}
 			} else {
-				setIsTimerRunning(false);
-				setCurrentExerciseIndex(0);
-				setTimer(exerciseTimer); // Reset to exercise timer
-				setIsResting(false);
-				router.replace("/(tabs)/");
-				setTimeout(() => {
-					alert(
-						"With Ball Exercises Completed! You can now play Basketball!"
-					);
-				}, 1000);
-			}
-		}
-		// Handle rest period transition when the timer hits 0
-		else if (timer === 0 && isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
-				setCurrentExerciseIndex((prev) => prev + 1);
-				setIsResting(false);
-				setTimer(exerciseTimer); // Switch to next exercise
+				if (currentExerciseIndex < exercises.length - 1) {
+					setCurrentExerciseIndex((prev) => prev + 1);
+					setIsResting(false);
+					setTimer(exerciseTimer); // Switch to next exercise
+				}
 			}
 		}
 
