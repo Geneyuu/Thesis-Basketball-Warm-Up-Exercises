@@ -76,12 +76,17 @@ const Search = () => {
 	// Function to filter exercises based on search input
 	const filterExercises = (query) => {
 		setSearchQuery(query); // Update the search query state
+
+		// Sort exercises alphabetically
+		exercisesData.sort((a, b) => a.name.localeCompare(b.name)); // Sort in place
+
+		// Filter exercises based on search query
 		if (query === "") {
 			setFilteredExercises(exercisesData); // Show all exercises if query is empty
 		} else {
-			// Filter exercises that match the query
-			const filtered = exercisesData.filter((exercise) =>
-				exercise.name.toLowerCase().includes(query.toLowerCase())
+			const filtered = exercisesData.filter(
+				(exercise) =>
+					exercise.name.toLowerCase().includes(query.toLowerCase()) // Case insensitive filter
 			);
 			setFilteredExercises(filtered);
 		}
@@ -92,6 +97,8 @@ const Search = () => {
 		if (disabled) return; // Disable navigation while already navigating
 		setDisabled(true); // Prevent double tap
 		router.push(`/Search/${exerciseId}`); // Navigate to the selected exercise
+		setSearchQuery(""); // Clear the search query
+		setFilteredExercises(exercisesData);
 		setTimeout(() => setDisabled(false), 1300); // Re-enable after 1.3 seconds
 	};
 
