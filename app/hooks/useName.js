@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useName() {
-	const [name, setName] = useState("Asim"); // Default name
+	const [name, setName] = useState("SetName"); // Default name
 
 	// Load name from AsyncStorage when the hook initializes
 	useEffect(() => {

@@ -20,7 +20,7 @@ const Profile = () => {
 	const handleSave = () => {
 		// Save and then redirect to home
 		setName(newName);
-		alert("Name Updated", `You set your name to: ${newName}!`);
+		Alert.alert("Name Updated", `You set your name to: ${newName}!`);
 		router.replace("/home");
 	};
 	return (

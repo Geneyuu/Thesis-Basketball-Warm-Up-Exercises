@@ -73,12 +73,11 @@ const Search = () => {
 	const [disabled, setDisabled] = useState(false); // Prevents double taps
 	const router = useRouter();
 
+	exercisesData.sort((a, b) => a.name.localeCompare(b.name)); // Sort in place
+
 	// Function to filter exercises based on search input
 	const filterExercises = (query) => {
 		setSearchQuery(query); // Update the search query state
-
-		// Sort exercises alphabetically
-		exercisesData.sort((a, b) => a.name.localeCompare(b.name)); // Sort in place
 
 		// Filter exercises based on search query
 		if (query === "") {
