@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Text, View, StyleSheet, Image, Animated } from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
 
+const scaleValue = new Animated.Value(1);
+
 export default function Index() {
-	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
-	// Create an animated value
-	const scaleValue = new Animated.Value(1);
-
 	useEffect(() => {
-		// Preload the fonts
-		const loadAssets = async () => {
+		const loadFonts = async () => {
 			try {
 				console.log("Loading fonts...");
 				await Font.loadAsync({
@@ -35,71 +32,61 @@ export default function Index() {
 				});
 
 				console.log("Fonts loaded successfully.");
-
-				// Set a longer delay to show splash screen for 10 seconds
-				setTimeout(() => {
-					setIsLoading(false);
-				}, 6000);
 			} catch (error) {
 				console.error("Error loading fonts:", error);
-				setIsLoading(false);
 			}
 		};
 
-		loadAssets();
+		loadFonts();
+
+		// Start the animation once fonts are fully loaded
+		const animation = Animated.loop(
+			Animated.sequence([
+				Animated.timing(scaleValue, {
+					toValue: 1.1,
+					duration: 1500,
+					useNativeDriver: true,
+				}),
+				Animated.timing(scaleValue, {
+					toValue: 1,
+					duration: 2000,
+					useNativeDriver: true,
+				}),
+			])
+		);
+
+		animation.start();
+
+		// Cleanup the animation when the component unmounts
+		return () => {
+			animation.stop();
+		};
 	}, []);
 
-	// Start the animation when the component mounts
 	useEffect(() => {
-		if (isLoading) {
-			Animated.loop(
-				Animated.sequence([
-					Animated.timing(scaleValue, {
-						toValue: 1.1, // scale to 1.1x
-						duration: 1500, // duration of 1.5 seconds
-						useNativeDriver: true,
-					}),
-					Animated.timing(scaleValue, {
-						toValue: 1, // back to original size
-						duration: 2000, // duration of 2 seconds
-						useNativeDriver: true,
-					}),
-				])
-			).start();
-		}
-	}, [isLoading]);
+		// Show splash screen for 6 seconds before navigating
+		setTimeout(() => {
+			router.replace("/(tabs)/home");
+		}, 6000);
+	}, [router]);
 
-	useEffect(() => {
-		if (!isLoading) {
-			router.replace("/(tabs)/home"); // Redirect after the delay
-		}
-	}, [isLoading]);
-
-	if (isLoading) {
-		return (
-			<View style={styles.container}>
-				{/* Animated splash screen image */}
-				<Animated.Image
-					source={require("../assets/images/applogo_modified.png")} // Ensure the path is correct
-					style={[
-						styles.splashImage,
-						{ transform: [{ scale: scaleValue }] },
-					]} // Apply scale animation
-				/>
-				<Text style={styles.text}>Basketball Warm Ups</Text>
-				{/* Positioned at the bottom of the screen */}
-				<Image
-					source={require("../assets/images/cvsulogo.png")} // Logo above text
-					style={styles.universityLogo}
-				/>
-				<Text style={styles.universityText}>
-					Cavite State University
-				</Text>
-			</View>
-		);
-	}
-
-	return null;
+	return (
+		<View style={styles.container}>
+			<Animated.Image
+				source={require("../assets/images/applogo_modified.png")}
+				style={[
+					styles.splashImage,
+					{ transform: [{ scale: scaleValue }] },
+				]}
+			/>
+			<Text style={styles.text}>Basketball Warm Ups</Text>
+			<Image
+				source={require("../assets/images/cvsulogo.png")}
+				style={styles.universityLogo}
+			/>
+			<Text style={styles.universityText}>Cavite State University</Text>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
@@ -110,8 +97,8 @@ const styles = StyleSheet.create({
 		backgroundColor: "#ffffff",
 	},
 	splashImage: {
-		width: 150, // Adjust size as needed
-		height: 150, // Adjust size as needed
+		width: 150,
+		height: 150,
 		marginBottom: 20,
 	},
 	text: {
@@ -120,16 +107,16 @@ const styles = StyleSheet.create({
 		width: "45%",
 		textTransform: "uppercase",
 		color: "#333333",
-		fontFamily: "Karla-Bold", // Optional: Set a bold font
+		fontFamily: "Karla-Bold",
 		letterSpacing: 0,
 		textAlign: "center",
 	},
 	universityText: {
 		position: "absolute",
-		bottom: 45, // Position it at the bottom of the screen
+		bottom: 45,
 		fontSize: 18,
 		color: "#333333",
-		fontFamily: "Karla-SemiBold", // Optional: Set Ba regular font
+		fontFamily: "Karla-SemiBold",
 		textAlign: "center",
 		textTransform: "uppercase",
 	},

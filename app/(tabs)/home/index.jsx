@@ -13,6 +13,7 @@ import { Data } from "../../_layout";
 const Home = () => {
 	return (
 		<View style={styles.container}>
+			<View style={styles.scrollViewContainer}></View>
 			<Header />
 			<FeaturedExercises />
 			<Categories />
