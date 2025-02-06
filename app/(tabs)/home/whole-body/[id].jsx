@@ -37,7 +37,7 @@ const ExerciseDetails = () => {
 				<Video
 					source={videoSource}
 					style={styles.video}
-					useNativeControls={true}
+					useNativeControls={false}
 					shouldPlay={true}
 					isLooping={true}
 					resizeMode="cover"

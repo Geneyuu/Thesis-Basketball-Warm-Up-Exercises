@@ -20,10 +20,9 @@ const Profile = () => {
 	const handleSave = () => {
 		// Save and then redirect to home
 		setName(newName);
-		alert("Name Updated", `You set your name to: ${name}!`);
+		Alert.alert("Name Updated", `You set your name to: ${newName}!`);
 		router.replace("/home");
 	};
-
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
