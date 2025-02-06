@@ -20,7 +20,7 @@ const Profile = () => {
 	const handleSave = () => {
 		// Save and then redirect to home
 		setName(newName);
-		alert("Name Updated", `You set your name to: ${name}!`);
+		Alert.alert("Name Updated!", `You set your name to: ${newName}!`);
 		router.replace("/home");
 	};
 
@@ -57,7 +57,7 @@ const Profile = () => {
 const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
-		backgroundColor: "#f9f9f9",
+		backgroundColor: "#fff",
 	},
 	scrollContainer: {
 		flexGrow: 1,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 		padding: 16,
 	},
 	container: {
-		backgroundColor: "#f9f9f9",
+		backgroundColor: "#fff",
 		display: "flex",
 		flex: 1,
 		justifyContent: "center",
