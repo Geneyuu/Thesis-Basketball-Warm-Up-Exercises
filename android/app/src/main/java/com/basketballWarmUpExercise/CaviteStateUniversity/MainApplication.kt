@@ -1,4 +1,4 @@
-package com.escario13.FinalWarmUpExercise
+package com.basketballWarmUpExercise.CaviteStateUniversity
 
 import android.app.Application
 import android.content.res.Configuration

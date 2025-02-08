@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Video } from "expo-av";
@@ -21,6 +21,8 @@ const ExerciseDetails = () => {
 	console.log(`This is ${id}`);
 
 	const videoSource = videoSources[id];
+	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
+
 	//hehehhasdasdwqe
 
 	if (!videoSource) {
@@ -33,15 +35,23 @@ const ExerciseDetails = () => {
 			<Text style={styles.description}>You selected: {id}</Text>
 
 			{/* Render the video player if a valid video source exists */}
+			{/* Render the video player only after it's loaded */}
 			{videoSource ? (
-				<Video
-					source={videoSource}
-					style={styles.video}
-					useNativeControls={false}
-					shouldPlay={true}
-					isLooping={true}
-					resizeMode="cover"
-				/>
+				<>
+					{!isVideoReady && (
+						<Text style={styles.loadingText}>Loading video...</Text>
+					)}
+
+					<Video
+						source={videoSource}
+						style={styles.video}
+						useNativeControls={false}
+						shouldPlay={true}
+						isLooping={true}
+						resizeMode="cover"
+						onLoad={() => setIsVideoReady(true)} // Set the video as ready once loaded
+					/>
+				</>
 			) : (
 				<Text style={styles.errorText}>Video not found</Text>
 			)}

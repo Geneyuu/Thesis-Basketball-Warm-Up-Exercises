@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, Animated } from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
@@ -7,6 +7,7 @@ const scaleValue = new Animated.Value(1);
 
 export default function Index() {
 	const router = useRouter();
+	const [fontsLoaded, setFontsLoaded] = useState(false);
 
 	useEffect(() => {
 		const loadFonts = async () => {
@@ -31,6 +32,7 @@ export default function Index() {
 					"Oswald-Regular": require("../assets/fonts/Oswald-Regular.ttf"),
 				});
 
+				setFontsLoaded(true);
 				console.log("Fonts loaded successfully.");
 			} catch (error) {
 				console.error("Error loading fonts:", error);
@@ -69,6 +71,15 @@ export default function Index() {
 			router.replace("/(tabs)/home");
 		}, 6000);
 	}, [router]);
+
+	if (!fontsLoaded) {
+		// You can return a loading spinner or placeholder while fonts are loading
+		return (
+			<View style={styles.container}>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
 
 	return (
 		<View style={styles.container}>
@@ -119,6 +130,7 @@ const styles = StyleSheet.create({
 		fontFamily: "Karla-SemiBold",
 		textAlign: "center",
 		textTransform: "uppercase",
+		width: "80%", // Ensure the text can fit
 	},
 	universityLogo: {
 		position: "absolute",

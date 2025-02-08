@@ -4,20 +4,20 @@
 		"slug": "FinalWarmUpExercise",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		// "icon": "./assets/images/icon.png", since we used custom splash-screen
 		"scheme": "myapp",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.escario13.FinalWarmUpExercise"
+			"bundleIdentifier": "com.basketballWarmUpExercise.CaviteStateUniversity"
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
+				"foregroundImage": "./assets/images/applogo_modified.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.escario13.FinalWarmUpExercise"
+			"package": "com.basketballWarmUpExercise.CaviteStateUniversity",
+			"jsEngine": "hermes"
 		},
 		"web": {
 			"bundler": "metro",
@@ -29,7 +29,7 @@
 			[
 				"expo-splash-screen",
 				{
-					"image": "./assets/images/splash-icon.png",
+					"image": "./assets/images/WhiteBackground.png",
 					"imageWidth": 200,
 					"resizeMode": "contain",
 					"backgroundColor": "#ffffff"

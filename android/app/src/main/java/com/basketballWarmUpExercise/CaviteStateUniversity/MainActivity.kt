@@ -1,4 +1,4 @@
-package com.escario13.FinalWarmUpExercise
+package com.basketballWarmUpExercise.CaviteStateUniversity
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

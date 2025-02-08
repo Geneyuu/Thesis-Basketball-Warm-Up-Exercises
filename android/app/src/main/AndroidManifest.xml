@@ -27,8 +27,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.escario13.FinalWarmUpExercise"/>
-        <data android:scheme="exp+finalwarmupexercise"/>
+        <data android:scheme="com.basketballWarmUpExercise.CaviteStateUniversity"/>
       </intent-filter>
     </activity>
   </application>

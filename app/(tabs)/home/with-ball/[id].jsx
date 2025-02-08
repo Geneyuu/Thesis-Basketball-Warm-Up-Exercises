@@ -1,7 +1,20 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { Video } from "expo-av";
+import { useVideoPlayer, VideoView } from "expo-video";
+
+const exerciseTitles = {
+	"arm-stretch-left-arm": "Arm Stretch (Left)",
+	"arm-stretch-right-arm": "Arm Stretch (Right)",
+	"arm-circles": "Arm Circles",
+	"shoulder-rolls": "Shoulder Rolls",
+	"neck-tilts": "Neck Tilts",
+	"leg-stretch-left-leg": "Leg Stretch (Left)",
+	"leg-stretch-right-leg": "Leg Stretch (Right)",
+	"toe-touches": "Toe Touches",
+	"side-stretches": "Side Stretches",
+	lunges: "Lunges",
+};
 
 const videoSources = {
 	"arm-stretch-left-arm": require("../../../../assets/videos/video.mp4"),
@@ -16,65 +29,136 @@ const videoSources = {
 	lunges: require("../../../../assets/videos/pushup.mp4"),
 };
 
+const exerciseInstructions = {
+	"arm-stretch-left-arm":
+		"Extend your left arm straight across your chest and use your right hand to gently pull it towards you. Hold for 15-30 seconds.",
+	"arm-stretch-right-arm":
+		"Extend your right arm straight across your chest and use your left hand to gently pull it towards you. Hold for 15-30 seconds.",
+	"arm-circles":
+		"Extend your arms to the sides and make small circular motions. Gradually increase the circle size and repeat for 30 seconds.",
+	"shoulder-rolls":
+		"Lift your shoulders towards your ears, then roll them back and down in a circular motion. Repeat 10 times, then reverse.",
+	"neck-tilts":
+		"Slowly tilt your head towards one shoulder and hold for a few seconds. Repeat on the other side.",
+	"leg-stretch-left-leg":
+		"Step your left foot forward and keep your back leg straight while bending the front knee slightly. Hold for 15-30 seconds.",
+	"leg-stretch-right-leg":
+		"Step your right foot forward and keep your back leg straight while bending the front knee slightly. Hold for 15-30 seconds.",
+	"toe-touches":
+		"Stand straight and bend forward at the waist, reaching for your toes. Hold for 15-30 seconds.",
+	"side-stretches":
+		"Raise one arm overhead and lean to the opposite side. Hold for a few seconds, then switch sides.",
+	lunges: "Step forward with one leg and lower your hips until both knees are bent at 90 degrees. Repeat on the other leg.",
+};
+
 const ExerciseDetails = () => {
-	const { id } = useLocalSearchParams(); // Retrieve the exercise ID
-	console.log(`This is ${id}`);
+	const { id } = useLocalSearchParams();
+	const [showPlayer, setShowPlayer] = useState(false);
 
+	const exerciseTitle = exerciseTitles[id] || "Exercise Details";
 	const videoSource = videoSources[id];
+	const instructionText =
+		exerciseInstructions[id] ||
+		"No specific instructions available for this exercise.";
 
-	if (!videoSource) {
-		console.log("Video not found for id:", id);
-	}
+	const player = useVideoPlayer(videoSource, (player) => {
+		player.loop = true;
+	});
+
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setShowPlayer(true);
+			player.play();
+		}, 500);
+
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, []);
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Exercise Details</Text>
-			<Text style={styles.description}>You selected: {id}</Text>
+		<ScrollView
+			style={styles.container}
+			contentContainerStyle={{ flexGrow: 1 }}
+		>
+			<View style={styles.videoContainer}>
+				{showPlayer && videoSource ? (
+					<VideoView
+						style={styles.video}
+						player={player}
+						nativeControls={false}
+					/>
+				) : (
+					<Text style={styles.loadingText}>Loading video...</Text>
+				)}
+			</View>
 
-			{/* Render the video player if a valid video source exists */}
-			{videoSource ? (
-				<Video
-					source={videoSource}
-					style={styles.video}
-					useNativeControls={false}
-					shouldPlay={true}
-					isLooping={true}
-					resizeMode="cover"
-				/>
-			) : (
-				<Text style={styles.errorText}>Video not found</Text>
-			)}
-		</View>
+			<Text style={styles.title}>{exerciseTitle}</Text>
+
+			<View style={styles.detailsContainer}>
+				<Text style={styles.detailTitle}>Instructions:</Text>
+				<Text style={styles.detailText}>{instructionText}</Text>
+			</View>
+		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		padding: 16,
 		backgroundColor: "#fff",
 	},
-	title: {
-		fontSize: 24,
-		fontWeight: "bold",
-		marginBottom: 16,
-	},
-	description: {
-		fontSize: 16,
-		textAlign: "center",
-		marginBottom: 20,
+	videoContainer: {
+		width: "100%",
+		overflow: "hidden",
+		height: "250",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	video: {
 		width: "100%",
-		height: 250,
-		marginTop: 20,
+		height: "100%",
+		resizeMode: "stretch",
 	},
-	errorText: {
-		color: "red",
+	loadingText: {
+		color: "#666",
 		fontSize: 16,
+		textAlign: "center",
+	},
+	title: {
+		fontSize: 35,
+		color: "#333",
+		marginBottom: 20,
+		textAlign: "center",
+		fontFamily: "Karla-Bold",
+		marginTop: 30,
+	},
+	detailsContainer: {
+		backgroundColor: "#fff",
+		padding: 20,
+		borderRadius: 15,
+		shadowColor: "#000",
+		shadowOpacity: 0.1,
+		shadowRadius: 6,
+		elevation: 2,
 		marginTop: 20,
+		width: "90%", // Adjust width to make it narrower
+		maxWidth: "auto", // Prevent it from being too wide
+		alignSelf: "center", // Center it
+	},
+
+	detailTitle: {
+		fontSize: 22,
+		color: "#333",
+		marginBottom: 10,
+		fontFamily: "Karla-Bold",
+	},
+	detailText: {
+		fontSize: 16,
+		color: "#666",
+		lineHeight: 24,
+		fontFamily: "Karla-Regular",
+		textAlign: "left",
 	},
 });
 

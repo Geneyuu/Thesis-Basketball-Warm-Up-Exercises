@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.escario13.FinalWarmUpExercise'
+    namespace 'com.basketballWarmUpExercise.CaviteStateUniversity'
     defaultConfig {
-        applicationId 'com.escario13.FinalWarmUpExercise'
+        applicationId 'com.basketballWarmUpExercise.CaviteStateUniversity'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

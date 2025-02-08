@@ -55,15 +55,22 @@ const formatTime = (time) => {
 };
 
 const ExerciseVideo = ({ currentExercise }) => {
+	const [isLoaded, setIsLoaded] = React.useState(false);
+
 	return (
-		<Video
-			source={currentExercise.video}
-			style={styles.videoPlayer}
-			resizeMode="contain"
-			isLooping
-			shouldPlay
-			isMuted={true}
-		/>
+		<>
+			{!isLoaded && null}
+			<Video
+				source={currentExercise.video}
+				style={styles.videoPlayer}
+				resizeMode="contain"
+				isLooping
+				shouldPlay
+				isMuted
+				onLoad={() => setIsLoaded(true)} // Set isLoaded to true when video loads
+				onError={(error) => console.log("Video error:", error)}
+			/>
+		</>
 	);
 };
 

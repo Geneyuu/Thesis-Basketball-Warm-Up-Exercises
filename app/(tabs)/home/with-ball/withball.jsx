@@ -100,17 +100,23 @@ const ExerciseItem = ({ id, name, image }) => {
 // StickyButton Component
 const StickyButton = () => {
 	const router = useRouter();
+	const [isClickable, setIsClickable] = useState(true);
 
-	const handleStartWarmUp = () => {
-		router.push("../../home/with-ball/StartWarmUps");
+	const handlePress = () => {
+		if (isClickable) {
+			setIsClickable(false);
+			router.push("../../home/with-ball/StartWarmUps");
+			setTimeout(() => setIsClickable(true), 1300);
+		}
 	};
+
+	// const handleStartWarmUp = () => {
+	// 	router.push("../../home/with-ball/StartWarmUps");
+	// };
 
 	return (
 		<View style={styles.stickyButtonContainer}>
-			<TouchableOpacity
-				style={styles.stickyButton}
-				onPress={handleStartWarmUp}
-			>
+			<TouchableOpacity style={styles.stickyButton} onPress={handlePress}>
 				<Text style={styles.stickyButtonText}>Start Warmups</Text>
 			</TouchableOpacity>
 		</View>

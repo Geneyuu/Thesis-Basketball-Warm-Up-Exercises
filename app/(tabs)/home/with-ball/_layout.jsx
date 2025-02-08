@@ -36,7 +36,19 @@ const Layout = () => {
 					headerBackTitleVisible: false, // Hide back button title
 				}}
 			/>
-			{/* <Stack.Screen name="StartWarmUps" options={{ headerShown: true }} /> */}
+			{/* <Stack.Screen name="StartWarmUps"    options={{ headerShown: true }} /> */}
+			<Stack.Screen
+				name="[id]"
+				options={{
+					headerShown: true,
+					headerTitle: "",
+					headerTransparent: true,
+					headerStyle: {
+						backgroundColor: "transparent",
+					},
+					headerTintColor: "white",
+				}}
+			/>
 		</Stack>
 	);
 };
