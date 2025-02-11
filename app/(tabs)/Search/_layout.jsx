@@ -7,6 +7,14 @@ const Layout = () => {
 		<SafeAreaView style={styles.container}>
 			<Stack>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
+				<Stack.Screen
+					name="[id]"
+					options={{
+						headerShown: true,
+						headerTitleAlign: "center",
+						headerTitle: "WarmUps Exercise Details",
+					}}
+				/>
 			</Stack>
 		</SafeAreaView>
 	);

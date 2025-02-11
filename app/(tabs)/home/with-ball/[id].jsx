@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
 
 const exerciseTitles = {
@@ -63,18 +63,34 @@ const ExerciseDetails = () => {
 
 	const player = useVideoPlayer(videoSource, (player) => {
 		player.loop = true;
+		player.muted = true;
 	});
 
-	useEffect(() => {
-		const timeout = setTimeout(() => {
-			setShowPlayer(true);
-			player.play();
-		}, 500);
+	useFocusEffect(
+		React.useCallback(() => {
+			const timeout = setTimeout(() => {
+				setShowPlayer(true);
+				if (player) {
+					player.play();
+				}
+			}, 150);
 
-		return () => {
-			clearTimeout(timeout);
-		};
-	}, []);
+			return () => {
+				clearTimeout(timeout);
+				setShowPlayer(false);
+			};
+		}, [player])
+	);
+
+	// useEffect(() => {
+	// 	const timeout = setTimeout(() => {
+	// 		player.play();
+	// 	}, 500);
+
+	// 	return () => {
+	// 		clearTimeout(timeout);
+	// 	};
+	// }, []); di ko muna ginamit to since mas okay yung usefocuseffect
 
 	return (
 		<ScrollView

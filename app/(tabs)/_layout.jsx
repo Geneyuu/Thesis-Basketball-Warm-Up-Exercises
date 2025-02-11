@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 
 // Define the TabIcon component
+
 const TabIcon = ({ name, focused, color, icon }) => {
 	return (
 		<View style={styles.iconWrapper}>

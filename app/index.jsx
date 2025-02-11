@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, Animated } from "react-native";
+import {
+	Text,
+	View,
+	StyleSheet,
+	Image,
+	Animated,
+	StatusBar,
+} from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
 
@@ -83,6 +90,9 @@ export default function Index() {
 
 	return (
 		<View style={styles.container}>
+			{/* Status Bar with White Background and Dark Content */}
+			<StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+
 			<Animated.Image
 				source={require("../assets/images/applogo_modified.png")}
 				style={[

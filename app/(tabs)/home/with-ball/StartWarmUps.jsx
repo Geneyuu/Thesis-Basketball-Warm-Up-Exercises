@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
 	View,
 	Text,
@@ -10,6 +10,7 @@ import {
 import { Video } from "expo-av";
 import { router, useFocusEffect } from "expo-router";
 import { Data } from "../../../_layout"; // Adjust the path as needed
+import { useVideoPlayer, VideoView } from "expo-video";
 
 // Exercise data
 const exercises = [
@@ -54,22 +55,39 @@ const formatTime = (time) => {
 	}`;
 };
 
-const ExerciseVideo = ({ currentExercise }) => {
-	const [isLoaded, setIsLoaded] = React.useState(false);
+const ExerciseVideo = ({ videoSource }) => {
+	const [showPlayer, setShowPlayer] = useState(false);
+
+	const player = useVideoPlayer(videoSource, (player) => {
+		player.loop = true;
+		player.muted = true;
+	});
+
+	useFocusEffect(
+		React.useCallback(() => {
+			const timeout = setTimeout(() => {
+				setShowPlayer(true);
+				player.play(); // I-play ang player kapag bumalik sa screen.
+			}, 300);
+
+			return () => {
+				clearTimeout(timeout);
+				setShowPlayer(false);
+			};
+		}, [])
+	);
 
 	return (
 		<>
-			{!isLoaded && null}
-			<Video
-				source={currentExercise.video}
-				style={styles.videoPlayer}
-				resizeMode="contain"
-				isLooping
-				shouldPlay
-				isMuted
-				onLoad={() => setIsLoaded(true)} // Set isLoaded to true when video loads
-				onError={(error) => console.log("Video error:", error)}
-			/>
+			{showPlayer && videoSource ? (
+				<VideoView
+					style={styles.videoPlayer}
+					player={player}
+					nativeControls={false}
+				/>
+			) : (
+				<Text style={styles.loadingText}>Loading video...</Text>
+			)}
 		</>
 	);
 };
@@ -243,7 +261,7 @@ const StartWarmups = () => {
 						/>
 					</>
 				) : (
-					<ExerciseVideo currentExercise={currentExercise} />
+					<ExerciseVideo videoSource={currentExercise.video} />
 				)}
 				{!isResting && (
 					<ExerciseDescription currentExercise={currentExercise} />
@@ -276,7 +294,7 @@ const styles = StyleSheet.create({
 		fontSize: 65,
 		fontFamily: "Karla-Bold",
 		color: "#161616",
-		marginTop: 55,
+		marginTop: 20,
 		textAlign: "center",
 	},
 	videoPlayer: {
