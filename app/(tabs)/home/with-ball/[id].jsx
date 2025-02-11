@@ -73,7 +73,7 @@ const ExerciseDetails = () => {
 				if (player) {
 					player.play();
 				}
-			}, 150);
+			}, 400);
 
 			return () => {
 				clearTimeout(timeout);

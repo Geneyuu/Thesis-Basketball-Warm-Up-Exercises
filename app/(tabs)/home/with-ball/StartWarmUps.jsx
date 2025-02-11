@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
 		fontSize: 65,
 		fontFamily: "Karla-Bold",
 		color: "#161616",
-		marginTop: 20,
+		marginTop: 12,
 		textAlign: "center",
 	},
 	videoPlayer: {
