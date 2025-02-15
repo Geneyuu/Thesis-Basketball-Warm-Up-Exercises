@@ -1,5 +1,5 @@
-import React from "react";
-import { Tabs } from "expo-router";
+import React, { useState } from "react";
+import { Tabs, usePathname } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 
@@ -20,6 +20,9 @@ const TabIcon = ({ name, focused, color, icon }) => {
 };
 
 const Layout = () => {
+	// const pathname = usePathname();
+	// const hiddenScreens = ["/home/with-ball/StartWarmUps"]; this will hide the tab navigation when in this stack screen
+
 	return (
 		<Tabs
 			screenOptions={{
@@ -27,6 +30,7 @@ const Layout = () => {
 				tabBarActiveTintColor: "#161616", // Active tab label and icon color
 				tabBarInactiveTintColor: "#161616", // Inactive tab label and icon color
 				tabBarStyle: {
+					// display: hiddenScreens.includes(pathname) ? "none" : "flex",
 					backgroundColor: "#fff", // Tab bar background color
 					borderTopColor: "#232522", // Tab bar top border color
 					elevation: 0,

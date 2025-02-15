@@ -27,7 +27,7 @@ const videoSources = {
 	"toe-touches": require("../../../../assets/videos/pushup.mp4"),
 	"side-stretches": require("../../../../assets/videos/pushup.mp4"),
 	lunges: require("../../../../assets/videos/pushup.mp4"),
-};
+}; // kaya gumamit ng ganto kasi ang require ay di naman string. so ang ginawa ko ginamit ko nalang yung id na string na galing sa uselocalParams para gamitin yun to know the the video na ipapakita base sa string name na nasa id kung match sya sa videsources na name ng exercise.
 
 const exerciseInstructions = {
 	"arm-stretch-left-arm":
@@ -53,6 +53,7 @@ const exerciseInstructions = {
 
 const ExerciseDetails = () => {
 	const { id } = useLocalSearchParams();
+	console.log(id);
 	const [showPlayer, setShowPlayer] = useState(false);
 
 	const exerciseTitle = exerciseTitles[id] || "Exercise Details";
@@ -67,19 +68,17 @@ const ExerciseDetails = () => {
 	});
 
 	useFocusEffect(
-		React.useCallback(() => {
+		useCallback(() => {
 			const timeout = setTimeout(() => {
-				setShowPlayer(true);
-				if (player) {
-					player.play();
-				}
-			}, 400);
+				setShowPlayer(true); // Ipakita lang ang player pagkatapos ng delay.
+				player.play();
+			}, 500);
 
 			return () => {
 				clearTimeout(timeout);
 				setShowPlayer(false);
 			};
-		}, [player])
+		}, [])
 	);
 
 	// useEffect(() => {

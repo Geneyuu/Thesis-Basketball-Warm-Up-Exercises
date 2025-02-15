@@ -11,8 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-// Exercise data: This is the list of exercises
-const exercisesData = [
+const exercises = [
 	{
 		id: "arm-stretch-left-arm",
 		name: "Arm Stretch (Left Arm)",
@@ -63,48 +62,37 @@ const exercisesData = [
 		name: "Lunges",
 		image: require("../../../assets/images/withballpreview.png"),
 	},
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
-// Main App Component
 const Search = () => {
-	// State to track the search input and filtered exercises
-	const [searchQuery, setSearchQuery] = useState("");
-	const [filteredExercises, setFilteredExercises] = useState(exercisesData);
-	const [disabled, setDisabled] = useState(false); // Prevents double taps
+	const [query, setQuery] = useState("");
+	const [filtered, setFiltered] = useState(exercises);
+	const [disabled, setDisabled] = useState(false);
 	const router = useRouter();
 
-	exercisesData.sort((a, b) => a.name.localeCompare(b.name)); // Sort in place
-
-	// Function to filter exercises based on search input
-	const filterExercises = (query) => {
-		setSearchQuery(query); // Update the search query state
-
-		// Filter exercises based on search query
-		if (query === "") {
-			setFilteredExercises(exercisesData); // Show all exercises if query is empty
-		} else {
-			const filtered = exercisesData.filter(
-				(exercise) =>
-					exercise.name.toLowerCase().includes(query.toLowerCase()) // Case insensitive filter
-			);
-			setFilteredExercises(filtered);
-		}
+	const handleSearch = (text) => {
+		setQuery(text);
+		setFiltered(
+			text
+				? exercises.filter((ex) =>
+						ex.name.toLowerCase().includes(text.toLowerCase())
+				  )
+				: exercises
+		);
 	};
 
-	// Function to navigate to an exercise page
-	const navigateToExercise = (exerciseId) => {
-		if (disabled) return; // Disable navigation while already navigating
-		setDisabled(true); // Prevent double tap
-		router.push(`/Search/${exerciseId}`); // Navigate to the selected exercise
-		setSearchQuery(""); // Clear the search query
-		setFilteredExercises(exercisesData);
-		setTimeout(() => setDisabled(false), 1300); // Re-enable after 1.3 seconds
+	const handlePress = (id) => {
+		if (disabled) return; // If already disabled, stop the function
+		setDisabled(true); // Prevent further taps
+		router.push(`/Search/${id}`); // Navigate to the selected exercise
+		setQuery(""); // Clear search input
+		setFiltered(exercises); // Reset exercise list
+		// Re-enable button after 1.3 seconds
+		setTimeout(() => setDisabled(false), 1300);
 	};
 
-	// Render the search input and list of exercises
 	return (
 		<View style={styles.container}>
-			{/* Search Bar */}
 			<View style={styles.searchBarContainer}>
 				<Ionicons
 					name="search"
@@ -116,22 +104,19 @@ const Search = () => {
 					style={styles.searchBar}
 					placeholder="Search exercises..."
 					placeholderTextColor="#888"
-					value={searchQuery}
-					onChangeText={(onChangeText) =>
-						filterExercises(onChangeText)
-					}
+					value={query}
+					onChangeText={handleSearch}
 				/>
 			</View>
 
-			{/* Exercise List */}
 			<FlatList
-				data={filteredExercises} // List of exercises to display
-				keyExtractor={(item) => item.id} // Unique key for each exercise
+				data={filtered}
+				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => (
 					<TouchableOpacity
 						style={styles.exerciseItem}
-						onPress={() => navigateToExercise(item.id)}
-						disabled={disabled} // Prevent double-tap
+						onPress={() => handlePress(item.id)}
+						disabled={disabled}
 					>
 						<Image
 							source={item.image}
@@ -145,13 +130,8 @@ const Search = () => {
 	);
 };
 
-// 3. Styles for the components (unchanged from your original code)
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 15,
-		backgroundColor: "#ffff",
-	},
+	container: { flex: 1, padding: 15, backgroundColor: "#ffff" },
 	searchBarContainer: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -163,9 +143,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		marginTop: 20,
 	},
-	searchIcon: {
-		marginRight: 10,
-	},
+	searchIcon: { marginRight: 10 },
 	searchBar: {
 		flex: 1,
 		color: "#161616",
@@ -187,12 +165,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.1,
 		shadowRadius: 4,
 	},
-	exerciseImage: {
-		width: 70,
-		height: 70,
-		borderRadius: 10,
-		marginRight: 15,
-	},
+	exerciseImage: { width: 70, height: 70, borderRadius: 10, marginRight: 15 },
 	exerciseText: {
 		fontSize: 18,
 		color: "#161616",
@@ -201,5 +174,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-// pinagsama sama kona sa isang component para maaccess yung mga state, medyo magulo kapag hiwalay na components
 export default Search;

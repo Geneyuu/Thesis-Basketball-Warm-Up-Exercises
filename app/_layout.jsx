@@ -1,14 +1,13 @@
-import React, { createContext, useState } from "react"; // Import useState here
+import React, { createContext } from "react"; // Import useState here
 import { Stack } from "expo-router";
 import useName from "./hooks/useName"; // Import custom hook for name
 import useExerciseTimers from "./hooks/useExerciseTimers"; // Import custom hook for timers and exercise states
-import { StatusBar } from "react-native";
 
 export const Data = createContext();
 // so gumamit lang ako dito ng Cointext API para sa pagpasa ng data sa ibang components since hindi pwede irekta yung pagpasa ng data sa ibang components
 
 export default function RootLayout() {
-	const [name, setName] = useName();
+	const { name, setName } = useName();
 	const {
 		exerciseTimer,
 		setExerciseTimer,

@@ -7,7 +7,6 @@ import {
 	Image,
 	StyleSheet,
 } from "react-native";
-import { Video } from "expo-av";
 import { router, useFocusEffect } from "expo-router";
 import { Data } from "../../../_layout"; // Adjust the path as needed
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -45,6 +44,137 @@ const exercises = [
 			"Extend your arms out to the sides and make small circles, gradually increasing the size of the circles. Do this for 30 seconds in each direction.",
 	},
 ];
+
+const StartWarmups = () => {
+	// Extracting values from context
+	const {
+		currentExerciseIndex,
+		setCurrentExerciseIndex,
+		timer,
+		setTimer,
+		isTimerRunning,
+		setIsTimerRunning,
+		isResting,
+		setIsResting,
+		exerciseTimer, // Timer duration for exercise
+		restTimer, // Timer duration for rest period
+	} = useContext(Data);
+
+	// Get current and next exercise
+	const currentExercise = exercises[currentExerciseIndex];
+	const nextExercise = exercises[currentExerciseIndex + 1];
+
+	// Functions for controlling the warmup flow
+	const startWarmup = () => setIsTimerRunning(true);
+	const stopWarmup = () => setIsTimerRunning(false);
+	const restartWarmup = () => {
+		setIsTimerRunning(false);
+		setCurrentExerciseIndex(0);
+		setTimer(exerciseTimer);
+		setIsResting(false);
+	};
+
+	// Reset states on component mount and unmount
+	useEffect(() => {
+		setTimer(exerciseTimer);
+		setIsResting(false);
+		setIsTimerRunning(false);
+	}, []);
+
+	useFocusEffect(
+		React.useCallback(() => {
+			return () => {
+				setTimer(exerciseTimer);
+				setIsResting(false);
+				setIsTimerRunning(false);
+			};
+		}, [])
+	);
+
+	// Timer logic and exercise progression
+	useEffect(() => {
+		let interval;
+
+		// Countdown logic for exercise
+		if (isTimerRunning && timer > 0 && !isResting) {
+			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+		}
+		// Countdown logic for rest
+		else if (isTimerRunning && timer > 0 && isResting) {
+			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+		}
+		// Handle exercise transition when the timer hits 0
+		else if (timer === 0 && !isResting) {
+			if (currentExerciseIndex < exercises.length - 1) {
+				setIsResting(true);
+				setTimer(restTimer); // Set the rest period
+			} else {
+				setIsTimerRunning(false);
+				setCurrentExerciseIndex(0);
+				setTimer(exerciseTimer); // Reset to exercise timer
+				setIsResting(false);
+				router.replace("/(tabs)/");
+				setTimeout(() => {
+					alert(
+						"With Ball Exercises Completed! You can now play Basketball!"
+					);
+				}, 1000);
+			}
+		}
+		// Handle rest period transition when the timer hits 0
+		else if (timer === 0 && isResting) {
+			if (currentExerciseIndex < exercises.length - 1) {
+				setCurrentExerciseIndex((prev) => prev + 1);
+				setIsResting(false);
+				setTimer(exerciseTimer); // Switch to next exercise
+			}
+		}
+
+		return () => clearInterval(interval);
+	}, [
+		isTimerRunning,
+		timer,
+		currentExerciseIndex,
+		isResting,
+		restTimer,
+		exerciseTimer,
+	]);
+
+	return (
+		<ScrollView contentContainerStyle={styles.container}>
+			<View style={styles.exerciseContainer}>
+				<Text style={styles.heading}>
+					{isResting ? "Rest" : currentExercise.name}
+				</Text>
+
+				{isResting ? ( // etong part is yung resting phase component so if resting display next warmup name and image
+					<>
+						<Text style={styles.heading}>
+							Next Warm Up: {nextExercise?.name}
+						</Text>
+						<ExerciseImage
+							nextExercise={nextExercise}
+							currentExercise={currentExercise}
+						/>
+					</>
+				) : (
+					<ExerciseVideo videoSource={currentExercise.video} />
+				)}
+				{!isResting && (
+					<ExerciseDescription currentExercise={currentExercise} />
+				)}
+				<TimerControls
+					timer={timer}
+					isResting={isResting}
+					isTimerRunning={isTimerRunning}
+					startWarmup={startWarmup}
+					stopWarmup={stopWarmup}
+					restartWarmup={restartWarmup}
+				/>
+			</View>
+		</ScrollView>
+	);
+};
 
 // Timer and helper function
 const formatTime = (time) => {
@@ -145,137 +275,6 @@ const TimerControls = ({
 				<Text style={styles.buttonText}>Restart Exercise</Text>
 			</TouchableOpacity>
 		</View>
-	);
-};
-
-const StartWarmups = () => {
-	// Extracting values from context
-	const {
-		currentExerciseIndex,
-		setCurrentExerciseIndex,
-		timer,
-		setTimer,
-		isTimerRunning,
-		setIsTimerRunning,
-		isResting,
-		setIsResting,
-		exerciseTimer, // Timer duration for exercise
-		restTimer, // Timer duration for rest period
-	} = useContext(Data);
-
-	// Reset states on component mount and unmount
-	useEffect(() => {
-		setTimer(exerciseTimer);
-		setIsResting(false);
-		setIsTimerRunning(false);
-	}, []);
-
-	useFocusEffect(
-		React.useCallback(() => {
-			return () => {
-				setTimer(exerciseTimer);
-				setIsResting(false);
-				setIsTimerRunning(false);
-			};
-		}, [])
-	);
-
-	// Timer logic and exercise progression
-	useEffect(() => {
-		let interval;
-
-		// Countdown logic for exercise
-		if (isTimerRunning && timer > 0 && !isResting) {
-			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-		}
-		// Countdown logic for rest
-		else if (isTimerRunning && timer > 0 && isResting) {
-			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-		}
-		// Handle exercise transition when the timer hits 0
-		else if (timer === 0 && !isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
-				setIsResting(true);
-				setTimer(restTimer); // Set the rest period
-			} else {
-				setIsTimerRunning(false);
-				setCurrentExerciseIndex(0);
-				setTimer(exerciseTimer); // Reset to exercise timer
-				setIsResting(false);
-				router.replace("/(tabs)/");
-				setTimeout(() => {
-					alert(
-						"With Ball Exercises Completed! You can now play Basketball!"
-					);
-				}, 1000);
-			}
-		}
-		// Handle rest period transition when the timer hits 0
-		else if (timer === 0 && isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
-				setCurrentExerciseIndex((prev) => prev + 1);
-				setIsResting(false);
-				setTimer(exerciseTimer); // Switch to next exercise
-			}
-		}
-
-		return () => clearInterval(interval);
-	}, [
-		isTimerRunning,
-		timer,
-		currentExerciseIndex,
-		isResting,
-		restTimer,
-		exerciseTimer,
-	]);
-
-	// Get current and next exercise
-	const currentExercise = exercises[currentExerciseIndex];
-	const nextExercise = exercises[currentExerciseIndex + 1];
-
-	// Functions for controlling the warmup flow
-	const startWarmup = () => setIsTimerRunning(true);
-	const stopWarmup = () => setIsTimerRunning(false);
-	const restartWarmup = () => {
-		setIsTimerRunning(false);
-		setCurrentExerciseIndex(0);
-		setTimer(exerciseTimer);
-		setIsResting(false);
-	};
-
-	return (
-		<ScrollView contentContainerStyle={styles.container}>
-			<View style={styles.exerciseContainer}>
-				<Text style={styles.heading}>
-					{isResting ? "Rest" : currentExercise.name}
-				</Text>
-
-				{isResting ? ( // etong part is yung resting phase component so if resting display next warmup name and image
-					<>
-						<Text style={styles.heading}>
-							Next Warm Up: {nextExercise?.name}
-						</Text>
-						<ExerciseImage
-							nextExercise={nextExercise}
-							currentExercise={currentExercise}
-						/>
-					</>
-				) : (
-					<ExerciseVideo videoSource={currentExercise.video} />
-				)}
-				{!isResting && (
-					<ExerciseDescription currentExercise={currentExercise} />
-				)}
-				<TimerControls
-					timer={timer}
-					isResting={isResting}
-					isTimerRunning={isTimerRunning}
-					startWarmup={startWarmup}
-					stopWarmup={stopWarmup}
-					restartWarmup={restartWarmup}
-				/>
-			</View>
-		</ScrollView>
 	);
 };
 

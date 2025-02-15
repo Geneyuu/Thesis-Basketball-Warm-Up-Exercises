@@ -9,6 +9,18 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 
+const videoSources = {
+	"arm-stretch-left-arm": require("../../../../assets/videos/video.mp4"),
+	"arm-stretch-right-arm": require("../../../../assets/videos/pushup.mp4"),
+	"arm-circles": require("../../../../assets/videos/pushup.mp4"),
+	"shoulder-rolls": require("../../../../assets/videos/pushup.mp4"),
+	"neck-tilts": require("../../../../assets/videos/pushup.mp4"),
+	"leg-stretch-left-leg": require("../../../../assets/videos/pushup.mp4"),
+	"leg-stretch-right-leg": require("../../../../assets/videos/pushup.mp4"),
+	"toe-touches": require("../../../../assets/videos/pushup.mp4"),
+	"side-stretches": require("../../../../assets/videos/pushup.mp4"),
+	lunges: require("../../../../assets/videos/pushup.mp4"),
+}; // Hindi magagamit ang useLocalSearchParams() para sa dynamic videos gamit ang require() kasi kailangan ni React Native na malaman lahat ng local files bago pa mag run kaya gumamit tayo ng ganto.
 // Exercises data
 const exercises = [
 	{
@@ -80,11 +92,12 @@ const ExerciseItem = ({ id, name, image }) => {
 
 	// Handle button press and disable temporarily
 	const handlePress = () => {
-		if (isClickable) {
-			setIsClickable(false);
-			router.push(`/home/with-ball/${id}`);
-			setTimeout(() => setIsClickable(true), 1300); // Re-enable after 1.3 seconds
-		}
+		if (!isClickable) return;
+		setIsClickable(false);
+		router.push(`/home/with-ball/${id}`);
+
+		const timeout = setTimeout(() => setIsClickable(true), 1300);
+		return () => clearTimeout(timeout); // Cleanup
 	};
 
 	return (
@@ -105,7 +118,7 @@ const StickyButton = () => {
 	const handlePress = () => {
 		if (isClickable) {
 			setIsClickable(false);
-			router.push("../../home/with-ball/StartWarmUps");
+			router.push("/home/with-ball/StartWarmUps");
 			setTimeout(() => setIsClickable(true), 1300);
 		}
 	};

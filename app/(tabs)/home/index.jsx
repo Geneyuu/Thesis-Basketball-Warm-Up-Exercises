@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -7,8 +7,36 @@ import {
 	TouchableOpacity,
 	ScrollView,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useVideoPlayer, VideoView } from "expo-video";
+import { useFocusEffect, useRouter } from "expo-router";
 import { Data } from "../../_layout";
+import Carousel from "react-native-snap-carousel";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+const categoryData = [
+	{
+		title: "Whole Body (Dynamic)",
+		imageUri: require("../../../assets/images/wholebodypreview.png"),
+		navigationPath: "home/whole-body/details",
+	},
+	{
+		title: "In Place",
+		imageUri: require("../../../assets/images/inplacepreview.png"),
+		navigationPath: "home/in-place/inplace",
+	},
+	{
+		title: "With Ball",
+		imageUri: require("../../../assets/images/withballpreview.png"),
+		navigationPath: "home/with-ball/withball",
+	},
+	{
+		title: "Stretching",
+		imageUri: require("../../../assets/images/stretchingpreview.png"),
+		navigationPath: "home/stretching/stretching",
+	},
+];
 
 const Home = () => {
 	return (
@@ -68,17 +96,117 @@ const Header = () => (
 	</View>
 );
 
+const sliderMedia = [
+	{
+		type: "video",
+		source: require("../../../assets/videos/video.mp4"),
+	},
+	{
+		type: "video",
+		source: require("../../../assets/videos/pushup.mp4"),
+	},
+	{
+		type: "video",
+		source: require("../../../assets/videos/video.mp4"),
+	},
+];
+
 const FeaturedExercises = () => (
 	<View style={styles.featuredContainer}>
-		<Text style={styles.sectionTitle}>Featured Exercises</Text>
-		<View style={styles.featuredBox}>
-			<Image
-				source={require("../../../assets/images/withballpreview.png")}
-				style={styles.featuredImage}
-			/>
-		</View>
+		<Text style={styles.FeatureExerciseTitle}>Featured Exercises</Text>
+		<ImageSlider />
 	</View>
 );
+
+const ImageSlider = () => {
+	const [focusedIndex, setFocusedIndex] = useState(0); // Track the focused index
+
+	return (
+		<Carousel
+			data={sliderMedia}
+			enableMomentum={true}
+			renderItem={({ item, index }) => (
+				<ItemCard item={item} isFocused={focusedIndex === index} />
+			)}
+			sliderWidth={wp(200)}
+			itemWidth={wp(85)}
+			inactiveSlideScale={0.85}
+			inactiveSlideOpacity={0.9}
+			firstItem={0}
+			snapToAlignment="center"
+			slideStyle={{ display: "flex", alignItems: "center" }}
+			autoplay={true}
+			autoplayInterval={1000}
+			loop
+			onSnapToItem={(index) => {
+				setFocusedIndex(index);
+			}}
+		/>
+	);
+};
+
+const ItemCard = ({ item, isFocused }) => {
+	const [isLoading, setIsLoading] = useState(true);
+
+	if (item.type === "video") {
+		const player = useVideoPlayer(item.source, (playerInstance) => {
+			playerInstance.loop = true;
+			playerInstance.muted = true; // Default: Mute
+		});
+
+		useEffect(() => {
+			if (player) {
+				setTimeout(() => {
+					player.play();
+					setIsLoading(false);
+				}, 500);
+			}
+		}, [player]);
+
+		useEffect(() => {
+			if (player) {
+				player.muted = !isFocused;
+			}
+		}, [isFocused, player]);
+
+		useFocusEffect(
+			React.useCallback(() => {
+				player.play();
+
+				return () => {
+					if (player) {
+						player.muted = true; // Ensure mute on unmount
+						player.pause();
+					}
+				};
+			}, [player])
+		);
+
+		if (isLoading) {
+			return (
+				<View>
+					<Text>Loading...</Text>
+				</View>
+			);
+		}
+
+		return (
+			<View style={styles.videoContainer}>
+				<VideoView
+					player={player}
+					style={{ width: "100%", height: "100%" }}
+					nativeControls={false}
+				/>
+			</View>
+		);
+	}
+
+	return (
+		<View style={styles.imageContainer}>
+			<Image source={item.source} style={styles.image} />
+		</View>
+	);
+};
 
 const CategoryCard = ({ title, imageUri, navigationPath }) => {
 	const router = useRouter();
@@ -101,26 +229,9 @@ const Categories = () => (
 			contentContainerStyle={styles.categoriesGrid}
 			showsVerticalScrollIndicator={false}
 		>
-			<CategoryCard
-				title="Whole Body (Dynamic)"
-				imageUri={require("../../../assets/images/wholebodypreview.png")}
-				navigationPath="home/whole-body/details"
-			/>
-			<CategoryCard
-				title="In Place"
-				imageUri={require("../../../assets/images/inplacepreview.png")}
-				navigationPath="home/in-place/inplace"
-			/>
-			<CategoryCard
-				title="With Ball"
-				imageUri={require("../../../assets/images/withballpreview.png")}
-				navigationPath="home/with-ball/withball"
-			/>
-			<CategoryCard
-				title="Stretching"
-				imageUri={require("../../../assets/images/stretchingpreview.png")}
-				navigationPath="home/stretching/stretching"
-			/>
+			{categoryData.map((category, index) => (
+				<CategoryCard key={index} {...category} />
+			))}
 		</ScrollView>
 	</View>
 );
@@ -153,7 +264,6 @@ const styles = StyleSheet.create({
 	},
 	profileImage: { width: "100%", height: "100%", resizeMode: "contain" },
 	subHeaderText: {
-		marginTop: 0,
 		fontSize: 10,
 		color: "#000",
 		fontFamily: "Karla-ExtraLight",
@@ -170,7 +280,20 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
-	featuredContainer: { marginBottom: 0, padding: 20, marginTop: 15 },
+	featuredContainer: {
+		width: "100%",
+		alignItems: "center",
+		paddingBlock: 10,
+		marginTop: 50,
+		position: "relative",
+	},
+	FeatureExerciseTitle: {
+		position: "absolute",
+		left: 25,
+		top: -23,
+		fontFamily: "Karla-Bold",
+		fontSize: 20,
+	},
 	sectionTitle: {
 		fontSize: 20,
 		marginBottom: 5,
@@ -185,20 +308,51 @@ const styles = StyleSheet.create({
 		marginBottom: -18,
 	},
 	featuredImage: { width: "100%", height: "100%", resizeMode: "cover" },
-	categoryCard: { width: "47%", marginBottom: 10 },
-	cardImage: { width: "100%", height: 120, borderRadius: 10 },
+	categoryCard: {
+		width: "47%", // Laging 2 columns
+		alignItems: "center",
+	},
+	cardImage: {
+		width: "100%",
+		height: wp(30), // Responsive height
+		borderRadius: 10,
+		marginTop: 5,
+	},
 	cardText: {
+		marginTop: 5,
+		fontSize: wp(3.5), // Responsive text size
 		textAlign: "center",
-		paddingTop: 15,
 		fontFamily: "Karla-Regular",
 		color: "#000",
-		fontSize: 16,
 	},
-	categoriesContainer: { flex: 1, padding: 20 },
+	categoriesContainer: {
+		flex: 1,
+		paddingBlock: 10,
+		marginTop: 10,
+		paddingInline: 20,
+	},
 	categoriesGrid: {
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-between",
+		paddingBottom: hp(2), // Para may extra space sa baba
+	},
+	videoContainer: {
+		width: "105%",
+		height: hp(25),
+		borderRadius: 25,
+		overflow: "hidden",
+	},
+	imageContainer: {
+		width: "100%",
+		height: hp(25),
+		overflow: "hidden",
+	},
+	image: {
+		width: "100%",
+		height: "100%",
+		borderRadius: 25,
+		resizeMode: "contain",
 	},
 });
 

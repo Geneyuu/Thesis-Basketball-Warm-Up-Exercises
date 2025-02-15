@@ -29,5 +29,8 @@ export default function useName() {
 		saveName();
 	}, [name]);
 
-	return [name, setName];
+	return {
+		name,
+		setName,
+	};
 }
