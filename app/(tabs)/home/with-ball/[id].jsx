@@ -1,120 +1,98 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import { useVideoPlayer, VideoView } from "expo-video";
-
-const exerciseTitles = {
-	"arm-stretch-left-arm": "Arm Stretch (Left)",
-	"arm-stretch-right-arm": "Arm Stretch (Right)",
-	"arm-circles": "Arm Circles",
-	"shoulder-rolls": "Shoulder Rolls",
-	"neck-tilts": "Neck Tilts",
-	"leg-stretch-left-leg": "Leg Stretch (Left)",
-	"leg-stretch-right-leg": "Leg Stretch (Right)",
-	"toe-touches": "Toe Touches",
-	"side-stretches": "Side Stretches",
-	lunges: "Lunges",
-};
-
-const videoSources = {
-	"arm-stretch-left-arm": require("../../../../assets/videos/video.mp4"),
-	"arm-stretch-right-arm": require("../../../../assets/videos/pushup.mp4"),
-	"arm-circles": require("../../../../assets/videos/pushup.mp4"),
-	"shoulder-rolls": require("../../../../assets/videos/pushup.mp4"),
-	"neck-tilts": require("../../../../assets/videos/pushup.mp4"),
-	"leg-stretch-left-leg": require("../../../../assets/videos/pushup.mp4"),
-	"leg-stretch-right-leg": require("../../../../assets/videos/pushup.mp4"),
-	"toe-touches": require("../../../../assets/videos/pushup.mp4"),
-	"side-stretches": require("../../../../assets/videos/pushup.mp4"),
-	lunges: require("../../../../assets/videos/pushup.mp4"),
-}; // kaya gumamit ng ganto kasi ang require ay di naman string. so ang ginawa ko ginamit ko nalang yung id na string na galing sa uselocalParams para gamitin yun to know the the video na ipapakita base sa string name na nasa id kung match sya sa videsources na name ng exercise.
-
-const exerciseInstructions = {
-	"arm-stretch-left-arm":
-		"Extend your left arm straight across your chest and use your right hand to gently pull it towards you. Hold for 15-30 seconds.",
-	"arm-stretch-right-arm":
-		"Extend your right arm straight across your chest and use your left hand to gently pull it towards you. Hold for 15-30 seconds.",
-	"arm-circles":
-		"Extend your arms to the sides and make small circular motions. Gradually increase the circle size and repeat for 30 seconds.",
-	"shoulder-rolls":
-		"Lift your shoulders towards your ears, then roll them back and down in a circular motion. Repeat 10 times, then reverse.",
-	"neck-tilts":
-		"Slowly tilt your head towards one shoulder and hold for a few seconds. Repeat on the other side.",
-	"leg-stretch-left-leg":
-		"Step your left foot forward and keep your back leg straight while bending the front knee slightly. Hold for 15-30 seconds.",
-	"leg-stretch-right-leg":
-		"Step your right foot forward and keep your back leg straight while bending the front knee slightly. Hold for 15-30 seconds.",
-	"toe-touches":
-		"Stand straight and bend forward at the waist, reaching for your toes. Hold for 15-30 seconds.",
-	"side-stretches":
-		"Raise one arm overhead and lean to the opposite side. Hold for a few seconds, then switch sides.",
-	lunges: "Step forward with one leg and lower your hips until both knees are bent at 90 degrees. Repeat on the other leg.",
-};
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, AppState } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { Video } from "expo-av";
+import { exercises } from "../../../exercisespaths/exercises"; // Import your exercise data
+import { useFocusEffect } from "@react-navigation/native"; // Import useFocusEffect
 
 const ExerciseDetails = () => {
-	const { id } = useLocalSearchParams();
-	console.log(id);
-	const [showPlayer, setShowPlayer] = useState(false);
+	const { id } = useLocalSearchParams(); // Retrieve the exercise ID
+	console.log(`This is ${id}`);
 
-	const exerciseTitle = exerciseTitles[id] || "Exercise Details";
-	const videoSource = videoSources[id];
-	const instructionText =
-		exerciseInstructions[id] ||
-		"No specific instructions available for this exercise.";
+	const exercise = exercises.find((exercise) => exercise.id === id); // Find the exercise by ID
 
-	const player = useVideoPlayer(videoSource, (player) => {
-		player.loop = true;
-		player.muted = true;
-	});
+	if (!exercise) {
+		return <Text>Exercise not found</Text>; // Show error if no exercise is found
+	}
+
+	const { video, name, performDescription } = exercise;
+
+	const videoRef = useRef(null);
+	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
+	const [isPlaying, setIsPlaying] = useState(false); // Track video playing state
 
 	useFocusEffect(
 		useCallback(() => {
-			const timeout = setTimeout(() => {
-				setShowPlayer(true); // Ipakita lang ang player pagkatapos ng delay.
-				player.play();
-			}, 500);
+			// Auto-play video when screen is focused
+			if (videoRef.current) {
+				videoRef.current.playAsync();
+			}
+			setIsPlaying(true);
 
-			return () => {
-				clearTimeout(timeout);
-				setShowPlayer(false);
+			// Handle AppState changes
+			const handleAppStateChange = (appStatus) => {
+				if (appStatus === "active" && isVideoReady) {
+					setIsPlaying(true);
+					videoRef.current?.playAsync();
+				} else {
+					setIsPlaying(false);
+					videoRef.current?.pauseAsync();
+				}
 			};
-		}, [])
+
+			// Subscribe to AppState changes
+			const appStateListener = AppState.addEventListener(
+				"change",
+				handleAppStateChange
+			);
+
+			// Cleanup function when screen loses focus
+			return () => {
+				appStateListener.remove();
+				setIsPlaying(false);
+				videoRef.current?.pauseAsync();
+			};
+		}, [isVideoReady]) // Dependency on video readiness
 	);
 
-	// useEffect(() => {
-	// 	const timeout = setTimeout(() => {
-	// 		player.play();
-	// 	}, 500);
-
-	// 	return () => {
-	// 		clearTimeout(timeout);
-	// 	};
-	// }, []); di ko muna ginamit to since mas okay yung usefocuseffect
-
 	return (
-		<ScrollView
-			style={styles.container}
-			contentContainerStyle={{ flexGrow: 1 }}
-		>
-			<View style={styles.videoContainer}>
-				{showPlayer && videoSource ? (
-					<VideoView
-						style={styles.video}
-						player={player}
-						nativeControls={false}
-					/>
-				) : (
-					<Text style={styles.loadingText}>Loading video...</Text>
-				)}
-			</View>
+		<View style={styles.container}>
+			{video ? (
+				<>
+					{!isVideoReady && (
+						<Text style={styles.loadingText}>Loading video...</Text>
+					)}
 
-			<Text style={styles.title}>{exerciseTitle}</Text>
+					<View style={styles.videoContainer}>
+						<Video
+							ref={videoRef}
+							source={video}
+							style={[
+								styles.video,
+								!isVideoReady && { display: "none" },
+							]} // Hide until loaded
+							useNativeControls={false} // Disable video controls
+							shouldPlay={isPlaying} // Auto-play if focused
+							isLooping
+							resizeMode="cover"
+							onLoad={() => setIsVideoReady(true)} // Mark video as ready once loaded
+							onError={(error) =>
+								console.log("Error loading video:", error)
+							}
+						/>
+					</View>
+				</>
+			) : (
+				<Text style={styles.errorText}>Video not available</Text>
+			)}
 
+			{/* Exercise name and description below the video */}
+			<Text style={styles.title}>{name}</Text>
 			<View style={styles.detailsContainer}>
-				<Text style={styles.detailTitle}>Instructions:</Text>
-				<Text style={styles.detailText}>{instructionText}</Text>
+				<Text style={styles.detailTitle}>Description</Text>
+				<Text style={styles.detailText}>{performDescription}</Text>
 			</View>
-		</ScrollView>
+		</View>
 	);
 };
 
@@ -122,23 +100,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
-	},
-	videoContainer: {
-		width: "100%",
-		overflow: "hidden",
-		height: "250",
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	video: {
-		width: "100%",
-		height: "100%",
-		resizeMode: "stretch",
-	},
-	loadingText: {
-		color: "#666",
-		fontSize: 16,
-		textAlign: "center",
 	},
 	title: {
 		fontSize: 35,
@@ -161,7 +122,6 @@ const styles = StyleSheet.create({
 		maxWidth: "auto", // Prevent it from being too wide
 		alignSelf: "center", // Center it
 	},
-
 	detailTitle: {
 		fontSize: 22,
 		color: "#333",
@@ -174,6 +134,29 @@ const styles = StyleSheet.create({
 		lineHeight: 24,
 		fontFamily: "Karla-Regular",
 		textAlign: "left",
+	},
+	videoContainer: {
+		width: "100%",
+		overflow: "hidden",
+		alignSelf: "center",
+		height: 250,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	video: {
+		width: "100%",
+		height: "100%",
+		resizeMode: "stretch",
+	},
+	loadingText: {
+		color: "#666",
+		fontSize: 16,
+		textAlign: "center",
+	},
+	errorText: {
+		color: "red",
+		fontSize: 16,
+		marginTop: 20,
 	},
 });
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
 	View,
 	Text,
@@ -6,6 +6,7 @@ import {
 	Image,
 	TouchableOpacity,
 	ScrollView,
+	AppState,
 } from "react-native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -15,6 +16,7 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { Video } from "expo-av"; // Make sure expo-av is installed
 const categoryData = [
 	{
 		title: "Whole Body (Dynamic)",
@@ -72,7 +74,7 @@ const ProfileSection = () => {
 				onPress={() => router.push("/Profile")}
 			>
 				<Image
-					source={require("../../../assets/images/default-logo.webp")}
+					source={require("../../../assets/images/cvsulogo.png")}
 					style={styles.profileImage}
 				/>
 			</TouchableOpacity>
@@ -129,15 +131,14 @@ const ImageSlider = () => {
 				<ItemCard item={item} isFocused={focusedIndex === index} />
 			)}
 			sliderWidth={wp(200)}
-			itemWidth={wp(85)}
+			itemWidth={wp(79)}
 			inactiveSlideScale={0.85}
 			inactiveSlideOpacity={0.9}
 			firstItem={0}
 			snapToAlignment="center"
 			slideStyle={{ display: "flex", alignItems: "center" }}
 			autoplay={true}
-			autoplayInterval={1000}
-			loop
+			autoplayInterval={5000}
 			onSnapToItem={(index) => {
 				setFocusedIndex(index);
 			}}
@@ -146,64 +147,86 @@ const ImageSlider = () => {
 };
 
 const ItemCard = ({ item, isFocused }) => {
-	const [isLoading, setIsLoading] = useState(true);
+	const videoRef = useRef(null);
+	const [isLoaded, setIsLoaded] = useState(false);
 
-	if (item.type === "video") {
-		const player = useVideoPlayer(item.source, (playerInstance) => {
-			playerInstance.loop = true;
-			playerInstance.muted = true; // Default: Mute
-		});
+	// ✅ Handle video loading
+	const handleLoad = () => {
+		setIsLoaded(true); // Mark as loaded
+	};
 
-		useEffect(() => {
-			if (player) {
-				setTimeout(() => {
-					player.play();
-					setIsLoading(false);
-				}, 500);
-			}
-		}, [player]);
-
-		useEffect(() => {
-			if (player) {
-				player.muted = !isFocused;
-			}
-		}, [isFocused, player]);
-
-		useFocusEffect(
-			React.useCallback(() => {
-				player.play();
-
-				return () => {
-					if (player) {
-						player.muted = true; // Ensure mute on unmount
-						player.pause();
-					}
-				};
-			}, [player])
-		);
-
-		if (isLoading) {
-			return (
-				<View>
-					<Text>Loading...</Text>
-				</View>
-			);
+	// ✅ Automatically play video after mount if loaded
+	useEffect(() => {
+		if (videoRef.current && isLoaded) {
+			videoRef.current.playAsync();
 		}
+	}, [isLoaded]);
 
-		return (
-			<View style={styles.videoContainer}>
-				<VideoView
-					player={player}
-					style={{ width: "100%", height: "100%" }}
-					nativeControls={false}
-				/>
-			</View>
-		);
-	}
+	// ✅ Handle app state changes and video focus
+	useFocusEffect(
+		React.useCallback(() => {
+			const handleAppStateChange = (appStatus) => {
+				if (appStatus === "active" && isFocused && videoRef.current) {
+					videoRef.current.playAsync();
+				} else if (videoRef.current) {
+					videoRef.current.pauseAsync();
+				}
+			};
+
+			const appStateSubscription = AppState.addEventListener(
+				"change",
+				handleAppStateChange
+			);
+
+			// Handle focus-based play/pause
+			if (videoRef.current) {
+				if (isFocused && isLoaded) {
+					setTimeout(() => {
+						videoRef.current.playAsync();
+						videoRef.current.setIsMutedAsync(false);
+					}, 300);
+				} else {
+					videoRef.current.pauseAsync();
+				}
+			}
+
+			// Cleanup
+			return () => {
+				appStateSubscription.remove();
+				if (videoRef.current) {
+					videoRef.current.pauseAsync();
+				}
+			};
+		}, [isFocused, isLoaded])
+	);
 
 	return (
-		<View style={styles.imageContainer}>
-			<Image source={item.source} style={styles.image} />
+		<View style={styles.videoContainer}>
+			{item.type === "video" ? (
+				<>
+					{!isLoaded && <Text>Loading...</Text>}
+
+					<Video
+						ref={videoRef}
+						source={item.source}
+						style={{
+							width: "100%",
+							height: "100%",
+							display: isLoaded ? "flex" : "none", // Hide until loaded
+						}}
+						shouldPlay={false}
+						isMuted={true}
+						resizeMode="contain"
+						isLooping
+						onLoad={handleLoad} // ✅ Ensures video is loaded before play
+						onError={(error) =>
+							console.log("Error loading video:", error)
+						}
+					/>
+				</>
+			) : (
+				<Text>No video available</Text>
+			)}
 		</View>
 	);
 };
@@ -339,7 +362,7 @@ const styles = StyleSheet.create({
 	},
 	videoContainer: {
 		width: "105%",
-		height: hp(25),
+		height: hp(23),
 		borderRadius: 25,
 		overflow: "hidden",
 	},

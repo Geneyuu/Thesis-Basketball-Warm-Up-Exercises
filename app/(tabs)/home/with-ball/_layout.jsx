@@ -80,7 +80,7 @@ const Layout = () => {
 						>
 							{/* Back Button */}
 							<TouchableOpacity
-								onPress={() => router.back()}
+								onPress={() => router.back()} // Go back within the same nested stack
 								style={{
 									marginLeft: 10,
 								}}

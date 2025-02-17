@@ -15,61 +15,46 @@ const wholeBodyExercises = [
 		id: "exercise-1",
 		name: "Arm Stretch (Left Arm)",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/video.mp4"),
 	},
 	{
 		id: "exercise-2",
 		name: "Arm Stretch (Right Arm)",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-3",
 		name: "Arm Circles",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-4",
 		name: "Shoulder Rolls",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-5",
 		name: "Neck Tilts",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-6",
 		name: "Leg Stretch (Left Leg)",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-7",
 		name: "Leg Stretch (Right Leg)",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-8",
 		name: "Toe Touches",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 	{
 		id: "exercise-9",
 		name: "Side Stretches",
 		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "exercise-10",
-		name: "Lunges",
-		image: require("../../../../assets/images/default-logo.webp"),
-		video: require("../../../../assets/videos/pushup.mp4"),
 	},
 ];
 

@@ -38,7 +38,6 @@ export default function Index() {
 					"Oswald-Bold": require("../assets/fonts/Oswald-Bold.ttf"),
 					"Oswald-Regular": require("../assets/fonts/Oswald-Regular.ttf"),
 				});
-
 				setFontsLoaded(true);
 				console.log("Fonts loaded successfully.");
 			} catch (error) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import {
 	View,
 	Text,
@@ -6,44 +6,12 @@ import {
 	ScrollView,
 	Image,
 	StyleSheet,
+	AppState,
 } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { Data } from "../../../_layout"; // Adjust the path as needed
-import { useVideoPlayer, VideoView } from "expo-video";
-
-// Exercise data
-const exercises = [
-	{
-		id: "arm-stretch-left-arm",
-		name: "Arm Stretch (Left Arm)",
-		video: require("../../../../assets/videos/pushup.mp4"),
-		image: require("../../../../assets/images/withballpreview.png"),
-		description:
-			"Stretch your left arm upwards and hold for a few seconds to increase flexibility.",
-		performDescription:
-			"Extend your left arm straight up, keeping your elbow locked. Hold this position for 10-20 seconds and then switch arms.",
-	},
-	{
-		id: "arm-stretch-right-arm",
-		name: "Arm Stretch (Right Arm)",
-		video: require("../../../../assets/videos/pushup.mp4"),
-		image: require("../../../../assets/images/inplacepreview.png"),
-		description:
-			"Stretch your right arm upwards and hold for a few seconds to increase flexibility.",
-		performDescription:
-			"Extend your right arm straight up, keeping your elbow locked. Hold this position for 10-20 seconds and then switch arms.",
-	},
-	{
-		id: "arm-circles",
-		name: "Arm Circles",
-		video: require("../../../../assets/videos/pushup.mp4"),
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		description:
-			"Rotate your arms in small circles to warm up your shoulder joints.",
-		performDescription:
-			"Extend your arms out to the sides and make small circles, gradually increasing the size of the circles. Do this for 30 seconds in each direction.",
-	},
-];
+import { exercises } from "../../../exercisespaths/exercises"; // Exercises Data
+import { Video } from "expo-av"; // Import Video component from expo-av
 
 const StartWarmups = () => {
 	// Extracting values from context
@@ -74,21 +42,46 @@ const StartWarmups = () => {
 		setIsResting(false);
 	};
 
-	// Reset states on component mount and unmount
+	// Initialize the timer and set resting state to false on the first load
 	useEffect(() => {
+		setTimer(exerciseTimer); // Set initial timer value
+	}, []); // This will only run once on mount
+
+	useEffect(() => {
+		setIsTimerRunning(false);
+		setCurrentExerciseIndex(0);
 		setTimer(exerciseTimer);
 		setIsResting(false);
-		setIsTimerRunning(false);
-	}, []);
+	}, []); // This will only run once on mount
 
 	useFocusEffect(
 		React.useCallback(() => {
-			return () => {
-				setTimer(exerciseTimer);
-				setIsResting(false);
-				setIsTimerRunning(false);
+			// Handle app state changes (foreground vs background)
+			const handleAppStateChange = (appStatus) => {
+				if (appStatus === "active") {
+					// App comes to the foreground
+					// Only start the timer if it's in a resting phase (and not during exercise)
+					setIsTimerRunning(true);
+				} else {
+					// Optionally handle when the app goes to the background (pause timer)
+					stopWarmup(); // Stop the timer when the app goes to the background
+				}
 			};
-		}, [])
+
+			// Subscribe to app state changes
+			const appStateSubscription = AppState.addEventListener(
+				"change",
+				handleAppStateChange
+			);
+
+			// Cleanup the app state listener and stop the timer when losing focus
+			return () => {
+				appStateSubscription.remove();
+				setIsResting(false);
+				stopWarmup();
+				setTimer(exerciseTimer);
+			};
+		}, []) // React to changes in `isResting`
 	);
 
 	// Timer logic and exercise progression
@@ -158,7 +151,10 @@ const StartWarmups = () => {
 						/>
 					</>
 				) : (
-					<ExerciseVideo videoSource={currentExercise.video} />
+					<ExerciseVideo
+						videoSource={currentExercise.video}
+						isTimerRunning={isTimerRunning}
+					/>
 				)}
 				{!isResting && (
 					<ExerciseDescription currentExercise={currentExercise} />
@@ -180,45 +176,49 @@ const StartWarmups = () => {
 const formatTime = (time) => {
 	const minutes = Math.floor(time / 60);
 	const seconds = time % 60;
-	return `${minutes < 10 ? "" + minutes : minutes}:${
+	return `${minutes < 10 ? "0" + minutes : minutes}:${
 		seconds < 10 ? "0" + seconds : seconds
 	}`;
 };
 
-const ExerciseVideo = ({ videoSource }) => {
-	const [showPlayer, setShowPlayer] = useState(false);
+const ExerciseVideo = ({ videoSource, isTimerRunning }) => {
+	const videoRef = useRef(null);
+	const [shouldPlay, setShouldPlay] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(false);
 
-	const player = useVideoPlayer(videoSource, (player) => {
-		player.loop = true;
-		player.muted = true;
-	});
+	// ✅ Play/Pause the video only if it's loaded
+	useEffect(() => {
+		if (videoRef.current && isLoaded) {
+			setShouldPlay(isTimerRunning);
+		}
+	}, [isTimerRunning, isLoaded]);
 
-	useFocusEffect(
-		React.useCallback(() => {
-			const timeout = setTimeout(() => {
-				setShowPlayer(true);
-				player.play(); // I-play ang player kapag bumalik sa screen.
-			}, 300);
-
-			return () => {
-				clearTimeout(timeout);
-				setShowPlayer(false);
-			};
-		}, [])
-	);
+	// ✅ Handle video load
+	const handleLoad = () => {
+		setIsLoaded(true);
+	};
 
 	return (
-		<>
-			{showPlayer && videoSource ? (
-				<VideoView
-					style={styles.videoPlayer}
-					player={player}
-					nativeControls={false}
-				/>
-			) : (
+		<View style={styles.videoContainer}>
+			{!isLoaded && (
 				<Text style={styles.loadingText}>Loading video...</Text>
 			)}
-		</>
+
+			<Video
+				ref={videoRef}
+				source={videoSource}
+				style={[
+					styles.videoPlayer,
+					{ display: isLoaded ? "flex" : "none" },
+				]} // Hide video until loaded
+				shouldPlay={shouldPlay}
+				isMuted={false}
+				resizeMode="contain"
+				isLooping
+				onLoad={handleLoad} // Now it will trigger!
+				onError={(error) => console.log("Error loading video:", error)}
+			/>
+		</View>
 	);
 };
 

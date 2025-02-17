@@ -49,3 +49,5 @@ export default function RootLayout() {
 		</Data.Provider>
 	);
 }
+
+//<Stack> automatically manages screens based on file structure.

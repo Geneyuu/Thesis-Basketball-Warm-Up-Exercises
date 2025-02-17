@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useExerciseTimers() {
-	const [exerciseTimer, setExerciseTimer] = useState(6); // Default exercise timer (in seconds)
-	const [restTimer, setRestTimer] = useState(6); // Default rest timer (in seconds)
+	const [exerciseTimer, setExerciseTimer] = useState(12); // Default exercise timer (in seconds)
+	const [restTimer, setRestTimer] = useState(12); // Default rest timer (in seconds)
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 	const [timer, setTimer] = useState(exerciseTimer); // Initialize with exerciseTimer
 	const [isTimerRunning, setIsTimerRunning] = useState(false);

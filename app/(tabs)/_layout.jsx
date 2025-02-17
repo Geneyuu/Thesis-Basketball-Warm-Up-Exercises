@@ -21,7 +21,8 @@ const TabIcon = ({ name, focused, color, icon }) => {
 
 const Layout = () => {
 	// const pathname = usePathname();
-	// const hiddenScreens = ["/home/with-ball/StartWarmUps"]; this will hide the tab navigation when in this stack screen
+	// const hiddenScreens = ["/home/with-ball/StartWarmUps"];
+	// // this will hide the tab navigation when in this stack screen
 
 	return (
 		<Tabs
@@ -31,20 +32,20 @@ const Layout = () => {
 				tabBarInactiveTintColor: "#161616", // Inactive tab label and icon color
 				tabBarStyle: {
 					// display: hiddenScreens.includes(pathname) ? "none" : "flex",
-					backgroundColor: "#fff", // Tab bar background color
-					borderTopColor: "#232522", // Tab bar top border color
+					backgroundColor: "#fff",
+					borderTopColor: "#232522",
 					elevation: 0,
 					height: 80, // Tab bar height
-					borderTopWidth: 1, // Removing the top border line
-					paddingTop: 12, // Padding to avoid clipping with the tab icons
+					borderTopWidth: 1,
+					paddingTop: 12,
 					paddingBottom: 5,
 					paddingInline: 15,
 					// borderTopLeftRadius: 20,
 					// borderTopRightRadius: 20,
 				},
 				tabBarLabelStyle: {
-					fontFamily: "Karla-Regular", // Apply the custom font
-					fontSize: 12, // Adjust font size as needed
+					fontFamily: "Karla-Regular",
+					fontSize: 12,
 				},
 			}}
 		>
