@@ -10,63 +10,15 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { exercises } from "../../exercisespaths/exercises";
 
-const exercises = [
-	{
-		id: "arm-stretch-left-arm",
-		name: "Arm Stretch (Left Arm)",
-		image: require("../../../assets/images/stretchingpreview.png"),
-	},
-	{
-		id: "arm-stretch-right-arm",
-		name: "Arm Stretch (Right Arm)",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "arm-circles",
-		name: "Arm Circles",
-		image: require("../../../assets/images/inplacepreview.png"),
-	},
-	{
-		id: "shoulder-rolls",
-		name: "Shoulder Rolls",
-		image: require("../../../assets/images/wholebodypreview.png"),
-	},
-	{
-		id: "neck-tilts",
-		name: "Neck Tilts",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "leg-stretch-left-leg",
-		name: "Leg Stretch (Left Leg)",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "leg-stretch-right-leg",
-		name: "Leg Stretch (Right Leg)",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "toe-touches",
-		name: "Toe Touches",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "side-stretches",
-		name: "Side Stretches",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-	{
-		id: "lunges",
-		name: "Lunges",
-		image: require("../../../assets/images/withballpreview.png"),
-	},
-].sort((a, b) => a.name.localeCompare(b.name));
+const sortedExercises = [...exercises].sort((a, b) =>
+	a.name.localeCompare(b.name)
+);
 
 const Search = () => {
 	const [query, setQuery] = useState("");
-	const [filtered, setFiltered] = useState(exercises);
+	const [filtered, setFiltered] = useState(sortedExercises); // Set the sorted exercises
 	const [disabled, setDisabled] = useState(false);
 	const router = useRouter();
 
@@ -74,10 +26,10 @@ const Search = () => {
 		setQuery(text);
 		setFiltered(
 			text
-				? exercises.filter((ex) =>
+				? sortedExercises.filter((ex) =>
 						ex.name.toLowerCase().includes(text.toLowerCase())
 				  )
-				: exercises
+				: sortedExercises // Use the sorted list
 		);
 	};
 
@@ -86,7 +38,7 @@ const Search = () => {
 		setDisabled(true); // Prevent further taps
 		router.push(`/Search/${id}`); // Navigate to the selected exercise
 		setQuery(""); // Clear search input
-		setFiltered(exercises); // Reset exercise list
+		setFiltered(sortedExercises); // Reset exercise list
 		// Re-enable button after 1.3 seconds
 		setTimeout(() => setDisabled(false), 1300);
 	};

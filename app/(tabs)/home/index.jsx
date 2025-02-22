@@ -17,6 +17,7 @@ import {
 	heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { Video } from "expo-av"; // Make sure expo-av is installed
+import { ActivityIndicator } from "react-native";
 const categoryData = [
 	{
 		title: "Whole Body (Dynamic)",
@@ -152,7 +153,9 @@ const ItemCard = ({ item, isFocused }) => {
 
 	// ✅ Handle video loading
 	const handleLoad = () => {
-		setIsLoaded(true); // Mark as loaded
+		setTimeout(() => {
+			setIsLoaded(true); // Mark as loaded
+		}, 200);
 	};
 
 	// ✅ Automatically play video after mount if loaded
@@ -204,7 +207,9 @@ const ItemCard = ({ item, isFocused }) => {
 		<View style={styles.videoContainer}>
 			{item.type === "video" ? (
 				<>
-					{!isLoaded && <Text>Loading...</Text>}
+					{!isLoaded && (
+						<ActivityIndicator size="large" color="green" />
+					)}
 
 					<Video
 						ref={videoRef}
@@ -339,7 +344,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		height: wp(30), // Responsive height
 		borderRadius: 10,
-		marginTop: 5,
+		marginTop: 10,
 	},
 	cardText: {
 		marginTop: 5,
@@ -351,18 +356,18 @@ const styles = StyleSheet.create({
 	categoriesContainer: {
 		flex: 1,
 		paddingBlock: 10,
-		marginTop: 10,
 		paddingInline: 20,
 	},
 	categoriesGrid: {
 		flexDirection: "row",
 		flexWrap: "wrap",
+		marginTop: 13,
 		justifyContent: "space-between",
 		paddingBottom: hp(2), // Para may extra space sa baba
 	},
 	videoContainer: {
 		width: "105%",
-		height: hp(23),
+		height: hp(24),
 		borderRadius: 25,
 		overflow: "hidden",
 	},

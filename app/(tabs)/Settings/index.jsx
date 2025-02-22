@@ -11,11 +11,9 @@ import {
 	useWindowDimensions,
 } from "react-native";
 import { Data } from "./../../_layout"; // Import your context
-import { Link, useRouter } from "expo-router"; // For navigation
+import { useRouter } from "expo-router"; // For navigation
 
 const Settings = () => {
-	const { width, height } = useWindowDimensions();
-
 	const { exerciseTimer, setExerciseTimer, restTimer, setRestTimer } =
 		useContext(Data); // Access context
 
@@ -26,23 +24,26 @@ const Settings = () => {
 
 	// Handle Save button click
 	const handleSave = () => {
-		// Validate if timers are valid numbers
-		if (isNaN(newExerciseTimer) || isNaN(newRestTimer)) {
-			Alert.alert(
-				"Invalid Input",
-				"Please enter valid numbers for the timers."
-			);
+		// Check kung walang laman
+		if (!newExerciseTimer || !newRestTimer) {
+			Alert.alert("Invalid Input", "Please input a number.");
 			return;
 		}
 
-		// Update the timers in context
-		setExerciseTimer(newExerciseTimer);
-		setRestTimer(newRestTimer);
+		// Check kung valid number
+		if (isNaN(newExerciseTimer) || isNaN(newRestTimer)) {
+			Alert.alert("Invalid Input", "Please enter valid numbers.");
+			return;
+		}
 
-		// Navigate back to the home screen
+		// I-update yung context
+		setExerciseTimer(Number(newExerciseTimer));
+		setRestTimer(Number(newRestTimer));
+
+		// Balik sa home screen
 		router.replace("/(tabs)/");
 
-		// Alert the user that the timers have been updated
+		// Notify user
 		alert("Timers Updated");
 	};
 

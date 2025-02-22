@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { Data } from "../../../_layout"; // Adjust the path as needed
-import { exercises } from "../../../exercisespaths/exercises"; // Exercises Data
+import { exercises } from "../../../exercisespaths/withballExercises"; // Exercises Data
 import { Video } from "expo-av"; // Import Video component from expo-av
+import { ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const StartWarmups = () => {
 	// Extracting values from context
@@ -32,24 +34,34 @@ const StartWarmups = () => {
 	const currentExercise = exercises[currentExerciseIndex];
 	const nextExercise = exercises[currentExerciseIndex + 1];
 
+	const [restartVideo, setRestartVideo] = useState(false);
+
 	// Functions for controlling the warmup flow
 	const startWarmup = () => setIsTimerRunning(true);
 	const stopWarmup = () => setIsTimerRunning(false);
 	const restartWarmup = () => {
-		setIsTimerRunning(false);
+		setRestartVideo(true);
+		setTimeout(() => {
+			setRestartVideo(false);
+		}, 150);
 		setCurrentExerciseIndex(0);
-		setTimer(exerciseTimer);
 		setIsResting(false);
+		setIsTimerRunning(false);
+		setTimer(exerciseTimer);
 	};
 
-	// Initialize the timer and set resting state to false on the first load
-	useEffect(() => {
-		setTimer(exerciseTimer); // Set initial timer value
-	}, []); // This will only run once on mount
+	const resetTimerAndVideo = () => {
+		setTimer(exerciseTimer);
+		setIsTimerRunning(false);
+		setRestartVideo(true);
+		setTimeout(() => {
+			setRestartVideo(false);
+		}, 500);
+	};
 
 	useEffect(() => {
-		setIsTimerRunning(false);
 		setCurrentExerciseIndex(0);
+		setIsTimerRunning(false);
 		setTimer(exerciseTimer);
 		setIsResting(false);
 	}, []); // This will only run once on mount
@@ -59,12 +71,11 @@ const StartWarmups = () => {
 			// Handle app state changes (foreground vs background)
 			const handleAppStateChange = (appStatus) => {
 				if (appStatus === "active") {
-					// App comes to the foreground
-					// Only start the timer if it's in a resting phase (and not during exercise)
-					setIsTimerRunning(true);
+					// App comes to the foreground, continue the timer
+					setIsTimerRunning(false);
 				} else {
-					// Optionally handle when the app goes to the background (pause timer)
-					stopWarmup(); // Stop the timer when the app goes to the background
+					// App goes to background, stop the timer
+					stopWarmup();
 				}
 			};
 
@@ -74,14 +85,27 @@ const StartWarmups = () => {
 				handleAppStateChange
 			);
 
-			// Cleanup the app state listener and stop the timer when losing focus
+			setIsTimerRunning(isResting || isTimerRunning);
+			// if (isResting) {
+			// 	setIsTimerRunning(true);
+			// } else if (!isResting && !isTimerRunning) {
+			// 	setIsTimerRunning(false);
+			// } else if (!isResting && isTimerRunning) {
+			// 	setIsTimerRunning(true);
+			// }
+
+			// Cleanup function
 			return () => {
 				appStateSubscription.remove();
-				setIsResting(false);
 				stopWarmup();
-				setTimer(exerciseTimer);
+				setIsTimerRunning(false);
+
+				setRestartVideo(true);
+				setTimeout(() => {
+					setRestartVideo(false);
+				}, 100);
 			};
-		}, []) // React to changes in `isResting`
+		}, [isResting, isTimerRunning]) // ✅ No need to track isResting
 	);
 
 	// Timer logic and exercise progression
@@ -89,18 +113,15 @@ const StartWarmups = () => {
 		let interval;
 
 		// Countdown logic for exercise
-		if (isTimerRunning && timer > 0 && !isResting) {
+		if (isTimerRunning && timer > 0) {
 			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
 		}
-		// Countdown logic for rest
-		else if (isTimerRunning && timer > 0 && isResting) {
-			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-		}
+
 		// Handle exercise transition when the timer hits 0
 		else if (timer === 0 && !isResting) {
 			if (currentExerciseIndex < exercises.length - 1) {
 				setIsResting(true);
-				setTimer(restTimer); // Set the rest period
+				setTimer(restTimer); // Set the rest period timer
 			} else {
 				setIsTimerRunning(false);
 				setCurrentExerciseIndex(0);
@@ -111,7 +132,7 @@ const StartWarmups = () => {
 					alert(
 						"With Ball Exercises Completed! You can now play Basketball!"
 					);
-				}, 1000);
+				}, 100);
 			}
 		}
 		// Handle rest period transition when the timer hits 0
@@ -124,14 +145,7 @@ const StartWarmups = () => {
 		}
 
 		return () => clearInterval(interval);
-	}, [
-		isTimerRunning,
-		timer,
-		currentExerciseIndex,
-		isResting,
-		restTimer,
-		exerciseTimer,
-	]);
+	}, [isTimerRunning, timer, currentExerciseIndex, isResting]);
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
@@ -140,22 +154,26 @@ const StartWarmups = () => {
 					{isResting ? "Rest" : currentExercise.name}
 				</Text>
 
-				{isResting ? ( // etong part is yung resting phase component so if resting display next warmup name and image
+				{/* Render ExerciseImage or ExerciseVideo */}
+				{isResting ? (
 					<>
-						<Text style={styles.heading}>
-							Next Warm Up: {nextExercise?.name}
-						</Text>
 						<ExerciseImage
 							nextExercise={nextExercise}
 							currentExercise={currentExercise}
 						/>
+						<Text style={styles.heading}>
+							Next Warm Up: {nextExercise?.name}
+						</Text>
 					</>
 				) : (
 					<ExerciseVideo
 						videoSource={currentExercise.video}
 						isTimerRunning={isTimerRunning}
+						restartVideo={restartVideo} // Pass the restart flag here
 					/>
 				)}
+
+				{/* Render Description and Timer Controls */}
 				{!isResting && (
 					<ExerciseDescription currentExercise={currentExercise} />
 				)}
@@ -166,6 +184,7 @@ const StartWarmups = () => {
 					startWarmup={startWarmup}
 					stopWarmup={stopWarmup}
 					restartWarmup={restartWarmup}
+					resetTimerAndVideo={resetTimerAndVideo}
 				/>
 			</View>
 		</ScrollView>
@@ -176,32 +195,39 @@ const StartWarmups = () => {
 const formatTime = (time) => {
 	const minutes = Math.floor(time / 60);
 	const seconds = time % 60;
-	return `${minutes < 10 ? "0" + minutes : minutes}:${
+	return `${minutes < 10 ? "" + minutes : minutes}:${
 		seconds < 10 ? "0" + seconds : seconds
 	}`;
 };
 
-const ExerciseVideo = ({ videoSource, isTimerRunning }) => {
+const ExerciseVideo = ({ videoSource, isTimerRunning, restartVideo }) => {
 	const videoRef = useRef(null);
 	const [shouldPlay, setShouldPlay] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
+	const [showLoadingIndicator, setShowLoadingIndicator] = useState(true);
 
-	// ✅ Play/Pause the video only if it's loaded
+	// Handle video load
+	const handleLoad = () => {
+		setIsLoaded(true);
+		setShowLoadingIndicator(false);
+	};
+
+	// Reset the video when restartVideo prop changes
 	useEffect(() => {
 		if (videoRef.current && isLoaded) {
-			setShouldPlay(isTimerRunning);
+			if (isTimerRunning) {
+				videoRef.current.playAsync(); // Direktang i-play ang video
+			} else {
+				videoRef.current.replayAsync();
+				videoRef.current.pauseAsync(); // Direktang i-pause ang video
+			}
 		}
 	}, [isTimerRunning, isLoaded]);
 
-	// ✅ Handle video load
-	const handleLoad = () => {
-		setIsLoaded(true);
-	};
-
 	return (
 		<View style={styles.videoContainer}>
-			{!isLoaded && (
-				<Text style={styles.loadingText}>Loading video...</Text>
+			{showLoadingIndicator && (
+				<ActivityIndicator size="large" color="green" />
 			)}
 
 			<Video
@@ -209,13 +235,16 @@ const ExerciseVideo = ({ videoSource, isTimerRunning }) => {
 				source={videoSource}
 				style={[
 					styles.videoPlayer,
-					{ display: isLoaded ? "flex" : "none" },
-				]} // Hide video until loaded
+					{
+						display:
+							!showLoadingIndicator && isLoaded ? "flex" : "none",
+					},
+				]}
 				shouldPlay={shouldPlay}
 				isMuted={false}
 				resizeMode="contain"
 				isLooping
-				onLoad={handleLoad} // Now it will trigger!
+				onLoad={handleLoad}
 				onError={(error) => console.log("Error loading video:", error)}
 			/>
 		</View>
@@ -233,12 +262,16 @@ const ExerciseImage = ({ nextExercise, currentExercise }) => {
 
 const ExerciseDescription = ({ currentExercise }) => {
 	return (
-		<>
+		<View style={styles.perFormContainer}>
 			<Text style={styles.performDescriptionTitle}>How to Perform:</Text>
 			<Text style={styles.performDescription}>
 				{currentExercise.performDescription}
+				{"\n"}
+				<Text style={styles.recommendationText}>
+					Recommend timer for best warm up exercises is 25s.
+				</Text>
 			</Text>
-		</>
+		</View>
 	);
 };
 
@@ -249,24 +282,42 @@ const TimerControls = ({
 	startWarmup,
 	stopWarmup,
 	restartWarmup,
+	resetTimerAndVideo,
 }) => {
 	return (
 		<View>
 			<Text style={styles.timerText}>{formatTime(timer)}s</Text>
+
 			{!isResting && (
-				<TouchableOpacity
-					style={[
-						styles.button,
-						isTimerRunning
-							? styles.pauseButton
-							: styles.startButton,
-					]}
-					onPress={isTimerRunning ? stopWarmup : startWarmup}
-				>
-					<Text style={styles.buttonExercise}>
-						{isTimerRunning ? "Pause Exercise" : "Start Exercise"}
-					</Text>
-				</TouchableOpacity>
+				<>
+					<TouchableOpacity
+						style={styles.resetIconContainer}
+						onPress={() => {
+							resetTimerAndVideo();
+						}}
+					>
+						<Ionicons
+							name="reload-circle"
+							size={40}
+							color="green"
+						/>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[
+							styles.button,
+							isTimerRunning
+								? styles.pauseButton
+								: styles.startButton,
+						]}
+						onPress={isTimerRunning ? stopWarmup : startWarmup}
+					>
+						<Text style={styles.buttonExercise}>
+							{isTimerRunning
+								? "Pause Exercise"
+								: "Start Exercise"}
+						</Text>
+					</TouchableOpacity>
+				</>
 			)}
 			<TouchableOpacity
 				style={[styles.button, styles.restartButton]}
@@ -283,12 +334,14 @@ const styles = StyleSheet.create({
 	container: { flex: 1, padding: 16, backgroundColor: "#f9f9f9" },
 	exerciseContainer: { marginBottom: 20 },
 	heading: {
-		fontSize: 30,
+		fontSize: 35,
 		fontFamily: "Karla-Bold",
+		letterSpacing: -1.5,
 		color: "#161616",
-		marginBottom: 8,
+		marginBlock: 10,
 		textAlign: "center",
 	},
+
 	timerText: {
 		fontSize: 65,
 		fontFamily: "Karla-Bold",
@@ -297,10 +350,11 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 	},
 	videoPlayer: {
-		width: "100%",
-		height: 250,
-		borderRadius: 12,
+		width: "102%",
+		height: 235,
 		marginBottom: 16,
+		borderRadius: 10, // Optional: Adds rounded corners to the border
+		paddingInline: 15,
 	},
 	image: { width: "100%", height: 250, borderRadius: 12, marginBottom: 16 },
 	button: {
@@ -314,17 +368,48 @@ const styles = StyleSheet.create({
 	performDescription: {
 		fontSize: 16,
 		fontFamily: "Karla-Regular",
-		color: "#555",
+		color: "white",
 		textAlign: "center",
-		marginTop: 16,
+		marginTop: 10,
 		textAlign: "left",
 	},
 	performDescriptionTitle: {
 		fontSize: 20,
 		fontFamily: "Karla-Bold",
-		color: "#161616",
+		color: "white",
 		marginBottom: 8,
 	},
+	perFormContainer: {
+		borderWidth: 1, // Sets the width of the border
+		borderColor: "#161616", // Sets the border color
+		borderRadius: 10, // Optional: Adds rounded corners to the border
+		paddingInline: 15,
+		paddingBlock: 10, // Optional: Adds space inside the border},
+		backgroundColor: "#161616",
+		shadowColor: "#000", // Color of the shadow
+		shadowOffset: { width: 0, height: 2 }, // Position of the shadow
+		shadowOpacity: 0.25, // Transparency of the shadow
+		shadowRadius: 3.5, // Blur effect of the shadow
+		// Android shadow properties
+		elevation: 5, // Defines the shadow's elevation (size and intensity)
+	},
+	recommendationText: {
+		fontSize: 16,
+		fontFamily: "Karla-Regular",
+		color: "red",
+		padding: 0,
+	},
+
+	resetIconContainer: {
+		position: "absolute",
+		left: 66,
+		top: 28,
+		alignItems: "center", // Centers the icon vertically
+		justifyContent: "center", // Centers the icon horizontally
+		width: 50, // Adjusts the width based on content (Ionicon size)
+		height: 50, // You can adjust this if needed
+	},
+
 	startButton: { backgroundColor: "black" },
 	pauseButton: { backgroundColor: "#dc3545" },
 	restartButton: { borderWidth: 2, borderColor: "black", color: "black" },

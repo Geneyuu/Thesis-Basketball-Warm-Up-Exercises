@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { exercises } from "../../../exercisespaths/exercises";
+import { exercises } from "../../../exercisespaths/withballExercises";
 // ExerciseItem Component
 const ExerciseItem = ({ id, name, image }) => {
 	const router = useRouter();
