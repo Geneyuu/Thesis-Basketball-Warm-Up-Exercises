@@ -106,3 +106,5 @@ export const exercises = [
 			"Step forward with one leg and lower your hips until both knees are bent at 90 degrees. Alternate legs after 10 repetitions.",
 	},
 ];
+
+export default exercises; // Default export

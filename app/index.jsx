@@ -57,7 +57,7 @@ export default function Index() {
 				}),
 				Animated.timing(scaleValue, {
 					toValue: 1,
-					duration: 2000,
+					duration: 1500,
 					useNativeDriver: true,
 				}),
 			])
@@ -79,7 +79,6 @@ export default function Index() {
 	}, [router]);
 
 	if (!fontsLoaded) {
-		// You can return a loading spinner or placeholder while fonts are loading
 		return (
 			<View style={styles.container}>
 				<Text>Loading...</Text>

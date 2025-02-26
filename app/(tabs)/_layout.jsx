@@ -3,8 +3,6 @@ import { Tabs, usePathname } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 
-// Define the TabIcon component
-
 const TabIcon = ({ name, focused, color, icon }) => {
 	return (
 		<View style={styles.iconWrapper}>
@@ -131,14 +129,14 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		width: 60,
-		paddingTop: 0, // Add padding to avoid clipping with the border
+		paddingTop: 0,
 	},
 	focusedBorder: {
 		width: "100%",
 		height: 5,
-		backgroundColor: "#161616", // Green color for the focused border
+		backgroundColor: "#161616",
 		position: "absolute",
-		top: -19, // Adjust position for the border
+		top: -19,
 	},
 });
 // dito is sa layout is kung paano mo syang gustong i-display sa screen

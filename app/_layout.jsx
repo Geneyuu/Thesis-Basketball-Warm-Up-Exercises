@@ -7,7 +7,7 @@ export const Data = createContext();
 // so gumamit lang ako dito ng Cointext API para sa pagpasa ng data sa ibang components since hindi pwede irekta yung pagpasa ng data sa ibang components
 
 export default function RootLayout() {
-	const { name, setName } = useName();
+	const { name, setName } = useName(); // dito ginamit ko na yung useName
 	const {
 		exerciseTimer,
 		setExerciseTimer,

@@ -2,22 +2,31 @@ import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useName() {
-	const [name, setName] = useState("SetName"); // Default name
+	const [name, setName] = useState("SetName"); // Default state
 
-	// Load name from AsyncStorage when the hook initializes
 	useEffect(() => {
-		const loadName = async () => {
+		const initializeName = async () => {
 			try {
 				const storedName = await AsyncStorage.getItem("userName");
-				if (storedName) setName(storedName);
+
+				// Kapag wala pang laman, mag-set ng default sa storage
+				if (!storedName) {
+					await AsyncStorage.setItem("userName", "SetName");
+				} else {
+					setName(storedName); // Kung may laman na, gamitin iyon
+				}
 			} catch (error) {
-				console.error("Failed to load name from AsyncStorage:", error);
+				console.error(
+					"Failed to initialize name in AsyncStorage:",
+					error
+				);
 			}
 		};
-		loadName();
+
+		initializeName();
 	}, []);
 
-	// Save name to AsyncStorage whenever it changes
+	// eto eh kapag nadetect na yung state na name natin is nabago, magrurun tong effect nato tapos iseset nya yung localstorage sa bagong name na nabago.
 	useEffect(() => {
 		const saveName = async () => {
 			try {
@@ -26,11 +35,9 @@ export default function useName() {
 				console.error("Failed to save name to AsyncStorage:", error);
 			}
 		};
-		saveName();
-	}, [name]);
 
-	return {
-		name,
-		setName,
-	};
+		saveName();
+	}, [name]); //irerendre nya tong state kapag nadetect nagbago yung value ng state na name, para maupdate nya rin yung value dun sa localstorage.
+
+	return { name, setName }; // para madali maaccess pag ginamit ang useName since kapag tinawag mo ang useName eh magrereturn sya ng isang object na may dalawang properties.
 }

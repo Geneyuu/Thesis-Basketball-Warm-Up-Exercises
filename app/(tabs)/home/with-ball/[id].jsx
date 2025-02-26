@@ -69,7 +69,7 @@ const ExerciseDetails = () => {
 							source={video}
 							style={[
 								styles.video,
-								!isVideoReady && { display: "none" },
+								!isVideoReady && { opacity: 0 },
 							]} // Hide until loaded
 							useNativeControls={false} // Disable video controls
 							shouldPlay={isPlaying} // Auto-play if focused

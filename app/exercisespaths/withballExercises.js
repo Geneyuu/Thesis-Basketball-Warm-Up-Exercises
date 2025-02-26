@@ -19,6 +19,7 @@ export const exercises = [
 		performDescription:
 			"Extend your right arm straight up, keeping your elbow locked. Hold this position for 10-20 seconds and then switch arms.",
 	},
+
 	{
 		id: "arm-circles",
 		name: "Arm Circles",
@@ -50,3 +51,5 @@ export const exercises = [
 			"Slowly tilt your head to one side, holding for a few seconds, then switch to the other side. Repeat 5 times on each side.",
 	},
 ];
+
+export default exercises; // Default export
