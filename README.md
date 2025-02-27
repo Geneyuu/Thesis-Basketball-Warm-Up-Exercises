@@ -10,7 +10,7 @@ npm -v
 4. open vscode and go to its terminal
 5. git clone https://github.com/Geneyuu/FinalWarmUpExercise.git
 6. add that folder to vscode workspace
-7. Go terminal again make sure the directory is your workspace example: C:\Users\eugen\FinalWarmUpExercise>
+7. Go terminal again make sure the directory is your workspace example: C:\Users\eugen\Thesis-Basketbal-Warm-Up-Exercises>
 8. npm install
 9. npx expo start
 10. download expo app in playstore or appstore or kung trip nyo lang sa mismong ide i try click letter w lang mga pre
