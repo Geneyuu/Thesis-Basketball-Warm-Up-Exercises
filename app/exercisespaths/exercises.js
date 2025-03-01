@@ -9,6 +9,7 @@ export const exercises = [
 		performDescription:
 			"Extend your left arm straight up, keeping your elbow locked. Hold this position for 10-20 seconds and then switch arms.",
 	},
+
 	{
 		id: "arm-stretch-right-arm",
 		name: "Arm Stretch (Right Arm)",

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useExerciseTimers() {
-	const [exerciseTimer, setExerciseTimer] = useState(12); // Default exercise timer eto yung
+	const [exerciseTimer, setExerciseTimer] = useState(13); // Default exercise timer eto yung
 	const [restTimer, setRestTimer] = useState(12); // Default rest timer
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0); // eto eh para sa memory ng mga exercisesdata para may control tayo kung panong flow ang gusto nating mangyari.
 	const [timer, setTimer] = useState(exerciseTimer); // Initialize with default exercise timer so syempre ayaw natin baguhin yung default value kaya gumawa tayo ng another memory state para magbase lang yung countdown timer sa default values ng exerciseTimer at rest timer.
@@ -19,11 +19,11 @@ export default function useExerciseTimers() {
 				);
 				const storedRestTimer = await AsyncStorage.getItem("restTimer");
 
-				// Kapag walang naka-save na value, iset natin sa default (12) at isave sa AsyncStorage
+				// Kapag walang naka-save na value, isave yung default value ng exerciseTimer at isave sa AsyncStorage
 				if (!storedExerciseTimer) {
 					await AsyncStorage.setItem(
 						"exerciseTimer",
-						JSON.stringify(12)
+						JSON.stringify(exerciseTimer)
 					);
 				} else {
 					// Kapag may existing na value, convert from string to number at iset sa state
@@ -69,9 +69,9 @@ export default function useExerciseTimers() {
 	}, [exerciseTimer, restTimer]);
 
 	// Kapag nagbago ang exerciseTimer, i-update din ang countdown timer
-	useEffect(() => {
-		setTimer(exerciseTimer); // Isync ang timer sa bagong exerciseTimer
-	}, [exerciseTimer]);
+	// useEffect(() => {
+	// 	setTimer(exerciseTimer); // Isync ang timer sa bagong exerciseTimer
+	// }, [exerciseTimer]);
 
 	//  return lahat ng states para magamit sa ibang component
 	return {

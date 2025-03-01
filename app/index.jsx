@@ -9,12 +9,14 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
+// para magamit naitn yung mga tools na need sa paggawa ng react-native appss.
 
 const scaleValue = new Animated.Value(1);
 
+// splash-screen natin or startup screen
 export default function Index() {
-	const router = useRouter();
 	const [fontsLoaded, setFontsLoaded] = useState(false);
+	const router = useRouter(); // nagdeclare lang ako ng router dito para magamit yung useRotuer na navigation
 
 	useEffect(() => {
 		const loadFonts = async () => {
@@ -76,7 +78,7 @@ export default function Index() {
 		setTimeout(() => {
 			router.replace("/(tabs)/home");
 		}, 6000);
-	}, [router]);
+	}, []);
 
 	if (!fontsLoaded) {
 		return (

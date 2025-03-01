@@ -5,6 +5,7 @@ import { Video } from "expo-av";
 import { exercises } from "../../../exercisespaths/exercises"; // Import your exercise data
 import { useFocusEffect } from "@react-navigation/native"; // Import useFocusEffect
 
+// so eto yung screen ng dynamic na id exercise na niclick natin.
 const ExerciseDetails = () => {
 	const { id } = useLocalSearchParams(); // Retrieve the exercise ID
 	console.log(`This is ${id}`);
@@ -17,7 +18,7 @@ const ExerciseDetails = () => {
 
 	const { video, name, performDescription } = exercise;
 
-	const videoRef = useRef(null);
+	const videoRef = useRef(null); // Ang useRef ay parang invisible na box kung saan pwede kang maglagay ng reference sa isang elemento o value nang hindi nagti-trigger ng re-render. para maaccess den at makontrol yung dom elements.
 	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
 	const [isPlaying, setIsPlaying] = useState(false); // Track video playing state
 

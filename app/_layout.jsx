@@ -50,4 +50,5 @@ export default function RootLayout() {
 	);
 }
 
+// kung ano bang fomat or skeleton na magiging screen natin.
 //<Stack> automatically manages screens based on file structure.
