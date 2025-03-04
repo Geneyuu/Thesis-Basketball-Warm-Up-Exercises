@@ -7,7 +7,7 @@ export const exercises = [
 		description:
 			"Increases heart rate and warms up muscles for better performance.",
 		duration: 180, // in seconds (2-3 mins)
-		repetitions: null,
+		repetitions: 17,
 	},
 
 	{
@@ -18,7 +18,7 @@ export const exercises = [
 		description:
 			"Engages lateral movement muscles for agility and balance.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 15,
 	},
 
 	{
@@ -29,7 +29,7 @@ export const exercises = [
 		description:
 			"Improves coordination and warms up legs by engaging the core.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 12,
 	},
 
 	{
@@ -39,7 +39,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description: "Loosens hamstrings and activates glutes effectively.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 12,
 	},
 
 	{
@@ -49,7 +49,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description:
 			"Stretches and strengthens legs and core with a rotational movement.",
-		duration: null,
+		duration: 20,
 		repetitions: 10, // Per leg
 	},
 
@@ -60,7 +60,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description:
 			"Improves hip flexibility with controlled front and side swings.",
-		duration: null,
+		duration: 20,
 		repetitions: 10, // Per leg
 	},
 
@@ -71,7 +71,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description:
 			"Stretches hamstrings and activates the core with slow controlled movement.",
-		duration: null,
+		duration: 16,
 		repetitions: 5,
 	},
 
@@ -82,7 +82,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description:
 			"Increases hip mobility and balance by pulling knees to chest.",
-		duration: null,
+		duration: 25,
 		repetitions: 10, // Per leg
 	},
 
@@ -93,7 +93,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description: "Warms up the calves and ankles with small jumps.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 15,
 	},
 
 	{
@@ -104,7 +104,7 @@ export const exercises = [
 		description:
 			"Rotate your arms in small circles to warm up your shoulder joints.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 12,
 	},
 
 	{
@@ -115,7 +115,7 @@ export const exercises = [
 		description:
 			"Lift your shoulders towards your ears and roll them back and down.",
 		duration: 30,
-		repetitions: null,
+		repetitions: 12,
 	},
 
 	{
@@ -125,7 +125,7 @@ export const exercises = [
 		image: require("../../assets/images/withballpreview.png"),
 		description:
 			"Activates core and rotational muscles for dynamic movement.",
-		duration: null,
+		duration: 15,
 		repetitions: 10, // Per side
 	},
 
@@ -146,7 +146,7 @@ export const exercises = [
 		video: require("../../assets/videos/pushup.mp4"),
 		image: require("../../assets/images/withballpreview.png"),
 		description: "Develops lower-body explosiveness with controlled jumps.",
-		duration: null,
+		duration: 16,
 		repetitions: 10,
 	},
 
@@ -158,7 +158,7 @@ export const exercises = [
 		description:
 			"Enhances ball control and hand coordination by dribbling with both hands.",
 		duration: 60,
-		repetitions: null,
+		repetitions: 12,
 	},
 ];
 

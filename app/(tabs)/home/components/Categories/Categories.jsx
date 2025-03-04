@@ -8,22 +8,22 @@ import {
 
 const categoryData = [
 	{
-		title: "Whole Body (Dynamic)",
+		title: "Lower Body Mobility & Activation",
 		imageUri: require("./../../../../../assets/images/wholebodypreview.png"),
 		navigationPath: "home/whole-body/details",
 	},
 	{
-		title: "In Place",
+		title: "Upper Body & Core Activation",
 		imageUri: require("./../../../../../assets/images/inplacepreview.png"),
 		navigationPath: "home/in-place/inplace",
 	},
 	{
-		title: "With Ball",
+		title: "Cardio & Full-Body Activation",
 		imageUri: require("./../../../../../assets/images/withballpreview.png"),
 		navigationPath: "home/with-ball/withball",
 	},
 	{
-		title: "Stretching",
+		title: "Basketball-Specific Movements",
 		imageUri: require("./../../../../../assets/images/stretchingpreview.png"),
 		navigationPath: "home/stretching/stretching",
 	},

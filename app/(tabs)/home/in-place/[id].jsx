@@ -20,6 +20,7 @@ const ExerciseDetails = () => {
 	const videoRef = useRef(null);
 	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
 	const [isPlaying, setIsPlaying] = useState(false); // Track video playing state
+	<Text style={styles.detailTitle}>Description</Text>;
 
 	useFocusEffect(
 		useCallback(() => {

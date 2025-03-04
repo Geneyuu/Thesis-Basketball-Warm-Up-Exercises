@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { exercises } from "../../../exercisespaths/wholeBodyExercises";
+import { exercises } from "../../../exercisespaths/allExercises";
 // ExerciseItem Component
 const ExerciseItem = ({ id, name, image }) => {
 	const router = useRouter();
@@ -18,7 +18,7 @@ const ExerciseItem = ({ id, name, image }) => {
 	const handlePress = () => {
 		if (!isClickable) return;
 		setIsClickable(false);
-		router.push(`/home/with-ball/${id}`);
+		router.push(`/home/whole-body/${id}`);
 
 		const timeout = setTimeout(() => setIsClickable(true), 1300);
 		return () => clearTimeout(timeout); // Cleanup
@@ -78,7 +78,7 @@ const WithBall = () => (
 			</Text>
 			<Text style={styles.subheading}>Included exercises:</Text>
 			<View style={styles.exerciseContainer}>
-				{exercises.map((exercise) => (
+				{exercises.slice(4, 9).map((exercise) => (
 					<ExerciseItem key={exercise.id} {...exercise} />
 				))}
 			</View>

@@ -8,71 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-
-// Exercises data
-const exercises = [
-	{
-		id: "arm-stretch-left-arm",
-		name: "Arm Stretch (Left Arm)",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/video.mp4"),
-	},
-	{
-		id: "arm-stretch-right-arm",
-		name: "Arm Stretch (Right Arm)",
-		image: require("../../../../assets/images/wholebodypreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "arm-circles",
-		name: "Arm Circles",
-		image: require("../../../../assets/images/withballpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "shoulder-rolls",
-		name: "Shoulder Rolls",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "neck-tilts",
-		name: "Neck Tilts",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "leg-stretch-left-leg",
-		name: "Leg Stretch (Left Leg)",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "leg-stretch-right-leg",
-		name: "Leg Stretch (Right Leg)",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "toe-touches",
-		name: "Toe Touches",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "side-stretches",
-		name: "Side Stretches",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-	{
-		id: "lunges",
-		name: "Lunges",
-		image: require("../../../../assets/images/stretchingpreview.png"),
-		video: require("../../../../assets/videos/pushup.mp4"),
-	},
-];
-
+import { exercises } from "../../../exercisespaths/allExercises";
 // ExerciseItem Component
 const ExerciseItem = ({ id, name, image }) => {
 	const router = useRouter();
@@ -80,11 +16,12 @@ const ExerciseItem = ({ id, name, image }) => {
 
 	// Handle button press and disable temporarily
 	const handlePress = () => {
-		if (isClickable) {
-			setIsClickable(false);
-			router.push(`/home/stretching/${id}`);
-			setTimeout(() => setIsClickable(true), 1300); // Re-enable after 1.3 seconds
-		}
+		if (!isClickable) return;
+		setIsClickable(false);
+		router.push(`/home/stretching/${id}`);
+
+		const timeout = setTimeout(() => setIsClickable(true), 1300);
+		return () => clearTimeout(timeout); // Cleanup
 	};
 
 	return (
@@ -100,17 +37,23 @@ const ExerciseItem = ({ id, name, image }) => {
 // StickyButton Component
 const StickyButton = () => {
 	const router = useRouter();
+	const [isClickable, setIsClickable] = useState(true);
 
-	const handleStartWarmUp = () => {
-		router.push("../../home/stretching/StartWarmUps");
+	const handlePress = () => {
+		if (isClickable) {
+			setIsClickable(false);
+			router.push("/home/stretching/StartWarmUps");
+			setTimeout(() => setIsClickable(true), 1300);
+		}
 	};
+
+	// const handleStartWarmUp = () => {
+	// 	router.push("../../home/with-ball/StartWarmUps");
+	// };
 
 	return (
 		<View style={styles.stickyButtonContainer}>
-			<TouchableOpacity
-				style={styles.stickyButton}
-				onPress={handleStartWarmUp}
-			>
+			<TouchableOpacity style={styles.stickyButton} onPress={handlePress}>
 				<Text style={styles.stickyButtonText}>Start Warmups</Text>
 			</TouchableOpacity>
 		</View>
@@ -135,7 +78,7 @@ const WithBall = () => (
 			</Text>
 			<Text style={styles.subheading}>Included exercises:</Text>
 			<View style={styles.exerciseContainer}>
-				{exercises.map((exercise) => (
+				{exercises.slice(12).map((exercise) => (
 					<ExerciseItem key={exercise.id} {...exercise} />
 				))}
 			</View>

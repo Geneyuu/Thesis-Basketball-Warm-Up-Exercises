@@ -11,7 +11,7 @@ const Layout = () => {
 		<Stack>
 			{/* With Ball Screen */}
 			<Stack.Screen
-				name="withball"
+				name="inplace"
 				options={{
 					headerShown: true,
 					header: () => (
@@ -27,7 +27,6 @@ const Layout = () => {
 							}}
 						>
 							{/* Back Button */}
-
 							<TouchableOpacity
 								onPress={() => router.back()}
 								style={{
@@ -53,7 +52,7 @@ const Layout = () => {
 										textTransform: "capitalize",
 									}}
 								>
-									Cardio & Full-Body Activation
+									Upper Body & Core Activation
 								</Text>
 							</View>
 						</View>

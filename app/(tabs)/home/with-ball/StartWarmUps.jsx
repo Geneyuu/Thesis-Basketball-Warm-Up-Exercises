@@ -1,34 +1,26 @@
 import React, { useEffect, useContext, useState } from "react";
 import { ScrollView, View, Text, StyleSheet, AppState } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import { Data } from "../../../_layout";
-import { exercises } from "../../../../app/exercisespaths/exercises";
+import { Data } from "../../../_layout"; // Import Context provided in RootLayout
 import ExerciseVideo from "../../home/with-ball/components/StartWarmups/ExerciseVideo";
 import ExerciseImage from "../../home/with-ball/components/StartWarmups/ExerciseImage";
 import ExerciseDescription from "../../home/with-ball/components/StartWarmups/ExerciseDescription";
 import TimerControls from "../../home/with-ball/components/StartWarmups/TimerControls";
 
 const StartWarmups = () => {
-	// Access global state and timer values
-	const {
-		currentExerciseIndex,
-		setCurrentExerciseIndex,
-		timer,
-		setTimer,
-		isTimerRunning,
-		setIsTimerRunning,
-		isResting,
-		setIsResting,
-		exerciseTimer,
-		restTimer,
-	} = useContext(Data);
+	// Get all necessary state values from the context
+	const { exerciseList, restTimer } = useContext(Data);
 
-	// Get current and next exercise
-	const currentExercise = exercises[currentExerciseIndex];
-	const nextExercise = exercises[currentExerciseIndex + 1];
+	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+	const [timer, setTimer] = useState(exerciseList[0].duration); // Default timer
+	const [isTimerRunning, setIsTimerRunning] = useState(false);
+	const [isResting, setIsResting] = useState(false);
 
-	// State to control video restart
 	const [restartVideo, setRestartVideo] = useState(false);
+
+	// Get current and next exercise from the exerciseList from context
+	const currentExercise = exerciseList[currentExerciseIndex];
+	const nextExercise = exerciseList[currentExerciseIndex + 1];
 
 	// Timer control functions
 	const startWarmup = () => setIsTimerRunning(true);
@@ -41,24 +33,18 @@ const StartWarmups = () => {
 		setCurrentExerciseIndex(0);
 		setIsResting(false);
 		setIsTimerRunning(false);
-		setTimer(exerciseTimer);
+		// When restarting, use the duration from the first exercise (or fallback to a default)
+		setTimer(exerciseList[0].duration);
 	};
 
 	// Reset the timer and video for the current exercise
 	const resetTimerAndVideo = () => {
-		setTimer(exerciseTimer);
+		// Reset timer using current exercise duration if available
+		setTimer(currentExercise.duration);
 		setIsTimerRunning(false);
 		setRestartVideo(true);
 		setTimeout(() => setRestartVideo(false), 100);
 	};
-
-	// Initialize state on component mount
-	useEffect(() => {
-		setCurrentExerciseIndex(0);
-		setIsTimerRunning(false);
-		setTimer(exerciseTimer);
-		setIsResting(false);
-	}, []);
 
 	// Handle app state changes (foreground/background)
 	useFocusEffect(
@@ -70,7 +56,6 @@ const StartWarmups = () => {
 					stopWarmup();
 				}
 			};
-
 			const appStateSubscription = AppState.addEventListener(
 				"change",
 				handleAppStateChange
@@ -95,13 +80,15 @@ const StartWarmups = () => {
 		if (isTimerRunning && timer > 0) {
 			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
 		} else if (timer === 0 && !isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
+			// If the exercise phase ends and there are more exercises, switch to rest phase
+			if (currentExerciseIndex < 3) {
 				setIsResting(true);
 				setTimer(restTimer);
 			} else {
+				// End of workout session: reset states and navigate away
 				setIsTimerRunning(false);
 				setCurrentExerciseIndex(0);
-				setTimer(exerciseTimer);
+				setTimer(exerciseList[0].duration);
 				setIsResting(false);
 				router.replace("/(tabs)/");
 				setTimeout(() => {
@@ -111,22 +98,32 @@ const StartWarmups = () => {
 				}, 100);
 			}
 		} else if (timer === 0 && isResting) {
-			if (currentExerciseIndex < exercises.length - 1) {
+			// After rest, move to the next exercise and set timer based on its duration
+			if (currentExerciseIndex < exerciseList.length - 1) {
 				setCurrentExerciseIndex((prev) => prev + 1);
 				setIsResting(false);
-				setTimer(exerciseTimer);
+				// Set timer using the new current exercise's duration
+				const newExercise = exerciseList[currentExerciseIndex + 1];
+				setTimer(newExercise.duration);
 			}
 		}
 
 		return () => clearInterval(interval);
-	}, [isTimerRunning, timer, currentExerciseIndex, isResting]);
+	}, [
+		isTimerRunning,
+		timer,
+		currentExerciseIndex,
+		isResting,
+		exerciseList,
+		restTimer,
+	]);
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.exerciseContainer}>
 				{/* Display current exercise or rest message */}
 				<Text style={styles.heading}>
-					{isResting ? "Rest" : currentExercise.name}
+					{isResting ? "Rest" : currentExercise?.name}
 				</Text>
 
 				{/* Show next exercise image during rest */}
@@ -143,7 +140,7 @@ const StartWarmups = () => {
 				) : (
 					// Show video for the current exercise
 					<ExerciseVideo
-						videoSource={currentExercise.video}
+						videoSource={currentExercise?.video}
 						isTimerRunning={isTimerRunning}
 						restartVideo={restartVideo}
 						isResting={isResting}
@@ -170,7 +167,6 @@ const StartWarmups = () => {
 	);
 };
 
-// Styles
 const styles = StyleSheet.create({
 	container: { flex: 1, padding: 20, backgroundColor: "#f9f9f9" },
 	exerciseContainer: { marginBottom: 20 },

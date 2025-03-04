@@ -2,17 +2,17 @@ import React, { useEffect, useContext, useState } from "react";
 import { ScrollView, View, Text, StyleSheet, AppState } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { Data } from "../../../_layout"; // Import Context provided in RootLayout
-import ExerciseVideo from "../../home/whole-body/components/StartWarmups/ExerciseVideo";
-import ExerciseImage from "../../home/whole-body/components/StartWarmups/ExerciseImage";
-import ExerciseDescription from "../../home/whole-body/components/StartWarmups/ExerciseDescription";
-import TimerControls from "../../home/whole-body/components/StartWarmups/TimerControls";
+import ExerciseVideo from "../../home/in-place/components/StartWarmups/ExerciseVideo";
+import ExerciseImage from "../../home/in-place/components/StartWarmups/ExerciseImage";
+import ExerciseDescription from "../../home/in-place/components/StartWarmups/ExerciseDescription";
+import TimerControls from "../../home/in-place/components/StartWarmups/TimerControls";
 
 const StartWarmups = () => {
 	// Get all necessary state values from the context
 	const { exerciseList, restTimer } = useContext(Data);
 
-	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(4);
-	const [timer, setTimer] = useState(exerciseList[4]?.duration); // Default timer
+	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(9);
+	const [timer, setTimer] = useState(exerciseList[9]?.duration); // Default timer
 	const [isTimerRunning, setIsTimerRunning] = useState(false);
 	const [isResting, setIsResting] = useState(false);
 
@@ -30,10 +30,10 @@ const StartWarmups = () => {
 	const restartWarmup = () => {
 		setRestartVideo(true);
 		setTimeout(() => setRestartVideo(false), 150);
-		setCurrentExerciseIndex(4); // Start from index 3
+		setCurrentExerciseIndex(9); // Start from index 3
 		setIsResting(false);
 		setIsTimerRunning(false);
-		setTimer(exerciseList[4]?.duration);
+		setTimer(exerciseList[9]?.duration);
 	};
 
 	// Reset the timer and video for the current exercise
@@ -80,14 +80,14 @@ const StartWarmups = () => {
 			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
 		} else if (timer === 0 && !isResting) {
 			// If the exercise phase ends and there are more exercises, switch to rest phase
-			if (currentExerciseIndex < 8) {
+			if (currentExerciseIndex < 11) {
 				setIsResting(true);
 				setTimer(restTimer);
 			} else {
 				// End of workout session: reset states and navigate away
 				setIsTimerRunning(false);
 				setCurrentExerciseIndex(4);
-				setTimer(exerciseList[4]?.duration);
+				setTimer(exerciseList[9]?.duration);
 				setIsResting(false);
 				router.replace("/(tabs)/");
 				setTimeout(() => {
@@ -98,7 +98,7 @@ const StartWarmups = () => {
 			}
 		} else if (timer === 0 && isResting) {
 			// After rest, move to the next exercise and set timer based on its duration
-			if (currentExerciseIndex < 8) {
+			if (currentExerciseIndex < 11) {
 				setCurrentExerciseIndex((prev) => prev + 1);
 				setIsResting(false);
 				// Set timer using the new current exercise's duration

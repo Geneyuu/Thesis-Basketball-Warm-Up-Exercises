@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { exercises } from "../../../exercisespaths/withballExercises";
+import { exercises } from "../../../exercisespaths/allExercises";
 // ExerciseItem Component
 const ExerciseItem = ({ id, name, image }) => {
 	const router = useRouter();
@@ -78,7 +78,7 @@ const WithBall = () => (
 			</Text>
 			<Text style={styles.subheading}>Included exercises:</Text>
 			<View style={styles.exerciseContainer}>
-				{exercises.map((exercise) => (
+				{exercises.slice(0, 4).map((exercise) => (
 					<ExerciseItem key={exercise.id} {...exercise} />
 				))}
 			</View>

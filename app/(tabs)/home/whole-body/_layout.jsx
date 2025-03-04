@@ -45,14 +45,14 @@ const Layout = () => {
 									style={{
 										position: "relative",
 										top: 0,
-										left: -20,
+										left: -5,
 										color: "#161616",
-										fontSize: 34,
+										fontSize: 23,
 										fontFamily: "Oswald-Bold",
 										textTransform: "capitalize",
 									}}
 								>
-									Whole Body
+									Lower Body Mobility & Activation
 								</Text>
 							</View>
 						</View>

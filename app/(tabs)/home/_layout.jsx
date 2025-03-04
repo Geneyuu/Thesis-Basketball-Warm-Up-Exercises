@@ -24,6 +24,10 @@ const Layout = () => {
 					name="stretching"
 					options={{ headerShown: false, headerTitle: "Stretching" }}
 				/>
+				<Stack.Screen
+					name="in-place"
+					options={{ headerShown: false, headerTitle: "inplace" }}
+				/>
 			</Stack>
 		</SafeAreaView>
 	);

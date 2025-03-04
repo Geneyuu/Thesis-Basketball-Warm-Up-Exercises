@@ -15,7 +15,7 @@ const ExerciseDetails = () => {
 		return <Text>Exercise not found</Text>; // Show error if no exercise is found
 	}
 
-	const { video, name, performDescription } = exercise;
+	const { video, name, description } = exercise;
 
 	const videoRef = useRef(null);
 	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
@@ -69,7 +69,7 @@ const ExerciseDetails = () => {
 							source={video}
 							style={[
 								styles.video,
-								!isVideoReady && { display: "none" },
+								!isVideoReady && { opacity: 0 },
 							]} // Hide until loaded
 							useNativeControls={false} // Disable video controls
 							shouldPlay={isPlaying} // Auto-play if focused
@@ -90,7 +90,7 @@ const ExerciseDetails = () => {
 			<Text style={styles.title}>{name}</Text>
 			<View style={styles.detailsContainer}>
 				<Text style={styles.detailTitle}>Description</Text>
-				<Text style={styles.detailText}>{performDescription}</Text>
+				<Text style={styles.detailText}>{description}</Text>
 			</View>
 		</View>
 	);

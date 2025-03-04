@@ -16,7 +16,7 @@ const ExerciseDetails = () => {
 		return <Text>Exercise not found</Text>; // Show error if no exercise is found
 	}
 
-	const { video, name, performDescription } = exercise;
+	const { video, name, description } = exercise;
 
 	const videoRef = useRef(null); // Ang useRef ay parang invisible na box kung saan pwede kang maglagay ng reference sa isang elemento o value nang hindi nagti-trigger ng re-render. para maaccess den at makontrol yung dom elements.
 	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
@@ -91,7 +91,7 @@ const ExerciseDetails = () => {
 			<Text style={styles.title}>{name}</Text>
 			<View style={styles.detailsContainer}>
 				<Text style={styles.detailTitle}>Description</Text>
-				<Text style={styles.detailText}>{performDescription}</Text>
+				<Text style={styles.detailText}>{description}</Text>
 			</View>
 		</View>
 	);
