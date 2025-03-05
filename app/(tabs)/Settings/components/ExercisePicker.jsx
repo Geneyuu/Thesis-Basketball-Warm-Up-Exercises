@@ -14,6 +14,7 @@ const ExercisePicker = ({
 				selectedValue={selectedExercise}
 				onValueChange={(value) => setSelectedExercise(value)}
 				style={styles.picker}
+				// mode="dropdown"
 			>
 				<Picker.Item
 					label="Select an exercise..."

@@ -4,76 +4,61 @@ import exercises from "../exercisespaths/allExercises"; // Default exercises
 
 export default function useExerciseStorage() {
 	const [exerciseListAsync, setexerciseListAsync] = useState([]);
-	const [restTimer, setRestTimer] = useState(10); // Default rest timer
+	const [restTimer, setRestTimer] = useState(null); // 🔹 Set to null para malaman kung na-load na
 
-	//  Load Exercises & Rest Timer from AsyncStorage
+	//  Load Data on Mount
 	useEffect(() => {
-		const loadData = async () => {
+		const initializeStorage = async () => {
 			try {
-				// Load Exercises
+				//  Load Exercises
 				const storedExercises = await AsyncStorage.getItem("exercises");
 				if (storedExercises) {
 					setexerciseListAsync(JSON.parse(storedExercises));
 				} else {
-					setexerciseListAsync(exercises);
 					await AsyncStorage.setItem(
 						"exercises",
 						JSON.stringify(exercises)
 					);
+					setexerciseListAsync(exercises);
 				}
-				// Load Rest Timer
+
+				//  Load Rest Timer
 				const storedRestTimer = await AsyncStorage.getItem("restTimer");
 				if (storedRestTimer) {
-					setRestTimer(JSON.parse(storedRestTimer));
+					setRestTimer(Number(storedRestTimer));
+				} else {
+					setRestTimer(10);
+					await AsyncStorage.setItem("restTimer", "10");
 				}
 			} catch (error) {
-				console.error(
-					"Failed to initialize timers from AsyncStorage:",
-					error
-				);
+				console.error("Failed to initialize AsyncStorage:", error);
 			}
 		};
 
-		loadData();
-	}, []); //  Removed restTimer from dependency array
+		initializeStorage();
+	}, []);
 
-	// Save Exercises when updated
+	//  Save Exercises on Change
 	useEffect(() => {
-		const saveExercises = async () => {
-			try {
-				await AsyncStorage.setItem(
-					"exercises",
-					JSON.stringify(exerciseListAsync)
-				);
-			} catch (error) {
-				console.error("Error saving exercises:", error);
-			}
-		};
-
-		if (exerciseListAsync.length) saveExercises();
+		if (exerciseListAsync.length) {
+			AsyncStorage.setItem(
+				"exercises",
+				JSON.stringify(exerciseListAsync)
+			).catch((error) =>
+				console.error("Failed to save exercises:", error)
+			);
+		}
 	}, [exerciseListAsync]);
 
-	//  Save Rest Timer when updated
+	//  Save Rest Timer on Change
 	useEffect(() => {
-		const saveTimers = async () => {
-			try {
-				await AsyncStorage.setItem(
-					"restTimer",
-					JSON.stringify(restTimer)
-				);
-			} catch (error) {
-				console.error("Failed to save timers to AsyncStorage:", error);
-			}
-		};
-
-		saveTimers();
+		if (restTimer !== null) {
+			AsyncStorage.setItem("restTimer", String(restTimer)).catch(
+				(error) => console.error("Failed to save restTimer:", error)
+			);
+		}
 	}, [restTimer]);
 
-	// Return all states and functions for easy access
-	return {
-		exerciseListAsync,
-		setexerciseListAsync,
-		restTimer,
-		setRestTimer,
-	};
+	// 🔹 Return values & setters
+	return { exerciseListAsync, setexerciseListAsync, restTimer, setRestTimer };
 }
