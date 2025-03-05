@@ -19,9 +19,23 @@ const StartWarmups = () => {
 
 	const [restartVideo, setRestartVideo] = useState(false);
 
-	// Get current and next exercise from the exerciseListAsync from context
-	const currentExercise = exerciseList[currentExerciseIndex];
-	const nextExercise = exerciseList[currentExerciseIndex + 1];
+	// // Get current and next exercise from the exerciseListAsync from context
+	// const currentExercise = exerciseList[currentExerciseIndex];
+	// const nextExercise = exerciseList[currentExerciseIndex + 1];
+
+	// dito imemerge yung dalawang exercises
+	const currentExercise = {
+		...exerciseList[currentExerciseIndex],
+		...exerciseListAsync[currentExerciseIndex],
+	};
+	// dito eh para nas currentExercisneIndex din tayo na array para dun sa Async
+	const nextExercise =
+		currentExerciseIndex + 1 < exerciseList.length
+			? {
+					...exerciseList[currentExerciseIndex + 1],
+					...exerciseListAsync[currentExerciseIndex + 1],
+			  }
+			: null;
 
 	// Timer control functions
 	const startWarmup = () => setIsTimerRunning(true);

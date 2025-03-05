@@ -9,7 +9,7 @@ const InputField = ({ label, value, setValue, placeholder }) => {
 				style={styles.input}
 				placeholder={placeholder}
 				keyboardType="numeric"
-				value={value}
+				value={value.toString()}
 				onChangeText={setValue}
 			/>
 		</>

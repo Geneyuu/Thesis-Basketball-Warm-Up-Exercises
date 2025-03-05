@@ -45,7 +45,7 @@ export default function Settings() {
 			type: "SET_REPETITIONS",
 			payload: exercise?.repetitions || "",
 		});
-	}, [state.selectedExercise]);
+	}, [state.selectedExercise, exerciseListAsync]); // <-- Dinagdag exerciseListAsync
 
 	// Save updated exercise settings
 	const handleSaveSettings = () => {
