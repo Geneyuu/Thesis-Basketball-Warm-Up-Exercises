@@ -10,7 +10,7 @@ export const Data = createContext();
 export default function RootLayout() {
 	const { name, setName } = useName(); // dito ginamit ko na yung useName
 
-	const { exerciseList, setExerciseList, restTimer, setRestTimer } =
+	const { exerciseListAsync, setexerciseListAsync, restTimer, setRestTimer } =
 		useExerciseStorage();
 
 	return (
@@ -18,8 +18,8 @@ export default function RootLayout() {
 			value={{
 				name,
 				setName,
-				setExerciseList,
-				exerciseList,
+				setexerciseListAsync,
+				exerciseListAsync,
 				restTimer,
 				setRestTimer,
 			}}

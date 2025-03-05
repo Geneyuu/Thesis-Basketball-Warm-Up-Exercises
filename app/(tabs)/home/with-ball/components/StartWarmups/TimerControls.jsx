@@ -1,6 +1,18 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	StyleSheet,
+	Dimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+// 🔥 Kuhanin ang screen dimensions
+const { width, height } = Dimensions.get("window");
+
+// 🔥 Function para mag-scale ang size dynamically
+const scaleSize = (size) => (width / 375) * size; // 375px = base iPhone width
 
 const TimerControls = ({
 	timer,
@@ -12,7 +24,7 @@ const TimerControls = ({
 	resetTimerAndVideo,
 }) => {
 	return (
-		<View>
+		<View style={styles.container}>
 			<Text style={styles.timerText}>{formatTime(timer)}s</Text>
 
 			{!isResting && (
@@ -23,7 +35,7 @@ const TimerControls = ({
 					>
 						<Ionicons
 							name="refresh-circle-outline"
-							size={37}
+							size={scaleSize(30)}
 							color="black"
 						/>
 					</TouchableOpacity>
@@ -57,47 +69,52 @@ const TimerControls = ({
 const formatTime = (time) => {
 	const minutes = Math.floor(time / 60);
 	const seconds = time % 60;
-	return `${minutes < 10 ? "" + minutes : minutes}:${
+	return `${minutes < 10 ? "0" + minutes : minutes}:${
 		seconds < 10 ? "0" + seconds : seconds
 	}`;
 };
 
 const styles = StyleSheet.create({
+	container: {
+		width: "90%",
+		alignSelf: "center",
+		alignItems: "center",
+	},
 	timerText: {
-		fontSize: 60,
+		fontSize: scaleSize(50),
 		fontFamily: "Karla-Bold",
 		color: "#161616",
-		marginTop: 20,
 		textAlign: "center",
 	},
 	resetIconContainer: {
 		position: "absolute",
-		left: 60,
-		top: 30,
+		left: scaleSize(30),
+		top: scaleSize(12),
 		alignItems: "center",
 		justifyContent: "center",
-		width: 50,
-		height: 50,
+		width: scaleSize(40),
+		height: scaleSize(40),
 	},
 	button: {
-		paddingVertical: 15,
-		borderRadius: 10,
+		paddingVertical: scaleSize(12),
+		width: scaleSize(320),
+		borderRadius: scaleSize(10),
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: 20,
+		marginTop: scaleSize(10),
 	},
 	buttonText: {
 		color: "black",
-		fontSize: 18,
+		fontSize: scaleSize(16),
 		fontFamily: "Karla-Bold",
 	},
 	startButton: { backgroundColor: "black" },
 	pauseButton: { backgroundColor: "#dc3545" },
-	restartButton: { borderWidth: 2, borderColor: "black", color: "black" },
+	restartButton: { borderWidth: 2, borderColor: "black" },
 	buttonExercise: {
 		color: "white",
 		fontFamily: "Karla-Bold",
-		fontSize: 18,
+		fontSize: scaleSize(16),
 	},
 });
 

@@ -1,73 +1,87 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-	View,
-	Text,
-	TextInput,
-	StyleSheet,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	Keyboard,
-	Platform,
-	ScrollView,
-	Alert,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { Data } from "@/app/_layout";
+import React, { useContext, useEffect, useReducer } from "react";
+import { ScrollView, Alert, StyleSheet } from "react-native";
+import { Data } from "./../../_layout";
+import ExercisePicker from "./components/ExercisePicker";
+import InputField from "./components/InputField";
+import SaveButton from "./components/SaveButton";
+import AboutUs from "./components/AboutUs";
+import ExerciseSettingsTitle from "./components/ExerciseSettingsTitle";
+// Initial State
+const initialState = {
+	selectedExercise: "",
+	duration: "",
+	repetitions: "",
+};
+
+// Reducer Function try lang lol
+const reducer = (state, action) => {
+	switch (action.type) {
+		case "SET_EXERCISE":
+			return { ...state, selectedExercise: action.payload };
+		case "SET_DURATION":
+			return { ...state, duration: action.payload };
+		case "SET_REPETITIONS":
+			return { ...state, repetitions: action.payload };
+		case "RESET":
+			return initialState;
+		default:
+			return state;
+	}
+};
 
 export default function Settings() {
-	const { exerciseList, setExerciseList, resTimer, setResTimer } =
+	const { exerciseListAsync, setexerciseListAsync, restTimer, setRestTimer } =
 		useContext(Data);
 
-	const [selectedExercise, setSelectedExercise] = useState("");
-	const [duration, setDuration] = useState("");
-	const [repetitions, setRepetitions] = useState("");
+	const [state, dispatch] = useReducer(reducer, initialState);
 
+	// Load exercise details when selection changes
 	useEffect(() => {
-		if (selectedExercise) {
-			const exercise = exerciseList.find(
-				(eachExercise) => eachExercise.id === selectedExercise
-			);
+		const exercise = exerciseListAsync.find(
+			(ex) => ex.id === state.selectedExercise
+		);
+		dispatch({ type: "SET_DURATION", payload: exercise?.duration || "" });
+		dispatch({
+			type: "SET_REPETITIONS",
+			payload: exercise?.repetitions || "",
+		});
+	}, [state.selectedExercise]);
 
-			if (exercise) {
-				setDuration(
-					exercise.duration ? exercise.duration.toString() : ""
-				);
-				setRepetitions(
-					exercise.repetitions !== null
-						? exercise.repetitions.toString()
-						: ""
-				);
-			}
-		} else {
-			setDuration("");
-			setRepetitions("");
-		}
-	}, [selectedExercise]);
-
+	// Save updated exercise settings
 	const handleSaveSettings = () => {
-		if (!selectedExercise) {
-			Alert.alert("Error", "Please select an exercise to edit");
-
+		if (!state.selectedExercise) {
+			Alert.alert("Error", "Please select an exercise.");
 			return;
 		}
 
-		const updatedExercise = exerciseList.map((selectedEx) =>
-			selectedEx.id === selectedExercise
+		const updatedExercises = exerciseListAsync.map((ex) =>
+			ex.id === state.selectedExercise
 				? {
-						...selectedEx,
-						duration: duration
-							? Number(duration)
-							: selectedEx.duration,
-						repetitions: repetitions
-							? Number(repetitions)
-							: selectedEx.repetitions,
+						...ex,
+						duration: state.duration
+							? Number(state.duration)
+							: ex.duration,
+						repetitions: state.repetitions
+							? Number(state.repetitions)
+							: ex.repetitions,
 				  }
-				: selectedEx
+				: ex
 		);
 
-		setExerciseList(updatedExercise);
+		setexerciseListAsync(updatedExercises);
+		Alert.alert("Success", "Exercise settings updated!");
+	};
 
-		Alert.alert("Success", "Exercise settings updated successfully!");
+	// Save Rest Timer (Inside Component)
+	const handleSaveRestTimer = () => {
+		const newRestTimer = Number(restTimer);
+		if (isNaN(newRestTimer) || newRestTimer < 0) {
+			Alert.alert("Error", "Please enter a valid rest time.");
+			return;
+		}
+
+		setRestTimer(newRestTimer);
+		Alert.alert("Success", "Rest timer updated!");
 	};
 
 	return (
@@ -75,195 +89,55 @@ export default function Settings() {
 			style={styles.container}
 			keyboardShouldPersistTaps="handled"
 		>
-			<Text style={styles.title}>Exercise Settings</Text>
+			<ExerciseSettingsTitle />
+			<ExercisePicker
+				selectedExercise={state.selectedExercise}
+				setSelectedExercise={(value) =>
+					dispatch({ type: "SET_EXERCISE", payload: value })
+				}
+				exerciseListAsync={exerciseListAsync}
+			/>
 
-			{/* Exercise Selection */}
-			<Text style={styles.label}>Select Exercise:</Text>
-			<Picker
-				mode="dropdown"
-				style={styles.picker}
-				selectedValue={selectedExercise}
-				onValueChange={(itemValue) => {
-					setSelectedExercise(itemValue);
-					console.log("selected exercise", itemValue);
-				}}
-			>
-				<Picker.Item
-					label="Select an exercise..."
-					value=""
-					color="black"
-				/>
-				{exerciseList.map((eachExercise) => (
-					<Picker.Item
-						key={eachExercise.id}
-						label={eachExercise.name}
-						value={eachExercise.id}
-						color="green"
-					/>
-				))}
-			</Picker>
-
-			{/* Duration */}
-			<Text style={styles.label}>Duration (seconds):</Text>
-			<TextInput
-				style={styles.input}
+			<InputField
+				label="Duration (seconds)"
+				value={state.duration}
+				setValue={(value) =>
+					dispatch({ type: "SET_DURATION", payload: value })
+				}
 				placeholder="Enter duration"
-				keyboardType="numeric"
-				value={duration}
-				placeholderTextColor="#888"
-				onChangeText={(input) => setDuration(input)}
 			/>
 
-			{/* Repetitions */}
-			<Text style={styles.label}>Repetitions:</Text>
-			<TextInput
-				style={styles.input}
+			<InputField
+				label="Repetitions"
+				value={state.repetitions}
+				setValue={(value) =>
+					dispatch({ type: "SET_REPETITIONS", payload: value })
+				}
 				placeholder="Enter repetitions"
-				placeholderTextColor="#888"
-				keyboardType="numeric"
-				value={repetitions}
-				onChangeText={(input) => setRepetitions(input)}
 			/>
 
-			{/* Save Button */}
-			<TouchableOpacity
-				style={styles.button}
-				onPress={handleSaveSettings}
-			>
-				<Text style={styles.buttonText}>Save Settings</Text>
-			</TouchableOpacity>
+			<SaveButton onPress={handleSaveSettings} title="Save Settings" />
 
-			{/* Rest Timer */}
-			<Text style={styles.label}>Global Rest Timer (seconds):</Text>
-			<TextInput
-				style={styles.input}
+			{/* REST TIMER INPUT - Ensure it updates properly */}
+			<InputField
+				label="Global Rest Timer (seconds)"
+				value={restTimer}
+				setValue={(value) => setRestTimer(value)}
 				placeholder="Enter rest time"
-				placeholderTextColor="#888"
-				keyboardType="numeric"
 			/>
-			<TouchableOpacity style={styles.button} onPress={() => {}}>
-				<Text style={styles.buttonText}>Save Rest Timer</Text>
-			</TouchableOpacity>
 
-			{/* About Us Section */}
-			<View style={styles.aboutUsContainer}>
-				<Text style={styles.aboutTitle}>About Us</Text>
+			<SaveButton onPress={handleSaveRestTimer} title="Save Rest Timer" />
 
-				<View style={styles.developerContainer}>
-					<Text style={styles.developerName}>Juan Dela Cruz</Text>
-					<Text style={styles.developerEmail}>
-						juandelacruz@email.com
-					</Text>
-				</View>
-
-				<View style={styles.developerContainer}>
-					<Text style={styles.developerName}>Maria Santos</Text>
-					<Text style={styles.developerEmail}>
-						mariasantos@email.com
-					</Text>
-				</View>
-
-				<View style={styles.developerContainer}>
-					<Text style={styles.developerName}>Pedro Reyes</Text>
-					<Text style={styles.developerEmail}>
-						pedroreyes@email.com
-					</Text>
-				</View>
-			</View>
+			<AboutUs />
 		</ScrollView>
 	);
 }
 
+// Styles
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 20,
 		backgroundColor: "#fff",
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: "bold",
-		marginBottom: 20,
-		textAlign: "center",
-		fontFamily: "Karla-Bold",
-	},
-	label: {
-		fontSize: 16,
-		fontWeight: "bold",
-		marginBottom: 5,
-		fontFamily: "Karla-Regular",
-	},
-	picker: {
-		width: "100%",
-		alignSelf: "center",
-		...Platform.select({
-			ios: {
-				borderRadius: 5,
-				marginTop: -60,
-				backgroundColor: "transparent",
-				fontFamily: "Karla-Regular",
-			},
-			android: {},
-			web: {
-				height: 60,
-				fontFamily: "Karla-Regular",
-				fontSize: 16,
-			},
-		}),
-	},
-	input: {
-		borderWidth: 1,
-		padding: 10,
-		borderRadius: 5,
-		marginBottom: 15,
-		backgroundColor: "#fff",
-		fontFamily: "Karla-Regular",
-	},
-	button: {
-		backgroundColor: "black",
-		padding: 15,
-		borderRadius: 5,
-		alignItems: "center",
-		marginVertical: 10,
-		marginBottom: 50,
-	},
-	buttonText: {
-		color: "white",
-		fontSize: 16,
-		fontFamily: "Karla-Bold",
-	},
-
-	// About Us Section Styles
-	aboutUsContainer: {
-		...Platform.select({
-			ios: {
-				marginTop: 50,
-			},
-			android: {},
-			web: {},
-		}),
-		padding: 20,
-		borderRadius: 10,
-		backgroundColor: "none",
-	},
-	aboutTitle: {
-		fontSize: 26,
-		fontWeight: "bold",
-		textAlign: "center",
-		marginBottom: 10,
-		fontFamily: "Karla-Regular",
-	},
-	developerContainer: {
-		marginBottom: 15,
-		alignItems: "center",
-	},
-	developerName: {
-		fontSize: 16,
-		fontFamily: "Karla-Regular",
-	},
-	developerEmail: {
-		fontSize: 14,
-		color: "#555",
-		fontFamily: "Karla-Regular",
 	},
 });

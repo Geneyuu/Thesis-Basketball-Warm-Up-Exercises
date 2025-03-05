@@ -1,27 +1,26 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const SaveButton = ({ onPress }) => {
+const SaveButton = ({ onPress, title }) => {
 	return (
-		<TouchableOpacity style={styles.saveButton} onPress={onPress}>
-			<Text style={styles.saveButtonText}>Save Settings</Text>
+		<TouchableOpacity style={styles.button} onPress={onPress}>
+			<Text style={styles.buttonText}>{title}</Text>
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
-	saveButton: {
+	button: {
 		backgroundColor: "black",
-		paddingVertical: 12,
-		borderRadius: 8,
-		justifyContent: "center",
+		padding: 15,
+		borderRadius: 5,
 		alignItems: "center",
-		marginTop: 20,
+		marginVertical: 10,
 	},
-	saveButtonText: {
-		color: "#fff",
-		fontSize: 18,
-		fontFamily: "Karla-Bold",
+	buttonText: {
+		color: "white",
+		fontSize: 16,
+		fontWeight: "bold",
 	},
 });
 

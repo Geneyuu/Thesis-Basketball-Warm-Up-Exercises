@@ -6,19 +6,20 @@ import ExerciseVideo from "../../home/whole-body/components/StartWarmups/Exercis
 import ExerciseImage from "../../home/whole-body/components/StartWarmups/ExerciseImage";
 import ExerciseDescription from "../../home/whole-body/components/StartWarmups/ExerciseDescription";
 import TimerControls from "../../home/whole-body/components/StartWarmups/TimerControls";
+import exerciseList from "../../../exercisespaths/exercises";
 
 const StartWarmups = () => {
 	// Get all necessary state values from the context
-	const { exerciseList, restTimer } = useContext(Data);
+	const { exerciseListAsync, restTimer } = useContext(Data);
 
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(4);
-	const [timer, setTimer] = useState(exerciseList[4]?.duration); // Default timer
+	const [timer, setTimer] = useState(exerciseListAsync[4]?.duration); // Default timer
 	const [isTimerRunning, setIsTimerRunning] = useState(false);
 	const [isResting, setIsResting] = useState(false);
 
 	const [restartVideo, setRestartVideo] = useState(false);
 
-	// Get current and next exercise from the exerciseList from context
+	// Get current and next exercise from the exerciseListAsync from context
 	const currentExercise = exerciseList[currentExerciseIndex];
 	const nextExercise = exerciseList[currentExerciseIndex + 1];
 
@@ -33,7 +34,7 @@ const StartWarmups = () => {
 		setCurrentExerciseIndex(4); // Start from index 3
 		setIsResting(false);
 		setIsTimerRunning(false);
-		setTimer(exerciseList[4]?.duration);
+		setTimer(exerciseListAsync[4]?.duration);
 	};
 
 	// Reset the timer and video for the current exercise
@@ -87,7 +88,7 @@ const StartWarmups = () => {
 				// End of workout session: reset states and navigate away
 				setIsTimerRunning(false);
 				setCurrentExerciseIndex(4);
-				setTimer(exerciseList[4]?.duration);
+				setTimer(exerciseListAsync[4]?.duration);
 				setIsResting(false);
 				router.replace("/(tabs)/");
 				setTimeout(() => {
@@ -102,7 +103,7 @@ const StartWarmups = () => {
 				setCurrentExerciseIndex((prev) => prev + 1);
 				setIsResting(false);
 				// Set timer using the new current exercise's duration
-				const newExercise = exerciseList[currentExerciseIndex + 1];
+				const newExercise = exerciseListAsync[currentExerciseIndex + 1];
 				setTimer(newExercise.duration);
 			}
 		}
@@ -113,7 +114,7 @@ const StartWarmups = () => {
 		timer,
 		currentExerciseIndex,
 		isResting,
-		exerciseList,
+		exerciseListAsync,
 		restTimer,
 	]);
 

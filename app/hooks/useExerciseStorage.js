@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import exercises from "../exercisespaths/allExercises"; // Default exercises
 
 export default function useExerciseStorage() {
-	const [exerciseList, setExerciseList] = useState([]);
+	const [exerciseListAsync, setexerciseListAsync] = useState([]);
 	const [restTimer, setRestTimer] = useState(10); // Default rest timer
 
 	//  Load Exercises & Rest Timer from AsyncStorage
@@ -13,9 +13,9 @@ export default function useExerciseStorage() {
 				// Load Exercises
 				const storedExercises = await AsyncStorage.getItem("exercises");
 				if (storedExercises) {
-					setExerciseList(JSON.parse(storedExercises));
+					setexerciseListAsync(JSON.parse(storedExercises));
 				} else {
-					setExerciseList(exercises);
+					setexerciseListAsync(exercises);
 					await AsyncStorage.setItem(
 						"exercises",
 						JSON.stringify(exercises)
@@ -43,15 +43,15 @@ export default function useExerciseStorage() {
 			try {
 				await AsyncStorage.setItem(
 					"exercises",
-					JSON.stringify(exerciseList)
+					JSON.stringify(exerciseListAsync)
 				);
 			} catch (error) {
 				console.error("Error saving exercises:", error);
 			}
 		};
 
-		if (exerciseList.length) saveExercises();
-	}, [exerciseList]);
+		if (exerciseListAsync.length) saveExercises();
+	}, [exerciseListAsync]);
 
 	//  Save Rest Timer when updated
 	useEffect(() => {
@@ -71,8 +71,8 @@ export default function useExerciseStorage() {
 
 	// Return all states and functions for easy access
 	return {
-		exerciseList,
-		setExerciseList,
+		exerciseListAsync,
+		setexerciseListAsync,
 		restTimer,
 		setRestTimer,
 	};

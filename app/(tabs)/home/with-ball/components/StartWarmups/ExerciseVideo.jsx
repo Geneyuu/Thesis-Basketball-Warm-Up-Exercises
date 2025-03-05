@@ -49,6 +49,7 @@ const ExerciseVideo = ({ videoSource, isTimerRunning, isResting }) => {
 				isLooping
 				onLoad={handleLoad}
 				onError={(error) => console.log("Error loading video:", error)}
+				useNativeControls={false}
 			/>
 		</View>
 	);
@@ -57,8 +58,8 @@ const ExerciseVideo = ({ videoSource, isTimerRunning, isResting }) => {
 const styles = StyleSheet.create({
 	videoContainer: {
 		width: "100%",
+		alignSelf: "center",
 		alignItems: "center",
-		marginBottom: 20,
 	},
 	videoPlayer: {
 		width: "100%",
