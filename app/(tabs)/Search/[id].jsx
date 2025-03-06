@@ -65,9 +65,7 @@ const SearchExerciseDetails = () => {
 	const [isVideoReady, setIsVideoReady] = useState(false);
 
 	const handleVideoLoad = () => {
-		setTimeout(() => {
-			setIsVideoReady(true);
-		}, 350);
+		setIsVideoReady(true);
 	};
 
 	useFocusEffect(
