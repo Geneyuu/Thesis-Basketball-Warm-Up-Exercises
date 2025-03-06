@@ -11,7 +11,7 @@ const ExerciseVideo = ({ videoSource, isTimerRunning, isResting }) => {
 		setTimeout(() => {
 			setIsLoaded(true);
 			setShowLoadingIndicator(false);
-		}, 150);
+		}, 250);
 	};
 
 	useEffect(() => {

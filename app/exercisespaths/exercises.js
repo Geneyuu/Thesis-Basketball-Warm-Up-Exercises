@@ -15,7 +15,7 @@ export const exercises = [
 	{
 		id: "side-shuffles",
 		name: "Side Shuffles",
-		video: require("../../assets/videos/pushup.mp4"),
+		video: require("../../assets/videos/video.mp4"),
 		image: require("../../assets/images/withballpreview.png"),
 		recommendedRepetition: "10-24 reps",
 		recommendedDuration: "20-40 seconds",

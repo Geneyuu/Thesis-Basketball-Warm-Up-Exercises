@@ -57,6 +57,14 @@ const StartWarmups = () => {
 		setTimeout(() => setRestartVideo(false), 100);
 	};
 
+	// eto eh para sa kapag kunware nagupdate tayo ng duration eh magtitigreen yung currentexewrcise para maudpate yung latest values nya
+	useEffect(() => {
+		// I-update lang ang timer kung hindi ito tumatakbo
+		if (!isTimerRunning) {
+			setTimer(currentExercise?.duration);
+		}
+	}, [currentExercise]);
+
 	// Handle app state changes (foreground/background)
 	useFocusEffect(
 		React.useCallback(() => {

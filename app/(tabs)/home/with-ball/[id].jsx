@@ -1,59 +1,68 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, AppState } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	AppState,
+	ActivityIndicator,
+} from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Video } from "expo-av";
-import { exercises } from "../../../exercisespaths/exercises"; // Import your exercise data
-import { useFocusEffect } from "@react-navigation/native"; // Import useFocusEffect
+import { exercises } from "../../../exercisespaths/exercises";
+import { useFocusEffect } from "@react-navigation/native";
 
-// so eto yung screen ng dynamic na id exercise na niclick natin.
 const ExerciseDetails = () => {
-	const { id } = useLocalSearchParams(); // Retrieve the exercise ID
-	console.log(`This is ${id}`);
+	const { id } = useLocalSearchParams();
 
-	const exercise = exercises.find((exercise) => exercise.id === id); // Find the exercise by ID
+	const exercise = exercises.find((exercise) => exercise.id === id);
 
 	if (!exercise) {
-		return <Text>Exercise not found</Text>; // Show error if no exercise is found
+		return <Text style={styles.errorText}>Exercise not found</Text>;
 	}
 
 	const { video, name, description } = exercise;
 
-	const videoRef = useRef(null); // Ang useRef ay parang invisible na box kung saan pwede kang maglagay ng reference sa isang elemento o value nang hindi nagti-trigger ng re-render. para maaccess den at makontrol yung dom elements.
-	const [isVideoReady, setIsVideoReady] = useState(false); // Track video load status
-	const [isPlaying, setIsPlaying] = useState(false); // Track video playing state
+	const videoRef = useRef(null);
+	const [isVideoReady, setIsVideoReady] = useState(false);
+
+	const handleVideoLoad = () => {
+		setIsVideoReady(true);
+	};
+
+	useEffect(() => {
+		return () => {
+			if (videoRef.current) {
+				videoRef.current.pauseAsync();
+				videoRef.current.unloadAsync();
+			}
+			setIsVideoReady(false);
+		};
+	}, []);
 
 	useFocusEffect(
 		useCallback(() => {
-			// Auto-play video when screen is focused
-			if (videoRef.current) {
+			if (videoRef.current && isVideoReady) {
 				videoRef.current.playAsync();
 			}
-			setIsPlaying(true);
 
-			// Handle AppState changes
 			const handleAppStateChange = (appStatus) => {
 				if (appStatus === "active" && isVideoReady) {
-					setIsPlaying(true);
 					videoRef.current?.playAsync();
 				} else {
-					setIsPlaying(false);
 					videoRef.current?.pauseAsync();
 				}
 			};
 
-			// Subscribe to AppState changes
 			const appStateListener = AppState.addEventListener(
 				"change",
 				handleAppStateChange
 			);
 
-			// Cleanup function when screen loses focus
 			return () => {
 				appStateListener.remove();
-				setIsPlaying(false);
 				videoRef.current?.pauseAsync();
 			};
-		}, [isVideoReady]) // Dependency on video readiness
+		}, [isVideoReady])
 	);
 
 	return (
@@ -61,7 +70,9 @@ const ExerciseDetails = () => {
 			{video ? (
 				<>
 					{!isVideoReady && (
-						<Text style={styles.loadingText}>Loading video...</Text>
+						<View style={styles.loadingContainer}>
+							<ActivityIndicator size="large" color="green" />
+						</View>
 					)}
 
 					<View style={styles.videoContainer}>
@@ -71,12 +82,12 @@ const ExerciseDetails = () => {
 							style={[
 								styles.video,
 								!isVideoReady && { opacity: 0 },
-							]} // Hide until loaded
-							useNativeControls={false} // Disable video controls
-							shouldPlay={isPlaying} // Auto-play if focused
+							]}
+							useNativeControls={false} // Enable controls para sa debugging
+							shouldPlay={isVideoReady}
 							isLooping
-							resizeMode="cover"
-							onLoad={() => setIsVideoReady(true)} // Mark video as ready once loaded
+							resizeMode="contain"
+							onLoad={handleVideoLoad}
 							onError={(error) =>
 								console.log("Error loading video:", error)
 							}
@@ -87,7 +98,6 @@ const ExerciseDetails = () => {
 				<Text style={styles.errorText}>Video not available</Text>
 			)}
 
-			{/* Exercise name and description below the video */}
 			<Text style={styles.title}>{name}</Text>
 			<View style={styles.detailsContainer}>
 				<Text style={styles.detailTitle}>Description</Text>
@@ -119,9 +129,9 @@ const styles = StyleSheet.create({
 		shadowRadius: 6,
 		elevation: 2,
 		marginTop: 20,
-		width: "90%", // Adjust width to make it narrower
-		maxWidth: "auto", // Prevent it from being too wide
-		alignSelf: "center", // Center it
+		width: "90%",
+		maxWidth: "auto",
+		alignSelf: "center",
 	},
 	detailTitle: {
 		fontSize: 22,
@@ -149,10 +159,10 @@ const styles = StyleSheet.create({
 		height: "100%",
 		resizeMode: "stretch",
 	},
-	loadingText: {
-		color: "#666",
-		fontSize: 16,
-		textAlign: "center",
+	loadingContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+		marginTop: 20,
 	},
 	errorText: {
 		color: "red",
