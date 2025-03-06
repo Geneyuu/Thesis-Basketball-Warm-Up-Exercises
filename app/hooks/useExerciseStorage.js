@@ -4,7 +4,7 @@ import exercises from "../exercisespaths/allExercises"; // Default exercises
 
 export default function useExerciseStorage() {
 	const [exerciseListAsync, setexerciseListAsync] = useState([]);
-	const [restTimer, setRestTimer] = useState(null); // 🔹 Set to null para malaman kung na-load na
+	const [restTimer, setRestTimer] = useState(null); // Set to null para malaman kung na-load na
 
 	//  Load Data on Mount
 	useEffect(() => {
@@ -40,14 +40,20 @@ export default function useExerciseStorage() {
 
 	//  Save Exercises on Change
 	useEffect(() => {
-		if (exerciseListAsync.length) {
-			AsyncStorage.setItem(
-				"exercises",
-				JSON.stringify(exerciseListAsync)
-			).catch((error) =>
-				console.error("Failed to save exercises:", error)
-			);
-		}
+		const saveExercises = async () => {
+			try {
+				if (exerciseListAsync.length) {
+					await AsyncStorage.setItem(
+						"exercises",
+						JSON.stringify(exerciseListAsync)
+					);
+				}
+			} catch (error) {
+				console.error("Failed to save exercises:", error);
+			}
+		};
+
+		saveExercises();
 	}, [exerciseListAsync]);
 
 	//  Save Rest Timer on Change
@@ -59,6 +65,5 @@ export default function useExerciseStorage() {
 		}
 	}, [restTimer]);
 
-	// 🔹 Return values & setters
 	return { exerciseListAsync, setexerciseListAsync, restTimer, setRestTimer };
 }
