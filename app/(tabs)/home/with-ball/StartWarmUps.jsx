@@ -13,7 +13,7 @@ const StartWarmups = () => {
 	const { exerciseListAsync, restTimer } = useContext(Data);
 
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-	const [timer, setTimer] = useState(exerciseListAsync[0].duration); // Default timer
+	const [timer, setTimer] = useState(exerciseListAsync[0].duration);
 	const [isTimerRunning, setIsTimerRunning] = useState(false);
 	const [isResting, setIsResting] = useState(false);
 
@@ -188,7 +188,7 @@ const StartWarmups = () => {
 
 const styles = StyleSheet.create({
 	container: { flex: 1, padding: 20, backgroundColor: "#f9f9f9" },
-	exerciseContainer: { marginBottom: 20 },
+	exerciseContainer: { marginBottom: 20, backgroundColor: "red" },
 	heading: {
 		fontSize: 28,
 		fontFamily: "Karla-Bold",
