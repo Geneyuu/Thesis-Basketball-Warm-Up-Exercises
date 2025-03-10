@@ -32,11 +32,11 @@ const Layout = () => {
 					backgroundColor: "#fff",
 					borderTopColor: "#232522",
 					elevation: 0,
-					height: 80, // Tab bar height
+					height: 82, // Tab bar height
 					borderTopWidth: 1,
 					paddingTop: 12,
 					paddingBottom: 5,
-					paddingInline: 15,
+					paddingInline: 20,
 					// borderTopLeftRadius: 20,
 					// borderTopRightRadius: 20,
 				},
