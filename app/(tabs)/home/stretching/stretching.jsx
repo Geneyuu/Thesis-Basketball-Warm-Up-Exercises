@@ -87,6 +87,9 @@ const WithBall = () => (
 	</>
 );
 
+
+
+
 // Styles
 const styles = StyleSheet.create({
 	container: { padding: 16, backgroundColor: "#fff" },
@@ -123,13 +126,17 @@ const styles = StyleSheet.create({
 		marginBottom: 12,
 		shadowOpacity: 0.2,
 		shadowRadius: 5,
-		borderWidth: 1,
+		elevation: 2,
+		shadowColor: "#000",
+		shadowOffset: { width: 5, height: 5 },
+		shadowOpacity: 0.2,
+		shadowRadius: 4,
 	},
 	exerciseImage: { width: 80, height: 80, borderRadius: 8, marginRight: 12 },
 	exerciseText: {
-		fontSize: 19,
+		fontSize: 15,
 		color: "#161616",
-		fontFamily: "Karla-Regular",
+		fontFamily: "Roboto-ExtraBold",
 		flexShrink: 1,
 	},
 

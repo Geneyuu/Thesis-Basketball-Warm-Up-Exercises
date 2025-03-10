@@ -3,9 +3,9 @@ import { View, Text, StyleSheet } from "react-native";
 
 const AboutUs = () => {
 	const developers = [
-		{ name: "Juan Dela Cruz", email: "juandelacruz@email.com" },
-		{ name: "Maria Santos", email: "mariasantos@email.com" },
-		{ name: "Pedro Reyes", email: "pedroreyes@email.com" },
+		{ name: "Christian Bajao", email: "christian.bajao@cvsu.edu.ph" },
+		{ name: "Eugene Escario", email: "eugene.escario@cvsu.edu.ph" },
+		{ name: "James Lennard Sabellano", email: "jameslennard.sabellano@cvsu.edu.ph" },
 	];
 
 	return (
@@ -23,20 +23,20 @@ const AboutUs = () => {
 
 const styles = StyleSheet.create({
 	container: {
-		marginTop: 40,
-		padding: 20,
+		marginTop: 20,
+		padding: 10,
 		borderRadius: 10,
-		backgroundColor: "#f8f8f8",
+		//backgroundColor: "#f8f8f8",
 	},
 	title: {
-		fontSize: 26,
-		fontFamily: "Karla-Bold",
-		textAlign: "center",
+		fontSize: 22,
+		fontFamily: "Roboto-ExtraBold",
+		textAlign: "left",
 		marginBottom: 10,
 	},
 	developer: {
 		marginBottom: 15,
-		alignItems: "center",
+		alignItems: "left",
 	},
 	name: {
 		fontSize: 16,

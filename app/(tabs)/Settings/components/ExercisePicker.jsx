@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { textChangeRangeIsUnchanged } from "typescript";
 
 const ExercisePicker = ({
 	selectedExercise,
@@ -9,15 +10,15 @@ const ExercisePicker = ({
 }) => {
 	return (
 		<>
-			<Text style={styles.label}>Select Exercise:</Text>
+			<Text style={styles.text}>Exercise:</Text>
 			<Picker
 				selectedValue={selectedExercise}
 				onValueChange={(value) => setSelectedExercise(value)}
-				style={styles.picker}
 				// mode="dropdown"
+				style={styles.pickerStyle}
 			>
 				<Picker.Item
-					label="Select an exercise..."
+					label="Select an exercise.."
 					value=""
 					color="black"
 				/>
@@ -34,16 +35,21 @@ const ExercisePicker = ({
 	);
 };
 
+
 const styles = StyleSheet.create({
-	label: {
+
+	text: {
+		// backgroundColor: 'red',
+		fontWeight: 'Bold',
+		paddingVertical: 5,
 		fontSize: 16,
-		fontWeight: "bold",
-		marginBottom: 5,
 	},
-	picker: {
-		width: "100%",
-		marginBottom: 15,
+	pickerStyle: {
+		backgroundColor: '#E5E4E2',
+		padding: 10,
+		marginVertical: 5,
 	},
+
 });
 
 export default ExercisePicker;

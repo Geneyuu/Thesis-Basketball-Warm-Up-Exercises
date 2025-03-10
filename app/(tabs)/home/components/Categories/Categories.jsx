@@ -8,22 +8,22 @@ import {
 
 const categoryData = [
 	{
-		title: "Lower Body Mobility & Activation",
+		title: "Whole Body Exercises",
 		imageUri: require("./../../../../../assets/images/wholebodypreview.png"),
 		navigationPath: "home/whole-body/details",
 	},
 	{
-		title: "Upper Body & Core Activation",
+		title: "Upper Body Activation",
 		imageUri: require("./../../../../../assets/images/inplacepreview.png"),
 		navigationPath: "home/in-place/inplace",
 	},
 	{
-		title: "Cardio & Full-Body Activation",
+		title: "Lower Body Activation",
 		imageUri: require("./../../../../../assets/images/withballpreview.png"),
 		navigationPath: "home/with-ball/withball",
 	},
 	{
-		title: "Basketball-Specific Movements",
+		title: "Dynamic Exercises",
 		imageUri: require("./../../../../../assets/images/stretchingpreview.png"),
 		navigationPath: "home/stretching/stretching",
 	},

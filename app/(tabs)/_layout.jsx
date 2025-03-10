@@ -21,6 +21,7 @@ const Layout = () => {
 	// const pathname = usePathname();
 	// const hiddenScreens = ["/home/with-ball/StartWarmUps"];
 	// // this will hide the tab navigation when in this stack screen
+
 	return (
 		<Tabs
 			screenOptions={{
@@ -119,6 +120,8 @@ const Layout = () => {
 		</Tabs>
 	);
 };
+
+
 
 export default Layout;
 

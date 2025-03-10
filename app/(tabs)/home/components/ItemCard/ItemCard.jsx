@@ -110,6 +110,7 @@ const ItemCard = ({ item, isFocused }) => {
 						onError={(error) =>
 							console.log("Error loading video:", error)
 						}
+						useNativeControls
 					/>
 				</>
 			) : item.type === "image" ? (

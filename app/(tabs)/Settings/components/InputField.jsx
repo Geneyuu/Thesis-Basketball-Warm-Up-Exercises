@@ -11,16 +11,20 @@ const InputField = ({ label, value, setValue, placeholder }) => {
 				keyboardType="numeric"
 				value={value.toString()}
 				onChangeText={setValue}
+				placeholderTextColor="#807e7e"
 			/>
 		</>
 	);
 };
+
+
 
 const styles = StyleSheet.create({
 	label: {
 		fontSize: 16,
 		fontWeight: "bold",
 		marginBottom: 5,
+		marginTop: 8,
 	},
 	input: {
 		borderWidth: 1,
@@ -28,6 +32,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		marginBottom: 15,
 		backgroundColor: "#fff",
+		borderColor:'gray',
 	},
 });
 

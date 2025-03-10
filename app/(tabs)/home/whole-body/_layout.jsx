@@ -52,7 +52,7 @@ const Layout = () => {
 										textTransform: "capitalize",
 									}}
 								>
-									Lower Body Mobility & Activation
+									Whole Body Exercises
 								</Text>
 							</View>
 						</View>

@@ -23,19 +23,19 @@ const styles = StyleSheet.create({
 		marginInline: 18,
 		marginBottom: 12,
 		borderRadius: 10,
-		borderWidth: 1,
 		elevation: 2,
 		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
+		shadowOffset: { width: 5, height: 5 },
+		shadowOpacity: 0.2,
 		shadowRadius: 4,
+		
 	},
 	exerciseImage: { width: 70, height: 70, borderRadius: 10, marginRight: 15 },
 	exerciseText: {
-		fontSize: 18,
+		fontSize: 15,
 		color: "#161616",
 		fontWeight: "600",
-		fontFamily: "Karla-Regular",
+		fontFamily: "Roboto-Regular",
 	},
 });
 

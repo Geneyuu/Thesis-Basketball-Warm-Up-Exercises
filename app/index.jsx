@@ -39,6 +39,9 @@ export default function Index() {
 					"Karla-SemiBoldItalic": require("../assets/fonts/Karla-SemiBoldItalic.ttf"),
 					"Oswald-Bold": require("../assets/fonts/Oswald-Bold.ttf"),
 					"Oswald-Regular": require("../assets/fonts/Oswald-Regular.ttf"),
+					"Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+					"Roboto-SemiBold": require("../assets/fonts/Roboto-SemiBold.ttf"),
+					"Roboto-ExtraBold": require("../assets/fonts/Roboto-ExtraBold.ttf"),
 				});
 				setFontsLoaded(true);
 				console.log("Fonts loaded successfully.");

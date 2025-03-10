@@ -140,6 +140,9 @@ const styles = StyleSheet.create({
 		padding: 20,
 		backgroundColor: "#fff",
 	},
+	SaveButton: {
+		borderRadius: 100,
+	}
 });
 
 //test
