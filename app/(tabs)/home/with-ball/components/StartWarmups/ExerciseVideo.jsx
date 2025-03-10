@@ -1,6 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { Video } from "expo-av";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ExerciseVideo = ({ videoSource, isTimerRunning, isResting }) => {
 	const videoRef = useRef(null);
@@ -57,14 +61,16 @@ const ExerciseVideo = ({ videoSource, isTimerRunning, isResting }) => {
 
 const styles = StyleSheet.create({
 	videoContainer: {
+		flex: 1,
 		width: "100%",
-		alignSelf: "center",
+		height: hp("35%"),
 		alignItems: "center",
+		maxHeight: 360,
 	},
 	videoPlayer: {
-		width: "100%",
-		height: 200,
-		borderRadius: 10,
+		maxWidth: "auto", // Full width
+		height: hp("33%"), // Dynamic height based on aspect ratio
+		aspectRatio: 16 / 9, // Para laging tama ang video dimensions
 	},
 });
 

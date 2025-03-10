@@ -1,30 +1,82 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { ScrollView, View, Text, StyleSheet, AppState } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import { Data } from "../../../_layout"; // Import Context provided in RootLayout
+import { Data } from "../../../_layout";
 import ExerciseVideo from "../../home/with-ball/components/StartWarmups/ExerciseVideo";
 import ExerciseImage from "../../home/with-ball/components/StartWarmups/ExerciseImage";
 import ExerciseDescription from "../../home/with-ball/components/StartWarmups/ExerciseDescription";
 import TimerControls from "../../home/with-ball/components/StartWarmups/TimerControls";
 import exerciseList from "../../../exercisespaths/exercises";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const StartWarmups = () => {
-	// Get all necessary state values from the context
 	const { exerciseListAsync, restTimer } = useContext(Data);
 
-	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-	const [timer, setTimer] = useState(exerciseListAsync[0].duration);
-	const [isTimerRunning, setIsTimerRunning] = useState(false);
-	const [isResting, setIsResting] = useState(false);
+	const initialState = {
+		currentExerciseIndex: 0,
+		timer: exerciseListAsync[0]?.duration,
+		isTimerRunning: false,
+		isResting: false,
+		restartVideo: false,
+	};
 
-	const [restartVideo, setRestartVideo] = useState(false);
+	const reducer = (state, action) => {
+		switch (action.type) {
+			case "START_TIMER":
+				return { ...state, isTimerRunning: true };
+			case "STOP_TIMER":
+				return { ...state, isTimerRunning: false };
+			case "RESTART_WARMUP":
+				return {
+					...state,
+					currentExerciseIndex: 0,
+					isResting: false,
+					isTimerRunning: false,
+					timer: exerciseListAsync[0]?.duration,
+					restartVideo: true,
+				};
 
-	// dito imemerge yung dalawang exercises
+			case "RESET_RESTART_VIDEO":
+				return { ...state, restartVideo: false };
+			case "SET_TIMER":
+				return { ...state, timer: action.payload };
+			case "TICK":
+				return { ...state, timer: state.timer - 1 };
+			case "NEXT_EXERCISE":
+				const nextIndex = state.currentExerciseIndex + 1;
+				return {
+					...state,
+					currentExerciseIndex: nextIndex,
+					timer: exerciseListAsync[nextIndex]?.duration,
+					isResting: false,
+				};
+			case "START_REST":
+				return { ...state, isResting: true, timer: restTimer };
+			case "SET_TIMER_RUNNING":
+				return { ...state, isTimerRunning: action.payload };
+			default:
+				return state;
+		}
+	};
+
+	const [state, dispatch] = useReducer(reducer, initialState);
+
+	const {
+		currentExerciseIndex,
+		timer,
+		isTimerRunning,
+		isResting,
+		restartVideo,
+	} = state;
+
 	const currentExercise = {
 		...exerciseList[currentExerciseIndex],
 		...exerciseListAsync[currentExerciseIndex],
 	};
-	// dito eh para nas currentExercisneIndex din tayo na array para dun sa Async
+
 	const nextExercise =
 		currentExerciseIndex + 1 < exerciseList.length
 			? {
@@ -33,82 +85,69 @@ const StartWarmups = () => {
 			  }
 			: null;
 
-	// Timer control functions
-	const startWarmup = () => setIsTimerRunning(true);
-	const stopWarmup = () => setIsTimerRunning(false);
+	const startWarmup = () => dispatch({ type: "START_TIMER" });
+	const stopWarmup = () => dispatch({ type: "STOP_TIMER" });
 
-	// Restart the entire warmup session
 	const restartWarmup = () => {
-		setRestartVideo(true);
-		setTimeout(() => setRestartVideo(false), 150);
-		setCurrentExerciseIndex(0);
-		setIsResting(false);
-		setIsTimerRunning(false);
-		// When restarting, use the duration from the first exercise (or fallback to a default)
-		setTimer(exerciseListAsync[0].duration);
+		dispatch({ type: "RESTART_WARMUP" });
+		setTimeout(() => {
+			dispatch({ type: "RESET_RESTART_VIDEO" });
+		}, 150);
 	};
 
-	// Reset the timer and video for the current exercise
 	const resetTimerAndVideo = () => {
-		// Reset timer using current exercise duration if available
-		setTimer(currentExercise.duration);
-		setIsTimerRunning(false);
-		setRestartVideo(true);
-		setTimeout(() => setRestartVideo(false), 100);
+		dispatch({ type: "SET_TIMER", payload: currentExercise?.duration });
+		dispatch({ type: "STOP_TIMER" });
+		dispatch({ type: "RESTART_WARMUP" });
+		setTimeout(() => {
+			dispatch({ type: "RESET_RESTART_VIDEO" });
+		}, 100);
 	};
 
-	// eto eh para sa kapag kunware nagupdate tayo ng duration eh magtitigreen yung currentexewrcise para maudpate yung latest values nya
-	useEffect(() => {
-		// I-update lang ang timer kung hindi ito tumatakbo
-		if (!isTimerRunning) {
-			setTimer(currentExercise?.duration);
-		}
-	}, [currentExercise]);
-
-	// Handle app state changes (foreground/background)
 	useFocusEffect(
 		React.useCallback(() => {
 			const handleAppStateChange = (appStatus) => {
-				if (appStatus === "active") {
-					setIsTimerRunning(false);
+				if (appStatus !== "active") {
+					dispatch({ type: "STOP_TIMER" });
 				} else {
-					stopWarmup();
+					dispatch({ type: "STOP_TIMER" });
 				}
 			};
+
 			const appStateSubscription = AppState.addEventListener(
 				"change",
 				handleAppStateChange
 			);
 
-			setIsTimerRunning(isResting || isTimerRunning);
+			dispatch({
+				type: "SET_TIMER_RUNNING",
+				payload: state.isResting || state.isTimerRunning,
+			});
 
 			return () => {
 				appStateSubscription.remove();
-				stopWarmup();
-				setIsTimerRunning(false);
-				setRestartVideo(true);
-				setTimeout(() => setRestartVideo(false), 100);
+				dispatch({ type: "STOP_TIMER" });
+				// dispatch({ type: "RESTART_WARMUP" });
+				setTimeout(() => {
+					dispatch({ type: "RESET_RESTART_VIDEO" });
+				}, 100);
 			};
 		}, [isResting, isTimerRunning])
 	);
 
-	// Timer logic and exercise progression
 	useEffect(() => {
 		let interval;
 
 		if (isTimerRunning && timer > 0) {
-			interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+			interval = setInterval(() => {
+				dispatch({ type: "TICK" });
+			}, 1000);
 		} else if (timer === 0 && !isResting) {
-			// If the exercise phase ends and there are more exercises, switch to rest phase
 			if (currentExerciseIndex < 3) {
-				setIsResting(true);
-				setTimer(restTimer);
+				dispatch({ type: "START_REST" });
 			} else {
-				// End of workout session: reset states and navigate away
-				setIsTimerRunning(false);
-				setCurrentExerciseIndex(0);
-				setTimer(exerciseListAsync[0].duration);
-				setIsResting(false);
+				dispatch({ type: "STOP_TIMER" });
+				dispatch({ type: "RESTART_WARMUP" });
 				router.replace("/(tabs)/");
 				setTimeout(() => {
 					alert(
@@ -117,13 +156,8 @@ const StartWarmups = () => {
 				}, 100);
 			}
 		} else if (timer === 0 && isResting) {
-			// After rest, move to the next exercise and set timer based on its duration
-			if (currentExerciseIndex < exerciseListAsync.length - 1) {
-				setCurrentExerciseIndex((prev) => prev + 1);
-				setIsResting(false);
-				// Set timer using the new current exercise's duration
-				const newExercise = exerciseListAsync[currentExerciseIndex + 1];
-				setTimer(newExercise.duration);
+			if (currentExerciseIndex < 3) {
+				dispatch({ type: "NEXT_EXERCISE" });
 			}
 		}
 
@@ -140,61 +174,97 @@ const StartWarmups = () => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.exerciseContainer}>
-				{/* Display current exercise or rest message */}
-				<Text style={styles.heading}>
-					{isResting ? "Rest" : currentExercise?.name}
-				</Text>
-
-				{/* Show next exercise image during rest */}
 				{isResting ? (
 					<>
-						<ExerciseImage
-							nextExercise={nextExercise}
-							currentExercise={currentExercise}
-						/>
-						<Text style={styles.heading}>
-							Next Warm Up: {nextExercise?.name}
+						<Text style={styles.restPhaseText}>
+							{isResting ? "REST" : null}
 						</Text>
+						{/* Ililipat natin si TimerControls dito sa unahan */}
+						<TimerControls
+							timer={timer}
+							isResting={isResting}
+							isTimerRunning={isTimerRunning}
+							startWarmup={startWarmup}
+							stopWarmup={stopWarmup}
+							restartWarmup={restartWarmup}
+							resetTimerAndVideo={resetTimerAndVideo}
+							totalTimerDuration={restTimer}
+						/>
+
+						<Text style={styles.heading}>Next Warm Up:</Text>
+						<>
+							<ExerciseImage
+								nextExercise={nextExercise}
+								currentExercise={currentExercise}
+							/>
+							<Text style={styles.nextExercise}>
+								{nextExercise?.name}
+							</Text>
+						</>
 					</>
 				) : (
-					// Show video for the current exercise
-					<ExerciseVideo
-						videoSource={currentExercise?.video}
-						isTimerRunning={isTimerRunning}
-						restartVideo={restartVideo}
-						isResting={isResting}
-					/>
-				)}
+					<>
+						<ExerciseVideo
+							videoSource={currentExercise?.video}
+							isTimerRunning={isTimerRunning}
+							restartVideo={restartVideo}
+							isResting={isResting}
+						/>
 
-				{/* Show exercise description if not resting */}
-				{!isResting && (
-					<ExerciseDescription currentExercise={currentExercise} />
-				)}
+						<ExerciseDescription
+							currentExercise={currentExercise}
+							isResting={isResting}
+						/>
 
-				{/* Timer and control buttons */}
-				<TimerControls
-					timer={timer}
-					isResting={isResting}
-					isTimerRunning={isTimerRunning}
-					startWarmup={startWarmup}
-					stopWarmup={stopWarmup}
-					restartWarmup={restartWarmup}
-					resetTimerAndVideo={resetTimerAndVideo}
-				/>
+						<TimerControls
+							timer={timer}
+							isResting={isResting}
+							isTimerRunning={isTimerRunning}
+							startWarmup={startWarmup}
+							stopWarmup={stopWarmup}
+							restartWarmup={restartWarmup}
+							resetTimerAndVideo={resetTimerAndVideo}
+							totalTimerDuration={currentExercise?.duration}
+						/>
+					</>
+				)}
 			</View>
 		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: { flex: 1, padding: 20, backgroundColor: "#f9f9f9" },
-	exerciseContainer: { marginBottom: 20, backgroundColor: "red" },
+	container: {
+		flex: 1,
+		width: "100%",
+		backgroundColor: "white",
+	},
+	exerciseContainer: {
+		flex: 1,
+		width: "100%",
+		alignItems: "center", // Center items horizontally
+		justifyContent: "center", // Center items vertically
+	},
 	heading: {
-		fontSize: 28,
-		fontFamily: "Karla-Bold",
-		color: "#161616",
-		marginVertical: 10,
-		textAlign: "center",
+		fontSize: wp("6%"),
+		marginTop: 15,
+		fontFamily: "Karla-ExtraBold",
+		letterSpacing: -1.5,
+		textAlign: "left", // Align the heading text to the left
+		width: "90%", // Ensure the heading takes up the full width
+	},
+
+	restPhaseText: {
+		fontSize: wp("9%"),
+		paddingTop: 50,
+		fontFamily: "Karla-ExtraBold",
+		textAlign: "center", // Center the rest phase text horizontally
+	},
+	nextExercise: {
+		fontSize: wp("6%"),
+		marginBottom: wp("10%"),
+		fontFamily: "Karla-Regular",
+		letterSpacing: -1.2,
 	},
 });
 

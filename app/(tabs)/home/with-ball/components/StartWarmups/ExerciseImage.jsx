@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
 	imageContainer: {
 		width: "100%",
 		alignItems: "center",
-		marginBottom: 20,
+		marginVertical: 20,
 	},
 	image: {
-		width: "100%",
-		height: 200,
+		width: "60%",
+		height: 150,
 		borderRadius: 10,
 	},
 });

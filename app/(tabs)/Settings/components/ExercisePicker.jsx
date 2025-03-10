@@ -44,10 +44,17 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 		fontSize: 16,
 	},
+
 	pickerStyle: {
 		backgroundColor: '#E5E4E2',
 		padding: 10,
 		marginVertical: 5,
+	},
+	picker: {
+		width: "100%",
+		marginBottom: 15,
+		padding: 10,
+
 	},
 
 });

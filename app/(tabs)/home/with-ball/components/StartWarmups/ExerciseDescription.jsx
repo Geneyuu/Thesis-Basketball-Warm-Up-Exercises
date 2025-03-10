@@ -5,38 +5,34 @@ import {
 	heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const ExerciseDescription = ({ currentExercise, recommendedRepetition }) => {
+const ExerciseDescription = ({ currentExercise, isResting }) => {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>How to Perform</Text>
-			<Text style={styles.description}>
+			<Text style={styles.heading}>
+				{isResting ? "Rest" : currentExercise?.name}
+			</Text>
+
+			<Text style={styles.howToPerform}>
 				{currentExercise.description}
 			</Text>
 
-			<View style={styles.detailsContainer}>
-				<Text style={styles.detailText}>
-					<Text style={styles.highlight}>
-						⏳ Recommended Duration:
-					</Text>{" "}
+			<View style={styles.childContainer}>
+				<Text style={styles.description}>
+					⏳ Recommended Duration:{" "}
 					{currentExercise.recommendedDuration}
 				</Text>
 
-				<Text style={styles.detailText}>
-					<Text style={styles.highlight}>
-						📝 Recommended Repetitions:
-					</Text>{" "}
+				<Text style={styles.description}>
+					📝 Recommended Repetitions:{" "}
 					{currentExercise.recommendedRepetition}
 				</Text>
-				<Text style={styles.detailText}>
-					<Text style={styles.customhiglight}>
-						⏱️ You Set Your Duration To:
-					</Text>{" "}
-					{currentExercise.duration} sec
+
+				<Text style={styles.description}>
+					⏱️ You Set Your Duration To: {currentExercise.duration} sec
 				</Text>
-				<Text style={styles.detailText}>
-					<Text style={styles.customhiglight}>
-						⚡ You Set Your Custom Repetitions To:
-					</Text>{" "}
+
+				<Text style={styles.description}>
+					⚡ You Set Your Custom Repetitions To:{" "}
 					{currentExercise.repetitions} reps
 				</Text>
 			</View>
@@ -46,52 +42,28 @@ const ExerciseDescription = ({ currentExercise, recommendedRepetition }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "#181818",
-		padding: wp("5%"),
-		borderRadius: wp("4%"),
-		marginVertical: hp("1.5%"),
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: hp("0.5%") },
-		shadowOpacity: 0.3,
-		shadowRadius: hp("1%"),
-		elevation: 6,
-		borderWidth: 1,
-		borderColor: "rgba(255,255,255,0.1)",
+		flex: 1,
+		width: "100%",
+		marginTop: hp("10%"), // Mas flexible para sa iba't ibang screen sizes
+		alignItems: "center",
+		paddingHorizontal: wp("5%"), // Dynamic padding
 	},
-	title: {
-		fontSize: wp("3.5%"),
-		fontFamily: "Karla-Bold",
-		color: "#FFFFFF",
-		marginBottom: hp("1%"),
-		textAlign: "left",
-		letterSpacing: wp("0.3%"),
+	childContainer: {
+		marginTop: hp("1.5%"), // Consistent spacing
+	},
+	howToPerform: {
+		marginVertical: hp("1%"), // Vertical spacing for readability
+		fontSize: wp("4.5%"), // Dynamic font size
+		textAlign: "center",
 	},
 	description: {
-		fontSize: wp("3%"),
-		fontFamily: "Karla-Regular",
-		color: "#BBBBBB",
-		textAlign: "justify",
+		fontSize: wp("3.8%"), // Dynamic font size for better readability
+		color: "#555", // Softer text color for better UI
 	},
-	detailsContainer: {
-		padding: wp("3%"),
-		borderRadius: wp("3%"),
-		backgroundColor: "#222",
-		borderWidth: 1,
-		borderColor: "rgba(255,255,255,0.1)",
-	},
-	detailText: {
-		fontSize: wp("3%"),
-		fontFamily: "Karla-Regular",
-		color: "#EEEEEE",
-		marginBottom: hp("0.5%"),
-	},
-	highlight: {
-		color: "green",
-		fontFamily: "Karla-Bold",
-	},
-	customhiglight: {
-		color: "#00D4FF",
-		fontFamily: "Karla-Bold",
+	heading: {
+		fontSize: wp("6.5%"), // Bold and clear heading
+		fontWeight: "bold",
+		color: "black", // Energetic green tone
 	},
 });
 
