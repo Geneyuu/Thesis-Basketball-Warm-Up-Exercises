@@ -23,6 +23,8 @@ const StartWarmups = () => {
 		restartVideo: false,
 	};
 
+	// eto eh para sa kapag kunware nagupdate tayo ng duration eh magtitigreen yung currentexewrcise para maudpate yung latest values nya
+
 	const reducer = (state, action) => {
 		switch (action.type) {
 			case "START_TIMER":
@@ -135,6 +137,15 @@ const StartWarmups = () => {
 		}, [isResting, isTimerRunning])
 	);
 
+	// useEffect(() => {
+	// 	if (!isTimerRunning) {
+	// 		dispatch({
+	// 			type: "SET_TIMER",
+	// 			payload: currentExercise?.duration,
+	// 		});
+	// 	}
+	// }, [timer]);
+
 	useEffect(() => {
 		let interval;
 
@@ -179,6 +190,7 @@ const StartWarmups = () => {
 						<Text style={styles.restPhaseText}>
 							{isResting ? "REST" : null}
 						</Text>
+
 						{/* Ililipat natin si TimerControls dito sa unahan */}
 						<TimerControls
 							timer={timer}

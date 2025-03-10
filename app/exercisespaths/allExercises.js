@@ -1,128 +1,12 @@
 export const exercises = [
 	{
-		id: "jogging",
-		name: "Jogging",
+		id: "head-turns",
+		name: "Head Turns",
 		// video: require("../../assets/videos/pushup.mp4"),
 		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "25-30 reps",
-		// recommendedDuration: "30-50 seconds",
-		// description:
-		// 	"Increases heart rate and warms up muscles for better performance.",
-		duration: 180, // in seconds (2-3 mins)
-		repetitions: 17,
-	},
-
-	{
-		id: "side-shuffles",
-		name: "Side Shuffles",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Engages lateral movement muscles for agility and balance.",
-		duration: 30,
-		repetitions: 15,
-	},
-
-	{
-		id: "high-knees",
-		name: "High Knees",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "4-12 reps",
-		// recommendedDuration: "2-43 seconds",
-		// description:
-		// 	"Improves coordination and warms up legs by engaging the core.",
-		duration: 30,
-		repetitions: 12,
-	},
-
-	{
-		id: "butt-kicks",
-		name: "Butt Kicks",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "12-224 reps",
-		// recommendedDuration: "20-235 seconds",
-		// description: "Loosens hamstrings and activates glutes effectively.",
-		duration: 30,
-		repetitions: 12,
-	},
-
-	{
-		id: "walking-lunges-twist",
-		name: "Walking Lunges with a Twist",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "102-124 reps",
-		// recommendedDuration: "2120-4012 seconds",
-		// description:
-		// 	"Stretches and strengthens legs and core with a rotational movement.",
-		duration: 20,
-		repetitions: 10, // Per leg
-	},
-
-	{
-		id: "leg-swings",
-		name: "Leg Swings",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "110-2314 reps",
-		// recommendedDuration: "2012-4012 seconds",
-		// description:
-		// 	"Improves hip flexibility with controlled front and side swings.",
-		duration: 20,
-		repetitions: 10, // Per leg
-	},
-
-	{
-		id: "inchworms",
-		name: "Inchworms",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Stretches hamstrings and activates the core with slow controlled movement.",
-		duration: 16,
-		repetitions: 5,
-	},
-
-	{
-		id: "knee-hugs",
-		name: "Knee Hugs",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Increases hip mobility and balance by pulling knees to chest.",
-		duration: 25,
-		repetitions: 10, // Per leg
-	},
-
-	{
-		id: "ankle-hops",
-		name: "Ankle Hops",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description: "Warms up the calves and ankles with small jumps.",
-		duration: 30,
-		repetitions: 15,
-	},
-
-	{
-		id: "arm-circles",
-		name: "Arm Circles",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Rotate your arms in small circles to warm up your shoulder joints.",
+		// recommendedRepetition: "10-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Gently stretches the neck muscles for mobility.",
 		duration: 30,
 		repetitions: 12,
 	},
@@ -132,25 +16,179 @@ export const exercises = [
 		name: "Shoulder Rolls",
 		// video: require("../../assets/videos/pushup.mp4"),
 		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Lift your shoulders towards your ears and roll them back and down.",
+		// recommendedRepetition: "5-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Relieves tension and improves shoulder flexibility.",
 		duration: 30,
 		repetitions: 12,
 	},
 
 	{
-		id: "torso-twists",
-		name: "Torso Twists",
+		id: "arm-circles",
+		name: "Arm Circles",
 		// video: require("../../assets/videos/pushup.mp4"),
 		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Activates core and rotational muscles for dynamic movement.",
-		duration: 15,
-		repetitions: 10, // Per side
+		// recommendedRepetition: "10-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Prepares shoulder joints for dynamic movement.",
+		duration: 30,
+		repetitions: 12,
+	},
+
+	{
+		id: "overhead-stretch",
+		name: "Overhead Stretch",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "1-2 reps",
+		// recommendedDuration: "10-20 seconds",
+		// description: "Improves upper body flexibility and posture.",
+		duration: 20,
+		repetitions: 2,
+	},
+
+	{
+		id: "side-stretches",
+		name: "Side Stretches",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "5-10 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Stretches the obliques and improves core flexibility.",
+		duration: 30,
+		repetitions: 10,
+	},
+
+	{
+		id: "hip-rotation",
+		name: "Hip Rotation",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Loosens up the hips for better mobility.",
+		duration: 30,
+		repetitions: 12,
+	},
+
+	{
+		id: "knee-hugs",
+		name: "Knee Hugs",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-12 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Improves hip mobility and balance.",
+		duration: 30,
+		repetitions: 12,
+	},
+
+	{
+		id: "butt-kicks",
+		name: "Butt Kicks",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "20-30 reps",
+		// recommendedDuration: "30-40 seconds",
+		// description: "Loosens hamstrings and activates glutes.",
+		duration: 40,
+		repetitions: 25,
+	},
+
+	{
+		id: "walking-high-knees",
+		name: "Walking High Knees",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Warms up the hip flexors and quads.",
+		duration: 30,
+		repetitions: 12,
+	},
+
+	{
+		id: "jogging",
+		name: "Jogging",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "1 rep",
+		// recommendedDuration: "2-3 minutes",
+		// description: "Increases heart rate and warms up muscles.",
+		duration: 180,
+		repetitions: 1,
+	},
+
+	{
+		id: "lunges",
+		name: "Lunges",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-12 reps",
+		// recommendedDuration: "30-40 seconds",
+		// description: "Strengthens legs and glutes.",
+		duration: 40,
+		repetitions: 12,
+	},
+
+	{
+		id: "squat",
+		name: "Squat",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-12 reps",
+		// recommendedDuration: "30-40 seconds",
+		// description: "Engages the lower body and core.",
+		duration: 40,
+		repetitions: 12,
+	},
+
+	{
+		id: "jump-squat",
+		name: "Jump Squat",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "8-12 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Improves explosiveness and leg strength.",
+		duration: 30,
+		repetitions: 10,
+	},
+
+	{
+		id: "walking-lunges",
+		name: "Walking Lunges",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-12 reps",
+		// recommendedDuration: "30-40 seconds",
+		// description: "Enhances balance and leg endurance.",
+		duration: 40,
+		repetitions: 12,
+	},
+
+	{
+		id: "toe-touches",
+		name: "Toe Touches",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "10-15 reps",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Stretches hamstrings and lower back.",
+		duration: 30,
+		repetitions: 12,
+	},
+
+	{
+		id: "jumping-jacks",
+		name: "Jumping Jacks",
+		// video: require("../../assets/videos/pushup.mp4"),
+		// image: require("../../assets/images/withballpreview.png"),
+		// recommendedRepetition: "20-30 reps",
+		// recommendedDuration: "30-40 seconds",
+		// description: "Boosts heart rate and warms up the entire body.",
+		duration: 40,
+		repetitions: 25,
 	},
 
 	{
@@ -158,37 +196,23 @@ export const exercises = [
 		name: "Defensive Slides",
 		// video: require("../../assets/videos/pushup.mp4"),
 		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Engages lateral movement muscles for better defensive footwork.",
-		duration: 15, // in seconds (2 sets)
-		repetitions: 2, // Sets
+		// recommendedRepetition: "2 sets",
+		// recommendedDuration: "15-30 seconds",
+		// description: "Improves lateral movement for defense.",
+		duration: 30,
+		repetitions: 2,
 	},
 
 	{
-		id: "jump-squats",
-		name: "Jump Squats",
+		id: "carioca",
+		name: "Carioca",
 		// video: require("../../assets/videos/pushup.mp4"),
 		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description: "Develops lower-body explosiveness with controlled jumps.",
-		duration: 16,
-		repetitions: 10,
-	},
-
-	{
-		id: "dribbling-drills",
-		name: "Dribbling Drills",
-		// video: require("../../assets/videos/pushup.mp4"),
-		// image: require("../../assets/images/withballpreview.png"),
-		// recommendedRepetition: "10-24 reps",
-		// recommendedDuration: "20-40 seconds",
-		// description:
-		// 	"Enhances ball control and hand coordination by dribbling with both hands.",
-		duration: 60,
-		repetitions: 12,
+		// recommendedRepetition: "2-3 sets",
+		// recommendedDuration: "20-30 seconds",
+		// description: "Enhances agility and coordination.",
+		duration: 30,
+		repetitions: 3,
 	},
 ];
 

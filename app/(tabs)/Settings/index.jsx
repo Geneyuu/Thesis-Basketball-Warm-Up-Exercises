@@ -142,5 +142,5 @@ const styles = StyleSheet.create({
 	},
 	SaveButton: {
 		borderRadius: 100,
-	}
+	},
 });
