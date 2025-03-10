@@ -46,10 +46,11 @@ const Categories = () => (
 
 const styles = StyleSheet.create({
 	categoriesContainer: {
-		width: wp(100),
+		width: wp("100%"),
 		flex: 1,
-		paddingBlock: 10,
-		paddingInline: 20,
+		justifyContent: "flex-start",
+		paddingHorizontal: 20,
+		// backgroundColor: "red",
 	},
 	categoriesGrid: {
 		flexDirection: "row",
@@ -60,8 +61,7 @@ const styles = StyleSheet.create({
 	},
 	sectionTitle: {
 		fontSize: 20,
-		marginBottom: 5,
-		fontFamily: "Karla-Bold",
+		fontFamily: "Roboto-ExtraBold",
 		color: "#000",
 	},
 });

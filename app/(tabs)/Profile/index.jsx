@@ -17,6 +17,18 @@ const Profile = () => {
 	const [newName, setNewName] = useState(name);
 	const router = useRouter();
 
+	// Limit the input to 8 characters
+	const handleNameChange = (text) => {
+		if (text.length <= 9) {
+			setNewName(text);
+		} else {
+			Alert.alert(
+				"Error",
+				"The maximum number of characters allowed is 8."
+			);
+		}
+	};
+
 	const handleSave = () => {
 		setName(newName);
 		Alert.alert("Name Updated", `You set your name to: ${newName}!`);
@@ -27,16 +39,14 @@ const Profile = () => {
 		<SafeAreaView style={styles.safeArea}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
 				<View style={styles.container}>
-					{/* Display current name and title */}
 					<ProfileInfo title="Profile" currentName={name} />
 
-					{/* Input to change name */}
 					<NameInput
 						label="New Name:"
 						value={newName}
-						onChangeText={setNewName}
+						onChangeText={handleNameChange} // use the limiter here
 					/>
-					{/* Save button */}
+
 					<SaveButton onPress={handleSave} />
 				</View>
 			</ScrollView>

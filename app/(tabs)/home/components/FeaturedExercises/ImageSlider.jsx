@@ -49,13 +49,6 @@ const ImageSlider = () => {
 	);
 };
 
-const styles = StyleSheet.create({
-	videoContainer: {
-		width: wp(83),
-		height: hp(24),
-		borderRadius: 25,
-		overflow: "hidden",
-	},
-});
+const styles = StyleSheet.create({});
 
 export default ImageSlider;

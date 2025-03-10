@@ -72,13 +72,18 @@ const WithBall = () => (
 				style={styles.mainImage}
 			/>
 			<Text style={styles.description}>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Maecenas et consectetur ante. Vivamus vulputate nibh eros, vel
-				tempor magna posuere sed.
+				Whole Body Exercises are warm-up activities that engage multiple
+				muscle groups simultaneously. These exercises aim to increase
+				heart rate, enhance blood circulation, and prepare the entire
+				body for physical activity.{"\n\n"}
+				They improve mobility, coordination, and overall readiness,
+				helping to prevent injuries and boost athletic performance in
+				basketball.
 			</Text>
+
 			<Text style={styles.subheading}>Included exercises:</Text>
 			<View style={styles.exerciseContainer}>
-				{exercises.slice(4, 9).map((exercise) => (
+				{exercises.map((exercise) => (
 					<ExerciseItem key={exercise.id} {...exercise} />
 				))}
 			</View>
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	description: {
-		fontSize: 16,
+		fontSize: 13,
 		lineHeight: 22,
 		color: "#161616",
 		marginBottom: 16,

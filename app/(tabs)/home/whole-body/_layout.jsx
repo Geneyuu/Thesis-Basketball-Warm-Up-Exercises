@@ -65,21 +65,22 @@ const Layout = () => {
 				name="StartWarmUps"
 				options={{
 					headerShown: true,
+					headerTransparent: true,
 					header: () => (
 						<View
 							style={{
 								height: 65,
 								flexDirection: "row",
 								alignItems: "center",
-								backgroundColor: "#fff",
-								borderBottomWidth: 3,
-								borderBottomColor: "#161616",
+								backgroundColor: "transparent", // ✅ Transparent
+								// borderBottomWidth: 3, // ❌ Remove if you want it fully clean
+								// borderBottomColor: "#161616", // ❌ Optional
 								paddingHorizontal: 10,
 							}}
 						>
 							{/* Back Button */}
 							<TouchableOpacity
-								onPress={() => router.back()} // Go back within the same nested stack
+								onPress={() => router.back()}
 								style={{
 									marginLeft: 10,
 								}}
@@ -87,7 +88,7 @@ const Layout = () => {
 								<Ionicons
 									name="arrow-back"
 									size={28}
-									color="black"
+									color="white"
 								/>
 							</TouchableOpacity>
 
@@ -96,15 +97,14 @@ const Layout = () => {
 								<Text
 									style={{
 										position: "relative",
+										backgroundColor: "transparent",
 										top: 0,
 										left: -20,
 										color: "#161616",
 										fontSize: 25,
 										fontFamily: "Oswald-Bold",
 									}}
-								>
-									Start Warm-Ups
-								</Text>
+								></Text>
 							</View>
 						</View>
 					),

@@ -2,6 +2,10 @@ import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Data } from "../../../../_layout";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ProfileSection = () => {
 	const { name } = useContext(Data);
@@ -13,7 +17,6 @@ const ProfileSection = () => {
 				<Text style={styles.greetingText}>
 					Hello, <Text style={styles.greetingName}>{name}</Text>
 				</Text>
-				
 			</View>
 			<TouchableOpacity
 				style={styles.profileContainer}
@@ -29,29 +32,39 @@ const ProfileSection = () => {
 };
 
 const styles = StyleSheet.create({
-	profileSection: { flexDirection: "row", alignItems: "center" },
-	greetingText: { fontSize: 14, color: "#000", fontFamily: "Roboto", paddingTop: 25 },
+	profileSection: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-around",
+	},
+
+	greetingText: {
+		fontSize: hp(2),
+		color: "#000",
+		fontFamily: "Roboto-Regular",
+		marginTop: hp(0.5),
+		marginRight: wp(2.5),
+	},
+
 	greetingName: {
 		color: "#161616",
-		fontFamily: "Oswald-Bold",
-		fontSize: 16,
+		fontFamily: "Roboto-ExtraBold",
+		fontSize: hp(1.8),
 		textTransform: "uppercase",
 	},
-	// subGreetingText: {
-	// 	fontSize: 12,
-	// 	fontFamily: "Karla-ExtraLight",
-	// 	color: "#161616",
-	// 	marginTop: 2,
-	// 	textAlign: "right",
-	// },
+
 	profileContainer: {
-		marginLeft: 5,
-		width: 60,
-		height: 80,
-		borderRadius: 10,
-		overflow: "hidden",
+		width: wp(15),
+		height: wp(15),
+		alignItems: "center",
+		justifyContent: "center",
 	},
-	profileImage: { width: "100%", height: "100%", resizeMode: "contain", marginTop: 10},
+
+	profileImage: {
+		width: "100%",
+		height: "100%",
+		resizeMode: "contain",
+	},
 });
 
 export default ProfileSection;

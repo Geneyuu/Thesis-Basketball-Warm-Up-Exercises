@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		left: 25,
 		top: -23,
-		fontFamily: "Karla-Bold",
+		fontFamily: "Roboto-ExtraBold",
 		fontSize: 20,
 	},
 });

@@ -5,7 +5,10 @@ const AboutUs = () => {
 	const developers = [
 		{ name: "Christian Bajao", email: "christian.bajao@cvsu.edu.ph" },
 		{ name: "Eugene Escario", email: "eugene.escario@cvsu.edu.ph" },
-		{ name: "James Lennard Sabellano", email: "jameslennard.sabellano@cvsu.edu.ph" },
+		{
+			name: "James Lennard Sabellano",
+			email: "jameslennard.sabellano@cvsu.edu.ph",
+		},
 	];
 
 	return (
@@ -47,5 +50,4 @@ const styles = StyleSheet.create({
 		color: "#555",
 	},
 });
-
 export default AboutUs;

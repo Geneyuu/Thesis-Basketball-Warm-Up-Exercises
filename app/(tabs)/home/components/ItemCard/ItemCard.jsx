@@ -110,7 +110,6 @@ const ItemCard = ({ item, isFocused }) => {
 						onError={(error) =>
 							console.log("Error loading video:", error)
 						}
-						useNativeControls
 					/>
 				</>
 			) : item.type === "image" ? (
@@ -132,7 +131,7 @@ const ItemCard = ({ item, isFocused }) => {
 const styles = StyleSheet.create({
 	videoContainer: {
 		width: wp(83),
-		height: hp(24),
+		height: hp(23),
 		borderRadius: 25,
 		overflow: "hidden",
 	},
