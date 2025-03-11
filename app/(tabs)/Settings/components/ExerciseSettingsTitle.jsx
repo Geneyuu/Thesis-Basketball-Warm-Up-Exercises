@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontFamily: "Roboto-ExtraBold",
 		fontSize: wp("7.5%"), // 30 -> responsive
-		fontWeight: "bold",
 	},
 });
 

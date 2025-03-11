@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
 
 	name: {
 		fontSize: wp("4.5%"),
-		fontWeight: "bold",
 		color: "#222",
+		fontFamily: "Roboto-SemiBold",
 	},
 
 	email: {

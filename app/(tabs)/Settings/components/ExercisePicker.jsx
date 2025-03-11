@@ -42,9 +42,9 @@ const ExercisePicker = ({
 const styles = StyleSheet.create({
 	text: {
 		// backgroundColor: 'red',
-		fontWeight: "bold",
 		paddingVertical: hp("0.8%"), // 5 -> responsive
 		fontSize: wp("4%"), // 16 -> responsive
+		fontFamily: "Roboto-SemiBold",
 	},
 
 	pickerStyle: {

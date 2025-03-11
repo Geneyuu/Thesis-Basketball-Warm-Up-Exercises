@@ -24,9 +24,9 @@ const InputField = ({ label, value, setValue, placeholder }) => {
 const styles = StyleSheet.create({
 	label: {
 		fontSize: wp("4%"), // 16 -> responsive
-		fontWeight: "bold",
 		marginBottom: hp("0.5%"), // 5 -> responsive
 		marginTop: hp("1%"), // 8 -> responsive
+		fontFamily: "Roboto-SemiBold",
 	},
 	input: {
 		borderWidth: 1,
