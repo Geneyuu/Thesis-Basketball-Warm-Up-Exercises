@@ -1,16 +1,8 @@
 import React from "react";
 import { Stack } from "expo-router";
-import {
-	TouchableOpacity,
-	View,
-	Text,
-	Platform,
-	StatusBar,
-} from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
-// Responsive helpers
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp,
@@ -29,44 +21,40 @@ const Layout = () => {
 					header: () => (
 						<View
 							style={{
-								height: hp("8%"),
+								height: hp(8), // 65 -> responsive height
 								flexDirection: "row",
 								alignItems: "center",
 								backgroundColor: "#fff",
 								borderBottomWidth: 2.5,
 								borderBottomColor: "#161616",
-								paddingHorizontal: wp("2%"),
-								paddingTop:
-									Platform.OS === "android"
-										? StatusBar.currentHeight
-										: 0,
+								paddingHorizontal: wp(3),
 							}}
 						>
 							{/* Back Button */}
 							<TouchableOpacity
 								onPress={() => router.back()}
 								style={{
-									marginLeft: wp("2%"),
+									marginLeft: wp(2.5), // 10 -> responsive margin
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={wp("7%")}
+									size={hp(3.5)} // 28 -> responsive icon
 									color="black"
 								/>
 							</TouchableOpacity>
-
 							{/* Title */}
 							<View style={{ flex: 1, alignItems: "center" }}>
 								<Text
 									style={{
 										position: "relative",
 										top: 0,
-										left: -wp("1%"),
+										left: wp(-1.5), // -5 -> responsive left
 										color: "#161616",
-										fontSize: wp("5.5%"),
+										fontSize: hp(2.8), // 23 -> responsive font
 										fontFamily: "Roboto-SemiBold",
 										textTransform: "capitalize",
+										letterSpacing: -0.7,
 									}}
 								>
 									Whole Body Exercises
@@ -86,27 +74,23 @@ const Layout = () => {
 					header: () => (
 						<View
 							style={{
-								height: hp("8%"),
+								height: hp(8), // 65 -> responsive height
 								flexDirection: "row",
 								alignItems: "center",
 								backgroundColor: "transparent",
-								paddingHorizontal: wp("2%"),
-								paddingTop:
-									Platform.OS === "android"
-										? StatusBar.currentHeight
-										: 0,
+								paddingHorizontal: wp(3),
 							}}
 						>
 							{/* Back Button */}
 							<TouchableOpacity
 								onPress={() => router.back()}
 								style={{
-									marginLeft: wp("2%"),
+									marginLeft: wp(2.5), // 10 -> responsive margin
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={wp("7%")}
+									size={hp(3.5)} // 28 -> responsive icon
 									color="white"
 								/>
 							</TouchableOpacity>
@@ -118,10 +102,10 @@ const Layout = () => {
 										position: "relative",
 										backgroundColor: "transparent",
 										top: 0,
-										left: -wp("5%"),
+										left: wp(-5), // -20 -> responsive left
 										color: "#161616",
-										fontSize: wp("6%"),
-										fontFamily: "Roboto-Bold",
+										fontSize: hp(3), // 25 -> responsive font
+										fontFamily: "Roboto-SemiBold",
 									}}
 								></Text>
 							</View>
@@ -141,13 +125,9 @@ const Layout = () => {
 							style={{
 								flexDirection: "row",
 								alignItems: "center",
-								height: hp("8%"),
+								height: hp(8), // 65 -> responsive height
 								backgroundColor: "transparent",
-								paddingHorizontal: wp("2%"),
-								paddingTop:
-									Platform.OS === "android"
-										? StatusBar.currentHeight
-										: 0,
+								paddingHorizontal: wp(3),
 							}}
 						>
 							<TouchableOpacity
@@ -155,21 +135,21 @@ const Layout = () => {
 								style={{
 									flexDirection: "row",
 									alignItems: "center",
-									padding: wp("2%"),
-									marginTop: hp("2%"),
+									padding: 5, // 10 -> responsive padding
+									marginTop: hp(2.5), // 20 -> responsive marginTop
 									zIndex: 10,
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={wp("7%")}
+									size={hp(4)} // 30 -> responsive icon size
 									color="white"
 								/>
 								<Text
 									style={{
 										color: "white",
-										fontSize: wp("3.5%"),
-										marginLeft: wp("2%"),
+										fontSize: hp(2), // 18 -> responsive font size
+										marginLeft: wp(2), // 8 -> responsive margin
 										fontFamily: "Roboto-SemiBold",
 									}}
 								>
@@ -182,7 +162,7 @@ const Layout = () => {
 								<Text
 									style={{
 										color: "white",
-										fontSize: wp("5.5%"),
+										fontSize: hp(2.5), // 22 -> responsive font size
 										fontFamily: "Roboto-Bold",
 									}}
 								></Text>
