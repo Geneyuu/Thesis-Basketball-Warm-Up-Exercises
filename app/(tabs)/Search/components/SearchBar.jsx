@@ -1,13 +1,17 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const SearchBar = ({ query, onChangeText }) => {
 	return (
 		<View style={styles.searchBarContainer}>
 			<Ionicons
 				name="search"
-				size={24}
+				size={wp("5.5%")}
 				color="#161616"
 				style={styles.searchIcon}
 			/>
@@ -28,18 +32,20 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "#fff",
 		borderWidth: 1,
-		paddingVertical: 5,
-		paddingHorizontal: 16,
-		borderRadius: 10,
-		marginBottom: 20,
-		marginTop: 20,
+		paddingVertical: hp("1.2%"),
+		paddingHorizontal: wp("4%"),
+		borderRadius: wp("3%"),
+		marginBottom: hp("2.5%"),
+		marginTop: hp("2.5%"),
 	},
-	searchIcon: { marginRight: 10 },
+	searchIcon: {
+		marginRight: wp("3%"),
+	},
 	searchBar: {
 		flex: 1,
 		color: "#161616",
-		fontSize: 18,
-		fontFamily: "Karla-Regular",
+		fontSize: wp("4.2%"),
+		fontFamily: "Roboto-Regular",
 	},
 });
 

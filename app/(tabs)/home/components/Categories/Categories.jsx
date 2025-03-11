@@ -49,18 +49,18 @@ const styles = StyleSheet.create({
 		width: wp("100%"),
 		flex: 1,
 		justifyContent: "flex-start",
-		paddingHorizontal: 20,
-		// backgroundColor: "red",
+		paddingHorizontal: wp(5),
 	},
+
 	categoriesGrid: {
 		flexDirection: "row",
 		flexWrap: "wrap",
-		marginTop: 6,
 		justifyContent: "space-between",
 		paddingBottom: hp(2),
 	},
+
 	sectionTitle: {
-		fontSize: 20,
+		fontSize: hp(2.2),
 		fontFamily: "Roboto-ExtraBold",
 		color: "#000",
 	},

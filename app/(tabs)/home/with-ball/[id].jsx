@@ -10,6 +10,10 @@ import { useLocalSearchParams } from "expo-router";
 import { Video } from "expo-av";
 import { exercises } from "../../../exercisespaths/exercises";
 import { useFocusEffect } from "@react-navigation/native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ExerciseDetails = () => {
 	const { id } = useLocalSearchParams();
@@ -83,7 +87,7 @@ const ExerciseDetails = () => {
 								styles.video,
 								!isVideoReady && { opacity: 0 },
 							]}
-							useNativeControls={false} // Enable controls para sa debugging
+							useNativeControls={false}
 							shouldPlay={isVideoReady}
 							isLooping
 							resizeMode="contain"
@@ -113,44 +117,43 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 	},
 	title: {
-		fontSize: 35,
+		fontSize: wp("7%"),
 		color: "#333",
-		marginBottom: 20,
+		marginBottom: hp("2%"),
 		textAlign: "center",
 		fontFamily: "Karla-Bold",
-		marginTop: 30,
+		marginTop: hp("4%"),
 	},
 	detailsContainer: {
 		backgroundColor: "#fff",
-		padding: 20,
-		borderRadius: 15,
+		padding: wp("5%"),
+		borderRadius: wp("4%"),
 		shadowColor: "#000",
 		shadowOpacity: 0.1,
-		shadowRadius: 6,
+		shadowRadius: wp("2%"),
 		elevation: 2,
-		marginTop: 20,
-		width: "90%",
-		maxWidth: "auto",
+		marginTop: hp("3%"),
+		width: wp("90%"),
 		alignSelf: "center",
 	},
 	detailTitle: {
-		fontSize: 22,
+		fontSize: wp("5%"),
 		color: "#333",
-		marginBottom: 10,
+		marginBottom: hp("1%"),
 		fontFamily: "Karla-Bold",
 	},
 	detailText: {
-		fontSize: 16,
+		fontSize: wp("4%"),
 		color: "#666",
-		lineHeight: 24,
+		lineHeight: hp("3%"),
 		fontFamily: "Karla-Regular",
 		textAlign: "left",
 	},
 	videoContainer: {
-		width: "100%",
+		width: wp("100%"),
+		height: hp("30%"),
 		overflow: "hidden",
 		alignSelf: "center",
-		height: 250,
 		justifyContent: "center",
 		alignItems: "center",
 	},
@@ -162,12 +165,13 @@ const styles = StyleSheet.create({
 	loadingContainer: {
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: 20,
+		marginTop: hp("2%"),
 	},
 	errorText: {
 		color: "red",
-		fontSize: 16,
-		marginTop: 20,
+		fontSize: wp("4%"),
+		marginTop: hp("2%"),
+		textAlign: "center",
 	},
 });
 

@@ -1,5 +1,9 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const SaveButton = ({ onPress }) => {
 	return (
@@ -12,16 +16,16 @@ const SaveButton = ({ onPress }) => {
 const styles = StyleSheet.create({
 	saveButton: {
 		backgroundColor: "black",
-		paddingVertical: 12,
-		borderRadius: 8,
+		paddingVertical: hp("1.5%"),
+		borderRadius: wp("2%"),
 		justifyContent: "center",
 		alignItems: "center",
-		marginTop: 16,
+		marginTop: hp("2%"),
 	},
 	saveButtonText: {
 		color: "#fff",
-		fontSize: 18,
-		fontFamily: "Karla-Bold",
+		fontSize: wp("4.5%"),
+		fontFamily: "Roboto-SemiBold",
 	},
 });
 

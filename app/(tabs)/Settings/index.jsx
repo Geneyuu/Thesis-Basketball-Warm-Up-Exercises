@@ -1,11 +1,17 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import { ScrollView, Alert, StyleSheet } from "react-native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import { Data } from "./../../_layout";
 import ExercisePicker from "./components/ExercisePicker";
 import InputField from "./components/InputField";
 import SaveButton from "./components/SaveButton";
 import AboutUs from "./components/AboutUs";
 import ExerciseSettingsTitle from "./components/ExerciseSettingsTitle";
+
 // Initial State
 const initialState = {
 	selectedExercise: "",
@@ -13,7 +19,7 @@ const initialState = {
 	repetitions: "",
 };
 
-// Reducer Function try lang lol
+// Reducer Function
 const reducer = (state, action) => {
 	switch (action.type) {
 		case "SET_EXERCISE":
@@ -45,7 +51,7 @@ export default function Settings() {
 			type: "SET_REPETITIONS",
 			payload: exercise?.repetitions || "",
 		});
-	}, [state.selectedExercise, exerciseListAsync]); // <-- Dinagdag exerciseListAsync
+	}, [state.selectedExercise, exerciseListAsync]);
 
 	// Save updated exercise settings
 	const handleSaveSettings = () => {
@@ -72,7 +78,7 @@ export default function Settings() {
 		Alert.alert("Success", "Exercise settings updated!");
 	};
 
-	// Save Rest Timer (Inside Component)
+	// Save Rest Timer
 	const handleSaveRestTimer = () => {
 		const newRestTimer = Number(restTimer);
 		if (isNaN(newRestTimer) || newRestTimer < 0) {
@@ -90,6 +96,7 @@ export default function Settings() {
 			keyboardShouldPersistTaps="handled"
 		>
 			<ExerciseSettingsTitle />
+
 			<ExercisePicker
 				selectedExercise={state.selectedExercise}
 				setSelectedExercise={(value) =>
@@ -118,7 +125,6 @@ export default function Settings() {
 
 			<SaveButton onPress={handleSaveSettings} title="Save Settings" />
 
-			{/* REST TIMER INPUT - Ensure it updates properly */}
 			<InputField
 				label="Global Rest Timer (seconds)"
 				value={restTimer}
@@ -133,14 +139,14 @@ export default function Settings() {
 	);
 }
 
-// Styles
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
+		paddingHorizontal: wp("5%"),
+		paddingVertical: hp("2%"),
 		backgroundColor: "#fff",
 	},
 	SaveButton: {
-		borderRadius: 100,
+		borderRadius: wp("10%"),
 	},
 });

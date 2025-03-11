@@ -1,5 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ProfileInfo = ({ title, currentName }) => {
 	return (
@@ -13,23 +17,23 @@ const ProfileInfo = ({ title, currentName }) => {
 
 const styles = StyleSheet.create({
 	title: {
-		fontSize: 30,
-		fontFamily: "Karla-Bold",
+		fontSize: wp("7.5%"),
+		fontFamily: "Roboto-ExtraBold",
 		color: "#161616",
-		marginBottom: 24,
+		marginBottom: hp("3%"),
 		textAlign: "center",
 	},
 	label: {
-		fontSize: 18,
-		fontFamily: "Karla-Regular",
+		fontSize: wp("4.5%"),
+		fontFamily: "Roboto-Regular",
 		color: "#161616",
-		marginBottom: 8,
+		marginBottom: hp("1%"),
 	},
 	value: {
-		fontSize: 20,
-		fontFamily: "Karla-Bold",
+		fontSize: wp("5%"),
+		fontFamily: "Roboto-ExtraBold",
 		color: "#161616",
-		marginBottom: 16,
+		marginBottom: hp("2%"),
 	},
 });
 

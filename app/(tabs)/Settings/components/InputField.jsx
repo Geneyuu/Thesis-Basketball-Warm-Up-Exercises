@@ -1,5 +1,9 @@
 import React from "react";
 import { Text, TextInput, StyleSheet } from "react-native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const InputField = ({ label, value, setValue, placeholder }) => {
 	return (
@@ -17,22 +21,21 @@ const InputField = ({ label, value, setValue, placeholder }) => {
 	);
 };
 
-
-
 const styles = StyleSheet.create({
 	label: {
-		fontSize: 16,
+		fontSize: wp("4%"), // 16 -> responsive
 		fontWeight: "bold",
-		marginBottom: 5,
-		marginTop: 8,
+		marginBottom: hp("0.5%"), // 5 -> responsive
+		marginTop: hp("1%"), // 8 -> responsive
 	},
 	input: {
 		borderWidth: 1,
-		padding: 10,
-		borderRadius: 5,
-		marginBottom: 15,
+		paddingVertical: hp("1.5%"), // 10 -> responsive
+		paddingHorizontal: wp("3%"), // 10 -> responsive
+		borderRadius: wp("1.5%"), // 5 -> responsive
+		marginBottom: hp("2%"), // 15 -> responsive
 		backgroundColor: "#fff",
-		borderColor:'gray',
+		borderColor: "gray",
 	},
 });
 

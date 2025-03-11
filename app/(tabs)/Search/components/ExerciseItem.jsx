@@ -1,5 +1,9 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ExerciseItem = ({ item, onPress, disabled }) => {
 	return (
@@ -19,23 +23,27 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		backgroundColor: "#fff",
-		padding: 10,
-		marginInline: 18,
-		marginBottom: 12,
-		borderRadius: 10,
+		paddingVertical: hp("1.5%"),
+		paddingHorizontal: wp("4%"),
+		marginHorizontal: wp("4.5%"),
+		marginBottom: hp("1.5%"),
+		borderRadius: wp("2.5%"),
 		elevation: 2,
 		shadowColor: "#000",
-		shadowOffset: { width: 5, height: 5 },
+		shadowOffset: { width: 2, height: 2 },
 		shadowOpacity: 0.2,
 		shadowRadius: 4,
-		
 	},
-	exerciseImage: { width: 70, height: 70, borderRadius: 10, marginRight: 15 },
+	exerciseImage: {
+		width: wp("15%"),
+		height: wp("15%"),
+		borderRadius: wp("2%"),
+		marginRight: wp("4%"),
+	},
 	exerciseText: {
-		fontSize: 15,
+		fontSize: wp("4.2%"),
 		color: "#161616",
-		fontWeight: "600",
-		fontFamily: "Roboto-Regular",
+		fontFamily: "Roboto-SemiBold",
 	},
 });
 

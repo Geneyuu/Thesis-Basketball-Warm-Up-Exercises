@@ -11,6 +11,10 @@ import { useRouter } from "expo-router";
 import ProfileInfo from "../Profile/components/ProfileInfo";
 import NameInput from "../Profile/components/NameInput";
 import SaveButton from "../Profile/components/SaveButton";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const Profile = () => {
 	const { name, setName } = useContext(Data);
@@ -62,15 +66,15 @@ const styles = StyleSheet.create({
 	scrollContainer: {
 		flexGrow: 1,
 		justifyContent: "flex-start",
-		padding: 16,
+		padding: wp("4%"), // equivalent to 16 on a base width
 	},
 	container: {
 		backgroundColor: "#fff",
 		display: "flex",
 		flex: 1,
 		justifyContent: "center",
-		marginBottom: 100,
-		padding: 20,
+		marginBottom: hp("12%"), // equivalent to 100 on a base height
+		padding: wp("5%"), // equivalent to 20 on a base width
 	},
 });
 

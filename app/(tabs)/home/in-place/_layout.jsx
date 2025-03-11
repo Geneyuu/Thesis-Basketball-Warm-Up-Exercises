@@ -3,6 +3,10 @@ import { Stack } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const Layout = () => {
 	const router = useRouter();
@@ -17,25 +21,25 @@ const Layout = () => {
 					header: () => (
 						<View
 							style={{
-								height: 65,
+								height: hp("8%"),
 								flexDirection: "row",
 								alignItems: "center",
 								backgroundColor: "#fff",
-								borderBottomWidth: 3,
+								borderBottomWidth: 2.5,
 								borderBottomColor: "#161616",
-								paddingHorizontal: 10,
+								paddingHorizontal: wp("2.5%"),
 							}}
 						>
 							{/* Back Button */}
 							<TouchableOpacity
 								onPress={() => router.back()}
 								style={{
-									marginLeft: 10,
+									marginLeft: wp("2.5%"),
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={28}
+									size={wp("7%")}
 									color="black"
 								/>
 							</TouchableOpacity>
@@ -44,15 +48,15 @@ const Layout = () => {
 								<Text
 									style={{
 										position: "relative",
-										top: 0,
-										left: -5,
+										top: hp("0%"),
+										left: wp("-1.5%"),
 										color: "#161616",
-										fontSize: 23,
-										fontFamily: "Oswald-Bold",
+										fontSize: wp("5.5%"),
+										fontFamily: "Roboto-SemiBold",
 										textTransform: "capitalize",
 									}}
 								>
-									Upper Body & Core Activation
+									Dynamic Exercises
 								</Text>
 							</View>
 						</View>
@@ -68,25 +72,25 @@ const Layout = () => {
 					header: () => (
 						<View
 							style={{
-								height: 65,
+								height: hp("8%"),
 								flexDirection: "row",
 								alignItems: "center",
 								backgroundColor: "#fff",
-								borderBottomWidth: 3,
+								borderBottomWidth: 0.4,
 								borderBottomColor: "#161616",
-								paddingHorizontal: 10,
+								paddingHorizontal: wp("2.5%"),
 							}}
 						>
 							{/* Back Button */}
 							<TouchableOpacity
-								onPress={() => router.back()} // Go back within the same nested stack
+								onPress={() => router.back()}
 								style={{
-									marginLeft: 10,
+									marginLeft: wp("2.5%"),
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={28}
+									size={wp("7%")}
 									color="black"
 								/>
 							</TouchableOpacity>
@@ -96,11 +100,11 @@ const Layout = () => {
 								<Text
 									style={{
 										position: "relative",
-										top: 0,
-										left: -20,
+										top: hp("0%"),
+										left: wp("-5%"),
 										color: "#161616",
-										fontSize: 25,
-										fontFamily: "Oswald-Bold",
+										fontSize: wp("6%"),
+										fontFamily: "Roboto-SemiBold",
 									}}
 								>
 									Start Warm-Ups
@@ -122,9 +126,9 @@ const Layout = () => {
 							style={{
 								flexDirection: "row",
 								alignItems: "center",
-								height: 65,
+								height: hp("8%"),
 								backgroundColor: "transparent",
-								paddingHorizontal: 10,
+								paddingHorizontal: wp("2.5%"),
 							}}
 						>
 							<TouchableOpacity
@@ -132,22 +136,22 @@ const Layout = () => {
 								style={{
 									flexDirection: "row",
 									alignItems: "center",
-									padding: 10,
-									marginTop: 20,
+									padding: wp("2.5%"),
+									marginTop: hp("2%"),
 									zIndex: 10,
 								}}
 							>
 								<Ionicons
 									name="arrow-back"
-									size={30}
+									size={wp("8%")}
 									color="white"
 								/>
 								<Text
 									style={{
 										color: "white",
-										fontSize: 18,
-										marginLeft: 8,
-										fontFamily: "Oswald-Bold",
+										fontSize: wp("4.5%"),
+										marginLeft: wp("2%"),
+										fontFamily: "Roboto-SemiBold",
 									}}
 								>
 									Back
@@ -159,8 +163,8 @@ const Layout = () => {
 								<Text
 									style={{
 										color: "white",
-										fontSize: 22,
-										fontFamily: "Oswald-Bold",
+										fontSize: wp("5.5%"),
+										fontFamily: "Roboto-SemiBold",
 									}}
 								></Text>
 							</View>

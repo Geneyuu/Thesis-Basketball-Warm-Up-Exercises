@@ -5,6 +5,12 @@ import { exercises } from "../../exercisespaths/exercises";
 import SearchBar from "../Search/components/SearchBar";
 import ExerciseList from "../Search/components/ExerciseList";
 
+// Import hp and wp from react-native-responsive-screen
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 const sortedExercises = [...exercises].sort((a, b) =>
 	a.name.localeCompare(b.name)
 );
@@ -47,7 +53,14 @@ const Search = () => {
 	);
 };
 
+// Responsive styles
 const styles = StyleSheet.create({
-	container: { flex: 1, padding: 15, backgroundColor: "#ffff" },
+	container: {
+		flex: 1,
+		paddingHorizontal: wp("4%"),
+		paddingTop: hp("2%"),
+		backgroundColor: "#fff", // typo fixed from "#ffff"
+	},
 });
+
 export default Search;

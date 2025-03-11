@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 	},
 
 	greetingText: {
-		fontSize: hp(2),
+		fontSize: wp(3.5),
 		color: "#000",
 		fontFamily: "Roboto-Regular",
 		marginTop: hp(0.5),
@@ -49,8 +49,9 @@ const styles = StyleSheet.create({
 	greetingName: {
 		color: "#161616",
 		fontFamily: "Roboto-ExtraBold",
-		fontSize: hp(1.8),
+		fontSize: wp(3.2),
 		textTransform: "uppercase",
+		letterSpacing: -0.5,
 	},
 
 	profileContainer: {

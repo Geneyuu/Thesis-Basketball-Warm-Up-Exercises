@@ -9,19 +9,23 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { exercises } from "../../../exercisespaths/exercises";
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 // ExerciseItem Component
 const ExerciseItem = ({ id, name, image }) => {
 	const router = useRouter();
 	const [isClickable, setIsClickable] = useState(true);
 
-	// Handle button press and disable temporarily
 	const handlePress = () => {
 		if (!isClickable) return;
 		setIsClickable(false);
 		router.push(`/home/whole-body/${id}`);
 
 		const timeout = setTimeout(() => setIsClickable(true), 1300);
-		return () => clearTimeout(timeout); // Cleanup
+		return () => clearTimeout(timeout);
 	};
 
 	return (
@@ -47,10 +51,6 @@ const StickyButton = () => {
 		}
 	};
 
-	// const handleStartWarmUp = () => {
-	// 	router.push("../../home/with-ball/StartWarmUps");
-	// };
-
 	return (
 		<View style={styles.stickyButtonContainer}>
 			<TouchableOpacity style={styles.stickyButton} onPress={handlePress}>
@@ -61,7 +61,7 @@ const StickyButton = () => {
 };
 
 // WithBall Component (Main Component)
-const WithBall = () => (
+const WholeBody = () => (
 	<>
 		<ScrollView
 			contentContainerStyle={styles.container}
@@ -94,49 +94,58 @@ const WithBall = () => (
 
 // Styles
 const styles = StyleSheet.create({
-	container: { padding: 16, backgroundColor: "#fff" },
+	container: {
+		padding: wp("4%"),
+		backgroundColor: "#fff",
+	},
 	mainImage: {
 		width: "100%",
-		height: 250,
+		height: hp("30%"),
 		resizeMode: "cover",
-		borderRadius: 12,
-		marginBottom: 20,
+		borderRadius: wp("3%"),
+		marginBottom: hp("2%"),
 	},
 	description: {
-		fontSize: 13,
-		lineHeight: 22,
+		fontSize: wp("3.5%"),
+		lineHeight: hp("2.5%"),
 		color: "#161616",
-		marginBottom: 16,
+		marginBottom: hp("2%"),
 		textAlign: "justify",
 		fontFamily: "Karla-Regular",
 	},
 	subheading: {
-		fontSize: 22,
-		marginBottom: 20,
+		fontSize: wp("5.5%"),
+		marginBottom: hp("2.5%"),
 		color: "#161616",
 		fontFamily: "Karla-Bold",
 	},
-	exerciseContainer: { flexDirection: "column", marginBottom: 50 },
+	exerciseContainer: {
+		flexDirection: "column",
+		marginBottom: hp("10%"),
+	},
 
 	// Exercise Item Styles
 	exercise: {
 		flexDirection: "row",
 		alignItems: "center",
 		backgroundColor: "#fff",
-		borderRadius: 8,
-		padding: 12,
-		marginBottom: 12,
+		borderRadius: wp("2%"),
+		padding: wp("3%"),
+		marginBottom: hp("1.5%"),
 		shadowOpacity: 0.2,
 		shadowRadius: 5,
 		elevation: 2,
 		shadowColor: "#000",
 		shadowOffset: { width: 5, height: 5 },
-		shadowOpacity: 0.2,
-		shadowRadius: 4,
 	},
-	exerciseImage: { width: 80, height: 80, borderRadius: 8, marginRight: 12 },
+	exerciseImage: {
+		width: wp("20%"),
+		height: wp("20%"),
+		borderRadius: wp("2%"),
+		marginRight: wp("3%"),
+	},
 	exerciseText: {
-		fontSize: 15,
+		fontSize: wp("4%"),
 		color: "#161616",
 		fontFamily: "Roboto-ExtraBold",
 		flexShrink: 1,
@@ -145,19 +154,23 @@ const styles = StyleSheet.create({
 	// Sticky Button Styles
 	stickyButtonContainer: {
 		position: "absolute",
-		bottom: 18,
-		left: 16,
-		right: 16,
+		bottom: hp("2.5%"),
+		left: wp("4%"),
+		right: wp("4%"),
 	},
 	stickyButton: {
 		backgroundColor: "#161616",
-		paddingVertical: 12,
+		paddingVertical: hp("1.8%"),
 		borderWidth: 2,
-		borderRadius: 8,
+		borderRadius: wp("2%"),
 		justifyContent: "center",
 		alignItems: "center",
 	},
-	stickyButtonText: { fontSize: 18, color: "#fff", fontFamily: "Karla-Bold" },
+	stickyButtonText: {
+		fontSize: wp("4.5%"),
+		color: "#fff",
+		fontFamily: "Karla-Bold",
+	},
 });
 
-export default WithBall;
+export default WholeBody;

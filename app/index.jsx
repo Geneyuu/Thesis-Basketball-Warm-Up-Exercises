@@ -9,14 +9,16 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
-// para magamit naitn yung mga tools na need sa paggawa ng react-native appss.
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const scaleValue = new Animated.Value(1);
 
-// splash-screen natin or startup screen
 export default function Index() {
 	const [fontsLoaded, setFontsLoaded] = useState(false);
-	const router = useRouter(); // nagdeclare lang ako ng router dito para magamit yung useRotuer na navigation
+	const router = useRouter();
 
 	useEffect(() => {
 		const loadFonts = async () => {
@@ -52,7 +54,6 @@ export default function Index() {
 
 		loadFonts();
 
-		// Start the animation once fonts are fully loaded
 		const animation = Animated.loop(
 			Animated.sequence([
 				Animated.timing(scaleValue, {
@@ -70,14 +71,12 @@ export default function Index() {
 
 		animation.start();
 
-		// Cleanup the animation when the component unmounts
 		return () => {
 			animation.stop();
 		};
 	}, []);
 
 	useEffect(() => {
-		// Show splash screen for 6 seconds before navigating
 		setTimeout(() => {
 			router.replace("/(tabs)/home");
 		}, 6000);
@@ -93,7 +92,6 @@ export default function Index() {
 
 	return (
 		<View style={styles.container}>
-			{/* Status Bar with White Background and Dark Content */}
 			<StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
 			<Animated.Image
@@ -103,11 +101,14 @@ export default function Index() {
 					{ transform: [{ scale: scaleValue }] },
 				]}
 			/>
+
 			<Text style={styles.text}>Basketball Warm Ups</Text>
+
 			<Image
 				source={require("../assets/images/cvsulogo.png")}
 				style={styles.universityLogo}
 			/>
+
 			<Text style={styles.universityText}>Cavite State University</Text>
 		</View>
 	);
@@ -120,36 +121,40 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "#ffffff",
 	},
+
 	splashImage: {
-		width: 150,
-		height: 150,
-		marginBottom: 20,
+		width: wp("35%"),
+		height: wp("35%"),
+		marginBottom: hp("2%"),
 	},
+
 	text: {
-		marginTop: 20,
-		fontSize: 25,
-		width: "45%",
+		marginTop: hp("2%"),
+		fontSize: hp("3%"),
+		width: wp("50%"),
 		textTransform: "uppercase",
 		color: "#333333",
 		fontFamily: "Karla-Bold",
-		letterSpacing: 0,
+		letterSpacing: 0.5,
 		textAlign: "center",
 	},
+
+	universityLogo: {
+		position: "absolute",
+		bottom: hp("8%"),
+		width: wp("15%"),
+		height: wp("15%"),
+		resizeMode: "contain",
+	},
+
 	universityText: {
 		position: "absolute",
-		bottom: 45,
-		fontSize: 18,
+		bottom: hp("4%"),
+		fontSize: hp("2.2%"),
 		color: "#333333",
 		fontFamily: "Karla-SemiBold",
 		textAlign: "center",
 		textTransform: "uppercase",
-		width: "80%", // Ensure the text can fit
-	},
-	universityLogo: {
-		position: "absolute",
-		bottom: 70,
-		width: 60,
-		height: 60,
-		resizeMode: "contain",
+		width: wp("80%"),
 	},
 });
