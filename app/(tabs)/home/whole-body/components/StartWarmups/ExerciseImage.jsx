@@ -1,6 +1,11 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 const ExerciseImage = ({ nextExercise, currentExercise }) => {
 	return (
 		<View style={styles.imageContainer}>
@@ -16,14 +21,15 @@ const ExerciseImage = ({ nextExercise, currentExercise }) => {
 
 const styles = StyleSheet.create({
 	imageContainer: {
-		width: "100%",
+		width: wp("100%"),
 		alignItems: "center",
-		marginBottom: 20,
+		justifyContent: "center",
+		marginVertical: hp("1%"),
 	},
 	image: {
-		width: "100%",
-		height: 200,
-		borderRadius: 10,
+		width: wp("55%"),
+		height: hp("15%"),
+		borderRadius: hp("1%"),
 	},
 });
 
