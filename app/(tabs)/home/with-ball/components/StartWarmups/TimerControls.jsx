@@ -69,7 +69,7 @@ const TimerControls = ({
 					<>
 						<Progress.Circle
 							progress={progress}
-							size={wp("70%")}
+							size={wp("60%")}
 							color="green"
 							unfilledColor="#e0e0e0"
 							borderWidth={0}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 	},
 
 	progressWrapper: {
-		marginVertical: hp("2%"),
+		marginVertical: hp("1%"),
 		position: "relative",
 		alignItems: "center",
 		justifyContent: "center",
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
 	// For Progress.Circle overlay
 	restingTimerOverlay: {
 		position: "absolute",
-		width: wp("75%"),
-		height: wp("70%"),
+		width: wp("70%"),
+		height: wp("60%"),
 		alignItems: "center",
 		justifyContent: "center",
 		top: 25,

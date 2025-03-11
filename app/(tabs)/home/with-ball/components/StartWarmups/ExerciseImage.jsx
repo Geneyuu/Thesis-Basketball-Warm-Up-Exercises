@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
 		width: wp("100%"),
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: hp("1%"),
+		marginVertical: hp("1.5%"),
 	},
 	image: {
 		width: wp("55%"),
-		height: hp("15%"),
+		height: hp("16%"),
 		borderRadius: hp("1%"),
 	},
 });
